@@ -1,8 +1,8 @@
 let vertices = []; 
 let img;
-function preload() {
-  img = loadImage('prueba.png');
-}
+// function preload() {
+//   img = loadImage('prueba.png');
+// }
   
 function setup() { 
   createCanvas(displayWidth, displayHeight, SVG);
