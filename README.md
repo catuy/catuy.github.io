@@ -1,55 +1,25 @@
-# Pineapple
+# Hello PWA
+The classic Hello World program as a Progressive Web App
 
-Pineapple is a minimalistic [Jekyll](https://jekyllrb.com) portfolio theme that focuses on putting your projects in the spotlight.
+![Hello World Screenshot](./screenshot.jpg "Hello World Screenshot")
 
-![Pineapple screenshot](https://user-images.githubusercontent.com/9528895/38713105-6dda8a74-3ec7-11e8-8062-8aa6cf24c795.jpg)
+## What It Is
 
-See Pineapple in action on the [demo site](https://arnolds.io/pineapple/).
+A simple PWA demo that displays the text "Hello, World!" utilizing an app manifest, service workers and caching. This demo is written in plain-vanilla HTML, CSS and Javascript (ES6). It has no dependencies.
 
-## Contents
+I've also written a tutorial to go along with the code. Read it on Medium:
 
-- [Setup](#setup)
-- [Deploy to Github Pages](#deploy-to-github-pages)
-- [Creating projects](#creating-projects)
-- [Resources](#resources)
-- [License](#license)
+https://medium.com/james-johnson/a-simple-progressive-web-app-tutorial-f9708e5f2605
 
-## Setup
+## Demo
 
-Install dependencies:
+https://jamesjohnson280.github.io/hello-pwa/
 
-```
-$ gem install jekyll bundler
-```
+## Browser Compatibility
 
-Pulldown the project:
+Hello PWA has been tested in the following browsers:
 
-```
-$ git clone git@github.com:arnolds/pineapple.git
-$ cd pineapple
-```
-
-Start Jekyll:
-
-```
-$ jekyll serve
-```
-
-Browse to http://127.0.0.1:4000/pineapple/ for some Pineapple goodness.
-
-## Deploy to Github Pages
-
-1. Fork this repository, then rename the repository to yourgithubusername.github.io.
-2. Update user configuration values in `_config.yml`, and also set `baseurl: ""`.
-
-## Creating projects
-
-Projects are created as `.md` documents within the `_posts/projects` directory. They follow the same naming conventions as regular [Jekyll posts](https://jekyllrb.com/docs/posts/). Pineapple comes with four example projects, which you should use as a guide for creating your own e.g. [Red Pineapple](_posts/projects/2017-04-01-redpineapple.md).
-
-## Resources
-
-- [Apple Devices PSD Mockup Templates](https://www.graphicsfuel.com/2016/04/apple-devices-psd-mockup-templates/)
-
-## License
-
-Open sourced under the [MIT license](LICENSE.md).
+* Chrome 67 (Windows and Android)
+* Firefox 60
+* Safari 11
+* Edge 42

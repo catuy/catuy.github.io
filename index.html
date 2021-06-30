@@ -1,44 +1,24 @@
----
----
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-	<title>{{ site.author }} / {{ site.tagline }}</title>
-	<meta name="author" content="{{ site.author }}">
-	<meta name="description" content="{{ site.description }}">
-	<meta name="keywords" content="{{ site.keywords }}">
-	{% include head.html %}
+  <meta charset="utf-8">
+  <title>Hello World</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="images/hello-icon-152.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="white"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hello World">
+  <meta name="msapplication-TileImage" content="images/hello-icon-144.png">
+  <meta name="msapplication-TileColor" content="#FFFFFF">
 </head>
-<body>
-	{% include header.html %}
-	<main class="content">
-		<section class="intro">
-			<div class="container">
-				<h2>About me.</h2>
-				<p>{{ site.description }}</p>
-			</div>
-		</section>
-		<section class="projects">
-			<div class="container">
-				<h2>Projects I have worked on.</h2>
-				<ul class="projects-list">
-					{% for item in site.categories.projects reversed %}
-						<li>
-							<a href="{{ item.url | prepend: site.baseurl }}">
-								<div class="img-wrapper">
-									<img src="{{ item.project.logo | prepend: site.baseurl }}" alt="{{ item.project.title }}" />
-								</div>
-								<span class="h2">{{ item.project.type }}</span>
-								<h3>{{ item.project.title }}</h3>
-							</a>
-						</li>
-					{% endfor %}
-				</ul>
-			</div>
-		</section>
-	</main>
-	{% include footer.html %}
-	<script src="{{ "/assets/scripts/vendor/scrollreveal.min.js" | prepend: site.baseurl }}"></script>
-	<script src="{{ "/assets/scripts/home.js" | prepend: site.baseurl }}"></script>
+<body class="fullscreen">
+  <div class="container">
+    <h1 class="title">Hello World!</h1>
+  </div>
+  <script src="js/main.js"></script>
 </body>
 </html>
