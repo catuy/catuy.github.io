@@ -1,51 +1,88 @@
-var dim;
+let x, y;
+let px, py;
+let osc, fft;
+let pg;
+
+
+var c = ["#C460E0", 
+        //  "#F469A9", 
+         "#69F5E7", 
+        //  "#687DF2", 
+        //  "#69F591",             
+         "#F1Ea67"];
+
 
 function setup() {
-  createCanvas(displayWidth, displayHeight);
-  let fill_color = color('#312783');
-  let stroke_color = color('#E6007E');
-  let background_color = color('#eee');
-  let stroke_wight = 0;
-  dim = width/2;
-  colorMode(HSB, 360, 100, 100);
-  ellipseMode(RADIUS);
+  // createCanvas(windowHeight*.7, windowHeight);
+  createCanvas(windowWidth, windowHeight);
 
+  x = random(255);
+  y = random(255);
+  px = x;
+  py = y;
 
-  background(background_color);
-  fill(fill_color);
-  stroke(stroke_color);
-  strokeWeight(stroke_wight);
+  // background(222);
+  osc = new p5.TriOsc(); // definir frecuencia y tipo
+  osc.amp(0.5);
 
+  fft = new p5.FFT();
+  osc.start();
 }
 
 function draw() {
-  // background(0);
-  for (var x = 0; x <= width; x+=dim) {
-    drawGradient(x, height/2);
-  } 
+
+  x += (noise(frameCount * 0.01) - 0.5) * 90;
+  y += (noise(frameCount * 0.02) - 0.5) * 90;
+
+  if (x > width - 100) {
+    px = x = 100;
+  }
+  if (x < 100) {
+    px = x = width - 100;
+  }
+  if (y > height - 100) {
+    py = y =  100;
+  }
+  if (y < 100) {
+    py = y = height - 100;
+  }
+
+  // stroke(255);
+  // line(x, y, px, py);
+  // strokeWeight(200);
+  // stroke(0);
+  ellipse(x, y, 150, 150);
+  // rect(j, k, 100, 100);
+  // line(x, y, px, py);
+
+  // stroke(random(255), random(255), random(255));
+  stroke(random(c));
+  fill(0);
+
+  strokeWeight(2);
+    // line(pmouseX, pmouseY, mouseX, mouseY);
+   
+    // cambia la frecuencia del oscilador según mouseX
+   let freq = map(x, 0, width, 40, 880);
+   osc.freq(freq);
+ 
+   // cambia la amplitud del oscilador según mouseY
+   let amp = map(y, 0, height, 1, 0.01);
+   osc.amp(amp);
+
+  px = x;
+  py = y;
 }
 
-// function drawGradient(x, y) {
-//   var radius = dim/4;
-//   var h = random(0, 360);
-//   for (r = radius; r > 0; --r) {
-//     fill(h, 90, 90);
-//     ellipse(x, y, r, r);
-//     h = (h + 1) % 360;
-//   }
-// }
+ save_canvas = function() {
+    save();
+  }
 
-function touchMoved() {
+  function mousePressed() {
+    loop();
+  }
+
+  function mouseReleased() {
+    noLoop();
+  }
   
-  let object_width = 50;
-  let object_height = 50;
-  var h = random(0, 360);
-
-  ellipse(mouseX, mouseY, object_width, object_height);
-  fill(h, 90, 90);
-  // h = (h + 1) % 360;
-  // var h = random(0, 360);
-  return false;
-}
-
-
