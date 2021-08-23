@@ -1,0 +1,22 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+.save{
+  /* position: fixed;
+  right: 0px !important;
+  color: white;
+  background-color: black;
+  border: none;
+  padding: 15px 40px;
+  font-size:larger; */
+}
+a{
+  color: black;
+  text-decoration: none;
+}
