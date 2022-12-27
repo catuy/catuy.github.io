@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "UCU"
+date:   2022-12-12 17:12:19 -0300
+categories: jekyll update
+# image: /assets/blogimages/tiles/anii.jpg
+---
+xxx
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño de Producto</li>
+  <li>Diseño Web</li>
+  <li>Desarrollo</li>
+</ul>
+
+<span class="text-sm">[Visitar sitio web](https://anii.org.uy/){:target="_blank"}</span>
+<img class="post-image-full" src="/assets/blogimages/anii-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-3.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-4.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-5.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-6.jpg">
+<img class="post-image-full" src="/assets/blogimages/anii-7.jpg">

@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "Prisma.uy"
+date:   2022-12-21 17:12:19 -0300
+categories: jekyll update
+image: /assets/blogimages/tiles/prisma.jpg
+---
+PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.
+
+Es llevado adelante por la Agencia Nacional de Investigación e Innovación (ANII).
+Su misión es ser una herramienta que brinde información para la toma de decisiones al gobierno, academia, sector productivo y población en general.
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño Web</li>
+  <li>Desarrollo <span class="post-meta">(<a href="https://www.cognus.biz/" target="_blank">Cognus</a>)</span></li>
+</ul>
+
+
+<span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
+<img class="post-image-full" src="/assets/blogimages/prisma-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/prisma-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/prisma-3.jpg">
+<img class="post-image-left" src="/assets/blogimages/prisma-4.jpg">
+<img class="post-image-right" src="/assets/blogimages/prisma-5.jpg">

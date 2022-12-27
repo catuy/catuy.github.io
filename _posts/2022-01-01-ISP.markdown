@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "Innovación en Servicios Públicos"
+date:   2021-12-21 17:12:19 -0300
+categories: jekyll update
+image: /assets/blogimages/tiles/isp.jpg
+---
+El programa de Innovación en Servicios Públicos, ejecutado por la ANII y BID Lab, busca ayudar a mejorar los servicios públicos que utilizan las personas, aprovechando la incorporación de nuevos conocimientos y tecnologías, a partir de mecanismos de innovación abierta y otras herramientas, para beneficio de la población.
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño Web</li>
+  <li>Sistema Visual</li>
+  <li>Desarrollo</li>
+</ul>
+
+<span class="text-sm">[Visitar sitio web](https://innovacionpublica.anii.org.uy/){:target="_blank"}</span>
+<img class="post-image-full" src="/assets/blogimages/isp-1.jpg">

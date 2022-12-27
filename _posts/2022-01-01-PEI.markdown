@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "Emprendedores innovadores"
+date:   2021-12-21 17:12:19 -0300
+categories: jekyll update
+image: /assets/blogimages/tiles/pei.jpg
+---
+El Programa de Emprendedores Innovadores es un portal donde los emprendedores más destacados del país comparten herramientas y consejos para que des tus primeros pasos en el mundo lean startup.
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño Web</li>
+  <li>Desarrollo</li>
+</ul>
+
+<span class="text-sm">[Visitar sitio web](https://emprendedores_innovadores.anii.org.uy/){:target="_blank"}</span>
+<img class="post-image-full" src="/assets/blogimages/pei-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/pei-2.jpg">
+<img class="post-image-left" src="/assets/blogimages/pei-3.jpg">
+<img class="post-image-right" src="/assets/blogimages/pei-4.jpg">
