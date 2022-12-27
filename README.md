@@ -1,38 +1,34 @@
-<img width="1279" alt="Captura de Pantalla 2022-12-27 a la(s) 00 50 49" src="https://user-images.githubusercontent.com/8346573/209702033-04b3cff2-2231-42d6-9d58-be17c542d9bd.jpg">
+![Captura-de-Pantalla-2022-09-11-a-la(s)-02 25 42](https://user-images.githubusercontent.com/8346573/189807841-73d156d5-9fed-4db8-8a00-8f94dda19aab.jpg)
 
-# Atlas
+### Diego Cataldo​ (1982 ​-​ Montevideo, Uruguay​)​
 
+Degree in Graphic Design specialized in digital media.
 
-### Atlas es una consultora de productos digitales especializada en el desarrollo de sistemas de alta complejidad, brindando soluciones de TI para clientes de todo el mundo.
+Professor of Visual Communication Design at the School of Architecture, Design and Urbanism of the University of the Republic of Uruguay.
 
-### Contamos con 20 años de experiencia en el desarrollo de proyectos, combinando diseño, estrategia y programación en soluciones tecnológicas que ofrezcan experiencias significativas a las personas.
+He studied artistic ​serigraphy in the workshop of master Oscar Ferrando between 2007 and 2019. His recent work explores creative programming as a resource for the construction of tools focused on the production of images compatible with the serigraphy​ ​language.
 
-### Servicios:
-- Estrategia de Producto
-- Auditorías UX
-- Pruebas de usuario
-- Diseño Web
-- Diseño UX
-- Diseño UI
-- Branding
-- Desarrollo Front-end
-- Desarrollo de aplicaciones móviles
-- Headless CMS
-
-### Clientes
-- Ministerio de Educación y Cultura
-- Latu
-- Ministerio de Economía y Finanzas
-- Uruguay XXI
-- Instituto Nacional de Logística
-- ORT
-- Ministerio de Industria, Energía y Minería
-- Intendencia de Montevideo
-- Inavi
-- Agencia Nacional de Investigación e Innovación
-- Mercosur
-- Universidad Católica del Uruguay
+Some of his projects have been awarded, published and exhibited in more than 15 countries, highlighting his participation in the XV International Architecture Exhibition of the Venice Biennale, the Second Ibero-American Design Biennial of Madrid and the Fourth Latin American Typography Biennial.
 
 
-### Contacto
-[atlas.com.uy](https://atlas.com.uy)
+#### Record of International Exhibitions
+
+- 2021 “30 seconds museum”, Neo Shibuya, Tokyo, Japan.
+- 2017 “Exposição Novo Mundo | MUDE”, Museu do Design e da Moda, Coleção Francisco Capelo, Lisbon, Portugal.
+- 2017 “Festival Madrid Gráfica”, Plaza Matadero  / di_mad, Madrid, Spain
+- 2017 “28 afiches en homenaje a los artistas”, Escuela de Música del Rock y la Palabra, CDMX, Mexico. 
+- 2016 “Biennale Architettura 2021 - La Biennale di Venezia”, Giardini della Biennale, Venezia, Italy
+- 2016 “28 afiches en homenaje a los artistas”, Ministry of Transport and Public Works, Montevideo, Uruguay.
+- 2011 ”IX Bienal de Arte de Salto”, Mercado 18 de Julio, Montevideo, Uruguay
+- 2010 “Mesa redonda: Tipografía en Uruguay”, Universidad ORT, Montevideo, Uruguay
+- 2010 “Selección Bienal Iberoamericana de Diseño de Madrid”, Plaza Matadero  / di_mad, Madrid, Spain
+- 2010 “Bienal de Tipos Latinos”, Several countries, Argentina, Brazil, Bolivia, Chile, Colombia, Ecuador, Guatemala, Mexico, Peru, Paraguay, Uruguay and Venezuela.
+
+#### Record of International Recognitions and Awards
+
+- 2017 Selected project “Exposição Novo Mundo | MUDE”, Museu do Design e da Moda, Lisbon, Portugal.
+- 2016 Winner project “Uruguayan Curatorship of the Venice Architecture Biennale”, Ministry of Education and Culture, Montevideo, Uruguay
+- 2011 Winner project ”IX Bienal de Arte de Salto”, Ministry of Education and Culture, Montevideo, Uruguay
+- 2010 Winner project “4th Biennial of Latin American Typography”,  Tipos Latinos, Montevideo, Uruguay.
+- 2010 Winner project “2nd Ibero-American Design Biennial in Madrid”, di_mad, Madrid, Spain
+- 2010 Winner project “American Design Awards”, GDUSA. USA
