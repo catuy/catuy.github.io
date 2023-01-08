@@ -2,7 +2,7 @@
 layout: post
 title:  "CVUY"
 date:   2019-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos 
 image: /assets/blogimages/tiles/cvuy.jpg
 ---
 CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.

@@ -2,7 +2,8 @@
 layout: post
 title:  "ANII"
 date:   2019-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos academicos
+tags: [diseño web, desarrollo]
 image: /assets/blogimages/tiles/anii.jpg
 ---
 La Agencia Nacional de Investigación e Innovación (ANII) es una entidad gubernamental que promueve la investigación y la aplicación de nuevos conocimientos a la realidad productiva y social del país. ANII pone a disposición del público fondos para proyectos de investigación, becas de posgrados nacionales e internacionales y programas de incentivo a la cultura innovadora y del emprendedurismo, tanto en el sector privado como público.

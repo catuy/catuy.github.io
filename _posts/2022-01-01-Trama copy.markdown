@@ -2,7 +2,7 @@
 layout: post
 title:  "Trama.uy"
 date:   2020-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos 
 image: /assets/blogimages/tiles/trama.jpg
 ---
 Es una plataforma digital que conecta talentos, emprendedores, investigadores, empresarios e inversores para que compartan sus proyectos y experiencias, propiciando el trabajo conjunto para potenciar la investigación e  innovación del país.

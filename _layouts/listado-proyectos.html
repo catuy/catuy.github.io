@@ -1,0 +1,63 @@
+---
+layout: default
+---
+
+<div class="home">
+  {%- if page.title -%}
+    <!-- <h1 class="page-heading">{{ page.title }}</h1> -->
+  {%- endif -%}
+  <article class="main-content">      
+  {%- if site.posts.size > 0 -%}
+    <!-- <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2> -->
+    <p class="nav-categorias">
+      {% for item in site.navcategories %}
+              {% assign class = nil %}
+              {% if page.url == item.url %}
+                  {% assign class = 'active' %}
+              {% endif %}
+            <a href="{{ item.url }}" class="{{ class }}">[{{ item.title }}]</a>
+          {% endfor %}
+    </p>
+    {{ content }}
+    <ul class="post-list">
+      {% for post in site.categories[page.category] %}
+        <li>
+          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}  
+        {%- if post.image -%}
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }} 
+            <div class="filtered">
+            <img class="post-image" src="{{ post.image }}">
+            </div>
+          </a>
+          <span class="post-date">
+            [{{ post.date | date: "%Y" }}]
+          </span>
+            <span class="post-tags">
+              {% if post %}
+                {% assign tags = post.tags %}
+              {% else %}
+                {% assign tags = page.tags %}
+              {% endif %}
+              {% for tag in tags %}
+              <!-- <a href="{{site.baseurl}}/categories/#{{category|slugize}}"> -->
+                [{{tag}}]
+              <!-- </a> -->
+              {% unless forloop.last %}&nbsp;{% endunless %}
+              {% endfor %}
+            </span>
+        
+          {% else %}
+          <a class="post-link">
+            {{ post.title | escape }} 
+          </a>
+          <span class="post-tags">[Próximamente]</span>
+          {%- endif -%}
+        {%- if site.show_excerpts -%}
+          {{ post.excerpt }}
+        {%- endif -%}
+        </li>
+      {% endfor %}
+    </ul>
+  {%- endif -%}
+  </article>

@@ -2,7 +2,7 @@
 layout: post
 title:  "Emprendedores innovadores"
 date:   2021-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos 
 image: /assets/blogimages/tiles/pei.jpg
 ---
 El Programa de Emprendedores Innovadores es un portal donde los emprendedores más destacados del país comparten herramientas y consejos para que des tus primeros pasos en el mundo lean startup.

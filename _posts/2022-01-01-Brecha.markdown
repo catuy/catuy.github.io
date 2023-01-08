@@ -2,8 +2,9 @@
 layout: post
 title:  "Rediseño Semanario Brecha"
 date:   2020-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos consultorias artes-visuales
 image: /assets/blogimages/tiles/brecha.jpg
+tags: diseño web
 ---
 Semanario Brecha es una publicación periodística independiente de izquierda fundada en 1985 en Montevideo, Uruguay.
 

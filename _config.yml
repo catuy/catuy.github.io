@@ -18,11 +18,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Atlas
+title: Titulo del sitio
 email: contacto@atlas.com.uy
 description: >- # this means to ignore newlines until "baseurl:"
   Atlas es una consultora de productos digitales especializada en el desarrollo de sistemas de alta complejidad, brindando soluciones de TI para clientes de todo el mundo.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://atlas.com.uy" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 # github_username:  jekyll
@@ -31,6 +31,29 @@ url: "https://atlas.com.uy" # the base hostname & protocol for your site, e.g. h
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+
+permalink: /proyectos/:title/
+
+# Nav menu
+navigation:
+  - title: Home
+    url: /
+  - title: Informacion
+    url: /info/
+  - title: Proyectos
+    url: /proyectos/
+
+# Nav categories
+navcategories:
+  - title: todos
+    url: /proyectos/
+  - title: academicos
+    url: /proyectos/academicos/
+  - title: consultorias
+    url: /proyectos/consultorias/
+  - title: artes visuales
+    url: /proyectos/artes-visuales/
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.

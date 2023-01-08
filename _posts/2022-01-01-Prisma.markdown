@@ -2,7 +2,7 @@
 layout: post
 title:  "Prisma.uy"
 date:   2022-12-21 17:12:19 -0300
-categories: jekyll update
+categories: todos 
 image: /assets/blogimages/tiles/prisma.jpg
 ---
 PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.

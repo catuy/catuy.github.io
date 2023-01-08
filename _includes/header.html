@@ -1,18 +1,18 @@
-<header>
-      {%- assign default_paths = site.pages | map: "path" -%}
-      {%- assign page_paths = site.header_pages | default: default_paths -%}
-      {%- assign titles_size = site.pages | map: 'title' | join: '' | size -%}
-      {%- if titles_size > 0 -%}
-        <nav>  
+<header class="item">
+        <nav>
           <ul>
-            <li><a class="text-lg" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a></li>
-            {%- for path in page_paths -%}
-              {%- assign my_page = site.pages | where: "path", path | first -%}
-              {%- if my_page.title -%}
-              <li><a class="text-lg" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a></li>
-              {%- endif -%}
-            {%- endfor -%}
+          {% for item in site.navigation %}
+              {% assign class = nil %}
+              {% if page.url == item.url %}
+                  {% assign class = 'active' %}
+              {% endif %}
+              {% if page.url contains item.url and item.url contains '/proyectos/' %}
+                  {% assign class = 'active' %}
+              {% endif %}
+              <li><a href="{{ item.url }}" class="{{ class }}">{{ item.title }}</a></li>
+          {% endfor %}
           </ul>
-        </nav>
-      {%- endif -%}
+        </nav>    
   </header>
+
+ 

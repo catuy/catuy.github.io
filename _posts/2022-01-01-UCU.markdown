@@ -2,7 +2,7 @@
 layout: post
 title:  "UCU"
 date:   2022-12-12 17:12:19 -0300
-categories: jekyll update
+categories: todos 
 # image: /assets/blogimages/tiles/anii.jpg
 ---
 xxx
