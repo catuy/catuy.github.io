@@ -18,11 +18,10 @@
 
 body {
   margin: 0 auto;
-  background-color: var(--color-tertiary);
+  // background-color: var(--color-tertiary);
   font-family: sans-serif;
   line-height: 1.4;
   font-size: var(--font-size-m);
-
   @media only screen and (max-width: 1400px) {}
 
   @media only screen and (max-width: 992px) {}
@@ -97,7 +96,7 @@ header{
 //  GENERAL
 //  ------------------------------------------
 
-p a{
+ a{
   color: var(--color-primary);
   text-decoration: line-through;
   &:hover{
@@ -143,7 +142,7 @@ ul.post-list{
     padding:3px 0px;
     border-top: 1px solid var(--color-primary);
     span.post-date{
-      margin-left: 12px;
+      margin-left: 13px;
       float: right;
     }
     span.post-tags{
@@ -162,6 +161,23 @@ p.nav-categorias{
     &:hover{
       text-decoration: line-through;
     }
+  }
+}
+.main-content {
+  margin-top: var(--margin);
+  img{
+    margin-left: calc(-50vw + var(--margin));
+    width: calc(100vw - var(--margin)*2);
+    margin-top: var(--margin);
+  // background-color:hsla(0,100%,50%,1);
+  // background-image:
+  // radial-gradient(at 0% 0%, hsla(0,100%,50%,1) 0px, transparent 50%),
+  // radial-gradient(at 82% 0%, hsla(0,100%,50%,1) 0px, transparent 50%),
+  // radial-gradient(at 14% 25%, hsla(0,0%,100%,1) 0px, transparent 50%),
+  // radial-gradient(at 100% 64%, hsla(0,0%,100%,1) 0px, transparent 50%),
+  // radial-gradient(at 49% 62%, hsla(0,100%,50%,1) 0px, transparent 50%),
+  // radial-gradient(at 48% 8%, hsla(343,0%,100%,1) 0px, transparent 50%),
+  // radial-gradient(at 35% 100%, hsla(0,100%,50%,1) 0px, transparent 50%);
   }
 }
 
