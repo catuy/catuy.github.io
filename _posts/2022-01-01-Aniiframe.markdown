@@ -24,3 +24,5 @@ La Agencia Nacional de Investigación e Innovación (ANII) es una entidad gubern
 <img class="post-image-full" src="/assets/blogimages/anii-5.jpg">
 <img class="post-image-full" src="/assets/blogimages/anii-6.jpg">
 <img class="post-image-full" src="/assets/blogimages/anii-7.jpg">
+
+![mesh-gradient](https://user-images.githubusercontent.com/8346573/211223909-b0b7d020-08b1-46a7-a9bc-a83c75a4c3e5.png)
