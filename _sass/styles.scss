@@ -5,12 +5,30 @@
 :root {
   --color-primary: #FF0300;
   --color-secondary: black;
-  --color-tertiary: white;
+  --color-tertiary: #ffffff;
   --font-size-s: 12px;
-  --font-size-m: 16px;
+  --font-size-m: 15px;
   --font-size-l: 18px;
   --margin: 30px;
 }
+
+#threejsDiv {
+  position: fixed !important;
+  z-index: -1;
+  /* background: blue; */
+  height: 100vh;
+  position: absolute;
+  overflow:hidden;
+  top: 0px;
+  }
+  main{
+  position: fixed !important;
+  top: 0px;
+  z-index: -1;
+  height: 100vh;
+  overflow:hidden;
+  z-index: -2;
+  }
 
 //  ------------------------------------------
 //  BODY
@@ -34,7 +52,7 @@ body {
 //  ------------------------------------------
 
 .container {
-  background: var(--color-tertiary);
+  // background: var(--color-tertiary);
   color: var(--color-primary);
   display: grid;
   padding: 0vh;
@@ -164,20 +182,49 @@ p.nav-categorias{
   }
 }
 .main-content {
+  .canvas{
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+  }
   margin-top: var(--margin);
-  img{
-    margin-left: calc(-50vw + var(--margin));
-    width: calc(100vw - var(--margin)*2);
-    margin-top: var(--margin);
-  // background-color:hsla(0,100%,50%,1);
-  // background-image:
-  // radial-gradient(at 0% 0%, hsla(0,100%,50%,1) 0px, transparent 50%),
-  // radial-gradient(at 82% 0%, hsla(0,100%,50%,1) 0px, transparent 50%),
-  // radial-gradient(at 14% 25%, hsla(0,0%,100%,1) 0px, transparent 50%),
-  // radial-gradient(at 100% 64%, hsla(0,0%,100%,1) 0px, transparent 50%),
-  // radial-gradient(at 49% 62%, hsla(0,100%,50%,1) 0px, transparent 50%),
-  // radial-gradient(at 48% 8%, hsla(343,0%,100%,1) 0px, transparent 50%),
-  // radial-gradient(at 35% 100%, hsla(0,100%,50%,1) 0px, transparent 50%);
+  .images-content {
+    // position: fixed;
+    // top: 0px;
+    // left: 0px;
+    // width: 100%;
+    // height: 100%;
+
+    .image-wrap{
+      position: absolute;
+      // display: none;
+      float: left;
+      border: 1px solid var(--color-primary);
+      border-radius: 8px 8px 0 0;
+      .wrap-header{
+        height: var(--margin);
+        border-bottom: 1px solid var(--color-primary);
+        width: 100%;
+        background-color: var(--color-tertiary);
+        border-radius: 8px 8px 0 0;
+      }
+      img{
+        // margin-left: calc(-50vw + var(--margin));
+        // width: calc(100vw - var(--margin)*2);
+        float: left;
+        max-width: 45vw;
+        max-height: 70vh;
+        // margin-top: var(--margin);
+        }
+        video{
+        max-width: 45vw;
+        max-height: 70vh;
+        float: left;
+        }
+      }
   }
 }
 

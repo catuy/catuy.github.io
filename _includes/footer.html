@@ -1,2 +1,28 @@
-<footer class="item"><span class="copyleft">©</span> Copyleft - {{ site.title | escape }} {{ 'now' | date: "%Y" }} - subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a>
+<footer class="item">
+    <!-- <span class="copyleft">©</span> Copyleft - {{ site.title | escape }} {{ 'now' | date: "%Y" }} - subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> -->
 </footer>
+<script>
+    // array of file paths
+    var scripts = [
+        '/assets/heads/1.js',
+        '/assets/heads/2.js'
+    ];
+
+    // check if script path is already stored in sessionStorage
+    var scriptPath = sessionStorage.getItem('scriptPath');
+
+    if (!scriptPath) {
+        // if not, randomly select a path from the array
+        scriptPath = scripts[Math.floor(Math.random() * scripts.length)];
+        // store the path in sessionStorage
+        sessionStorage.setItem('scriptPath', scriptPath);
+    }
+
+    // create a script element
+    var script = document.createElement('script');
+    // set the source to the selected/stored path
+    script.src = scriptPath;
+    // append the script to the head of the document
+    document.getElementsByTagName('head')[0].appendChild(script);
+    sessionStorage.clear();
+</script>

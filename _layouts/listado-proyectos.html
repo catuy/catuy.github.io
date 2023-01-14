@@ -7,6 +7,7 @@ layout: default
     <!-- <h1 class="page-heading">{{ page.title }}</h1> -->
   {%- endif -%}
   <article class="main-content">      
+    {{ content }}
   {%- if site.posts.size > 0 -%}
     <!-- <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2> -->
     <p class="nav-categorias">
@@ -18,7 +19,6 @@ layout: default
             <a href="{{ item.url }}" class="{{ class }}">[{{ item.title }}]</a>
           {% endfor %}
     </p>
-    {{ content }}
     <ul class="post-list">
       {% for post in site.categories[page.category] %}
         <li>
