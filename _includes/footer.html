@@ -2,6 +2,7 @@
     <!-- <span class="copyleft">©</span> Copyleft - {{ site.title | escape }} {{ 'now' | date: "%Y" }} - subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> -->
 </footer>
 <script>
+    $(document).ready(function(){
     // array of file paths
     var scripts = [
         '/assets/heads/1.js',
@@ -24,5 +25,6 @@
     script.src = scriptPath;
     // append the script to the head of the document
     document.getElementsByTagName('head')[0].appendChild(script);
-    sessionStorage.clear();
+    // sessionStorage.clear();
+});
 </script>

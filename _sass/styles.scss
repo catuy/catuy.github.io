@@ -3,8 +3,8 @@
 //  ------------------------------------------
 
 :root {
-  --color-primary: #FF0300;
-  --color-secondary: black;
+  --color-primary: #ffffff;
+  --color-secondary: #ffffff;
   --color-tertiary: #ffffff;
   --font-size-s: 12px;
   --font-size-m: 15px;
@@ -67,7 +67,7 @@ body {
       grid-area: header;
       padding: var(--margin);
       a{
-        color: var(--color-primary);
+        // color: var(--color-primary);
         text-decoration: none;
         &:hover{
           text-decoration: line-through;

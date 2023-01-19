@@ -1,10 +1,8 @@
-<script>
-
-var sketch1 = function(p) {
-  const root = document.documentElement;
-  root.style.setProperty('--color-primary', 'blue');
-  root.style.setProperty('--second-color', '#ffffff');
-  colores = ['#0000ff', '#ffffff']; 
+const root = document.documentElement;
+root.style.setProperty('--color-primary', 'blue');
+root.style.setProperty('--second-color', '#ffffff');
+colores = ['#0000ff', '#ffffff']; 
+var sketch = function(p) {
   // head_color = 0X0000ff;
   background_color = 'blue';
   p.setup = function() {
@@ -22,5 +20,4 @@ var sketch1 = function(p) {
  
 };
 
-var myp5_1 = new p5(sketch1);
-</script>
+var myp5_1 = new p5(sketch);
