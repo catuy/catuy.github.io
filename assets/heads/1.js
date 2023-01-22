@@ -1,9 +1,9 @@
 const root = document.documentElement;
-root.style.setProperty('--color-primary', '#ff0000');
-root.style.setProperty('--second-color', '#ffffff');
-root.style.setProperty('--home-menu-color', '#ffffff');
-head_color = 0Xff0000;
-background_color = '#ff0000';
+root.style.setProperty('--color-primary', '#000');
+root.style.setProperty('--second-color', '#000');
+root.style.setProperty('--home-menu-color', '#fff');
+head_color = 0X000;
+background_color = '#000';
 
 if (location.pathname === '/') {
 var sketch = function(p) {

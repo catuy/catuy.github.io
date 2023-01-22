@@ -80,7 +80,7 @@ body {
 
     &:nth-child(2) {
       grid-area: main;
-      min-height: calc(95vh - var(--margin));
+      // min-height: calc(95vh - var(--margin));
       padding: 0px var(--margin) var(--margin) 0px;
       p{
         &:first-child{
@@ -215,12 +215,12 @@ p.nav-categorias{
         // margin-left: calc(-50vw + var(--margin));
         // width: calc(100vw - var(--margin)*2);
         float: left;
-        max-width: 45vw;
+        max-width: 50vw;
         max-height: 70vh;
         // margin-top: var(--margin);
         }
         video{
-        max-width: 45vw;
+        max-width: 50vw;
         max-height: 70vh;
         float: left;
         }

@@ -33,7 +33,7 @@ $(document).ready(function(){
       $(".image-wrap").eq(divIndex).draggable();
       // Agregamos el div para contener el número consecutivo
       var numConsecutivo = $("<div class='num-consecutivo'></div>");
-      numConsecutivo.html(divIndex + 1 + '/' + $(".image-wrap").length);
+      numConsecutivo.html('[' + (divIndex + 1) + '/' + $(".image-wrap").length + ']');
       $(".image-wrap").eq(divIndex).append(numConsecutivo);
       // Increment the div index
       divIndex++;

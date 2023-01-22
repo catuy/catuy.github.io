@@ -2,7 +2,7 @@
     <!-- <span class="copyleft">©</span> Copyleft - {{ site.title | escape }} {{ 'now' | date: "%Y" }} - subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> -->
 </footer>
 <script>
-    $(document).ready(function(){
+   $(document).ready(function(){
     // array of file paths
     var scripts = [
         '/assets/heads/1.js',
@@ -30,6 +30,16 @@
   $('header nav ul li:first-child').attr('id', 'nav-home');
   $(document).on('click', '#nav-home', function() {
     sessionStorage.clear();
+    var scriptPath = sessionStorage.getItem('scriptPath');
+
+    if (!scriptPath) {
+        scriptPath = scripts[Math.floor(Math.random() * scripts.length)];
+        sessionStorage.setItem('scriptPath', scriptPath);
+    }
+    var script = document.createElement('script');
+    script.src = scriptPath;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  });
 });
-});
+
 </script>

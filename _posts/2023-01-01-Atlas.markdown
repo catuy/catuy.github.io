@@ -22,3 +22,4 @@ Su misión es ser una herramienta que brinde información para la toma de decisi
 <img class="post-image-full" src="/assets/blogimages/atlas-1.png">
 <img class="post-image-full" src="/assets/blogimages/atlas-2.png">
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-4.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-5.mp4" type="video/mp4" /></video>
