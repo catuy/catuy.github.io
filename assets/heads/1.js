@@ -73,8 +73,8 @@ function init() {
 
   spotLight.castShadow = true;
 
-  spotLight.shadow.mapSize.width = 2048;
-  spotLight.shadow.mapSize.height = 2048;
+  spotLight.shadow.mapSize.width = 8192;
+  spotLight.shadow.mapSize.height = 8192;
 
   spotLight.shadow.camera.near = 200;
   spotLight.shadow.camera.far = 1500;
