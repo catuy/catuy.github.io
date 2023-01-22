@@ -14,11 +14,3 @@ His PhD work focused on on the topic Generation of concept-representative symbol
   - Listado
 
 Otro texto con [enlace](#)
-
-
-<script>
-    // Get the value of the "randomScript" from the browser's local storage
-    var randomScript = localStorage.getItem("randomScript");
-    // Load the script file from the local storage
-    $.getScript(randomScript);
-  </script>

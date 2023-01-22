@@ -5,6 +5,7 @@ root.style.setProperty('--home-menu-color', '#ffffff');
 head_color = 0Xff0000;
 background_color = '#ff0000';
 
+if (location.pathname === '/') {
 var sketch = function(p) {
   p.setup = function() {
     p.createCanvas(p.displayWidth, p.displayHeight);
@@ -175,9 +176,13 @@ function render() {
 
     mesh.rotation.y += 0.05 * ( targetX - mesh.rotation.y );
     mesh.rotation.x += 0.05 * ( targetY - mesh.rotation.x );
-
   }
-
-  renderer.render( scene, cam );
-
+    // Rotates the spotlight around the object
+    spotLight.position.x = Math.sin(Date.now() * 0.0035) * 700;
+    spotLight.position.z = Math.cos(Date.now() * 0.0035) * 700;
+  
+    // Update the camera and renderer
+    cam.lookAt( scene.position );
+    renderer.render( scene, cam );
+}
 }

@@ -1,10 +1,11 @@
 const root = document.documentElement;
-root.style.setProperty('--color-primary', '#001AFF');
+root.style.setProperty('--color-primary', '#ff0000');
 root.style.setProperty('--second-color', '#ffffff');
 root.style.setProperty('--home-menu-color', '#ffffff');
-head_color = 0X999;
-background_color = '#0000FF';
+head_color = 0Xff0000;
+background_color = '#ff0000';
 
+if (location.pathname === '/') {
 var sketch = function(p) {
   p.setup = function() {
     p.createCanvas(p.displayWidth, p.displayHeight);
@@ -179,5 +180,8 @@ function render() {
   }
 
   renderer.render( scene, cam );
+
+}
+
 
 }

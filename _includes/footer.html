@@ -6,7 +6,8 @@
     // array of file paths
     var scripts = [
         '/assets/heads/1.js',
-        '/assets/heads/2.js'
+        '/assets/heads/2.js',
+        '/assets/heads/3.js'
     ];
 
     // check if script path is already stored in sessionStorage
@@ -25,6 +26,10 @@
     script.src = scriptPath;
     // append the script to the head of the document
     document.getElementsByTagName('head')[0].appendChild(script);
-    // sessionStorage.clear();
+
+  $('header nav ul li:first-child').attr('id', 'nav-home');
+  $(document).on('click', '#nav-home', function() {
+    sessionStorage.clear();
+});
 });
 </script>
