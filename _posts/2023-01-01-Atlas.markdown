@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "Atlas.uy"
+title:  "d--i--e--g--o--c--a--t--a--l--d--o"
 date:   2023-01-01 17:12:19 -0300
 categories: todos 
-image: /assets/blogimages/tiles/prisma.jpg
+image: /assets/blogimages/tiles/cat.gif
 ---
 PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.
 

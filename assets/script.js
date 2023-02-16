@@ -7,6 +7,10 @@ $(document).ready(function(){
       $(this).wrap("<div class='image-wrap'></div>");
       $('<div class="wrap-header"></div>').insertBefore(this);
   });
+  $("iframe").each(function() {
+    $(this).wrap("<div class='image-wrap'></div>");
+    $('<div class="wrap-header"></div>').insertBefore(this);
+});
   let i = 0;
   $(".image-wrap").mousedown(function() {
       i++;
@@ -17,7 +21,7 @@ $(document).ready(function(){
   $(".image-wrap").hide();
   // Keep track of which div to show next
   var divIndex = 0;
-  $(".item").click(function(event) {
+  $("body").click(function(event) {
       // Get the click coordinates
       var x = event.pageX;
       var y = event.pageY;
@@ -37,9 +41,18 @@ $(document).ready(function(){
       $(".image-wrap").eq(divIndex).append(numConsecutivo);
       // Increment the div index
       divIndex++;
+       // Verifica si se han mostrado todas las imágenes y videos
+       if (divIndex >= $(".image-wrap").length) {
+        $("body").css("cursor", "default");
+      }
   });
-
-  $(".wrap-header").click(function(event) {
-      // currentDiv.hide();
+  $(body).css("cursor", "pointer");
+  $(".image-wrap").hover(function() {
+    if (divIndex < $(".image-wrap").length) {
+      $(this).css("cursor", "move");
+    } else {
+      $(this).css("cursor", "move");
+    }
   });
+  
 });

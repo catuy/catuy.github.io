@@ -1,6 +1,6 @@
 ---
 layout: listado-proyectos
 title: Proyectos
-permalink: /proyectos/consultorias/
+permalink: /archivo/consultorias/
 category: consultorias
 ---

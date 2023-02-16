@@ -1,7 +1,7 @@
 ---
 layout: listado-proyectos
 title: Proyectos
-permalink: /proyectos/artes-visuales/
+permalink: /archivo/artes-visuales/
 category: artes-visuales
 ---
 

@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "BMR - Broadreach Medical Resources"
+date:   2019-12-21 17:12:19 -0300
+categories: todos 
+image: /assets/blogimages/tiles/bmr.jpg
+---
+CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño de Producto</li>
+  <li>Diseño Web</li>
+  <li>Desarrollo</li>
+</ul>
+
+<img class="post-image-full" src="/assets/blogimages/bmr-1.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/bmr-2.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/bmr-3.mp4" type="video/mp4" /></video>

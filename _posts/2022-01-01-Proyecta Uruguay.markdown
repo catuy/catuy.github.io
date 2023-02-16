@@ -16,4 +16,5 @@ Proyecta Uruguay es un programa de apoyo a empresas innovadoras impulsado por la
 
 
 <span class="text-sm">[Visitar sitio web](https://proyectauruguay.uy/){:target="_blank"}</span>
-<img class="post-image-full" src="/assets/blogimages/pu-1.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/proyecta-1.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/proyecta-2.mp4" type="video/mp4" /></video>

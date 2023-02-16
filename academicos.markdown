@@ -1,6 +1,6 @@
 ---
 layout: listado-proyectos
 title: Proyectos
-permalink: /proyectos/academicos/
+permalink: /archivo/academicos/
 category: academicos
 ---

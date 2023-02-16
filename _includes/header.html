@@ -9,7 +9,7 @@
               {% if page.url contains item.url and item.url contains '/proyectos/' %}
                   {% assign class = 'active' %}
               {% endif %}
-              <li><a href="{{ item.url }}" class="{{ class }}">{{ item.title }}</a></li>
+              <li><a href="{{ item.url }}" class="{{ class }}"  onclick="fadeOut()">{{ item.title }}</a></li>
           {% endfor %}
           </ul>
         </nav>    

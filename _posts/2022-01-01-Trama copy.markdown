@@ -15,9 +15,8 @@ Es una plataforma digital que conecta talentos, emprendedores, investigadores, e
 </ul>
 
 <span class="text-sm">[Visitar sitio web](https://trama.uy/){:target="_blank"}</span>
-<img class="post-image-full" src="/assets/blogimages/trama-1.jpg">
-<img class="post-image-full" src="/assets/blogimages/trama-2.jpg">
-<img class="post-image-full" src="/assets/blogimages/trama-3.jpg">
-<img class="post-image-full" src="/assets/blogimages/trama-4.jpg">
-<img class="post-image-left" src="/assets/blogimages/trama-5.jpg">
-<img class="post-image-right" src="/assets/blogimages/trama-6.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/trama-0.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/trama-1.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/trama-2.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/trama-3.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/trama-4.mp4" type="video/mp4" /></video>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Prisma.uy"
-date:   2022-12-21 17:12:19 -0300
+date:   2022-12-24 17:12:19 -0300
 categories: todos 
 image: /assets/blogimages/tiles/prisma.jpg
 ---
@@ -19,8 +19,5 @@ Su misión es ser una herramienta que brinde información para la toma de decisi
 
 
 <span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
-<img class="post-image-full" src="/assets/blogimages/prisma-1.jpg">
-<img class="post-image-full" src="/assets/blogimages/prisma-2.jpg">
-<img class="post-image-full" src="/assets/blogimages/prisma-3.jpg">
-<img class="post-image-left" src="/assets/blogimages/prisma-4.jpg">
-<img class="post-image-right" src="/assets/blogimages/prisma-5.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/prisma-1.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/prisma-2.mp4" type="video/mp4" /></video>

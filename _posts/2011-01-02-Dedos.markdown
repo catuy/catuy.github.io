@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "Dedos"
+date:   2011-12-21 17:12:19 -0300
+categories: todos 
+image: /assets/blogimages/tiles/dedos.gif
+---
+CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.
+
+<ul class="right-align">
+<span class="text-sm">Servicios</span>
+  <li>UX</li>
+  <li>Diseño de Producto</li>
+  <li>Diseño Web</li>
+  <li>Desarrollo</li>
+</ul>
+
+<img class="post-image-full" src="/assets/blogimages/dedos-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/dedos-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/dedos-3.jpg">
+<iframe src="https://player.vimeo.com/video/63912629?h=624d85c4f4" width="640" height="480" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>

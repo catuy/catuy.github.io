@@ -16,6 +16,7 @@ CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contr
 </ul>
 
 <span class="text-sm">[Visitar sitio web](https://cvuy.uy/){:target="_blank"}</span>
-<img class="post-image-full" src="/assets/blogimages/cvuy-1.jpg">
-<img class="post-image-full" src="/assets/blogimages/cvuy-2.jpg">
-<img class="post-image-full" src="/assets/blogimages/cvuy-3.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/cvuy-1.mp4" type="video/mp4" /></video>
+<img class="post-image-full" src="/assets/blogimages/cvuy-2.png">
+<img class="post-image-full" src="/assets/blogimages/cvuy-3.png">
+<img class="post-image-full" src="/assets/blogimages/cvuy-4.png">

@@ -18,12 +18,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Titulo del sitio
-email: contacto@atlas.com.uy
+title: d--i--e--g--o--c--a--t--a--l--d--o
+email: cataldo.diego@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Atlas es una consultora de productos digitales especializada en el desarrollo de sistemas de alta complejidad, brindando soluciones de TI para clientes de todo el mundo.
+  ██ ████ ████████ ████ ████████ ████ ██████ ████████ ██████ ████ ████████ ████ ████████ ████ ██████ ████████ ██████ ████ ████████ ████ ████████ ████ ██████ ████████ ████
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://atlas.com.uy" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://d--i--e--g--o--c--a--t--a--l--d--o.com" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 # github_username:  jekyll
 
@@ -32,27 +32,27 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-permalink: /proyectos/:title/
+permalink: /archivo/:title/
 
 # Nav menu
 navigation:
-  - title: Home
+  - title: Inicio
     url: /
-  - title: Informacion
+  - title: Información
     url: /info/
-  - title: Proyectos
-    url: /proyectos/
+  - title: Archivo
+    url: /archivo/
 
 # Nav categories
 navcategories:
   - title: todos
-    url: /proyectos/
+    url: /archivo/
   - title: academicos
-    url: /proyectos/academicos/
+    url: /archivo/academicos/
   - title: consultorias
-    url: /proyectos/consultorias/
+    url: /archivo/consultorias/
   - title: artes visuales
-    url: /proyectos/artes-visuales/
+    url: /archivo/artes-visuales/
 
 # Exclude from processing.
 # The following items will not be processed, by default.

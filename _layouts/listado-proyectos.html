@@ -27,7 +27,7 @@ layout: default
         {%- if post.image -%}
           <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title | escape }} 
-            <div class="filtered">
+            <div class="filtered image-wrap">
             <img class="post-image" src="{{ post.image }}">
             </div>
           </a>

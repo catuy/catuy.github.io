@@ -8,7 +8,13 @@
         '/assets/heads/1.js',
         '/assets/heads/2.js',
         '/assets/heads/3.js',
-        '/assets/heads/4.js'
+        '/assets/heads/4.js',
+        // '/assets/heads/5.js',
+        // '/assets/heads/6.js',
+        // '/assets/heads/7.js',
+        // '/assets/heads/8.js',
+        // '/assets/heads/9.js',
+        '/assets/heads/10.js'
     ];
 
     // check if script path is already stored in sessionStorage
@@ -41,6 +47,29 @@
     script.src = scriptPath;
     document.getElementsByTagName('head')[0].appendChild(script);
   });
-});
 
+});
 </script>
+<script>
+  window.addEventListener("load", function () {
+    const preloader = document.getElementById("preloader");
+    preloader.style.display = "none";
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.body.style.opacity = 0;
+    document.body.style.transition = "opacity 200ms";
+    setTimeout(function() {
+      document.body.style.opacity = 1;
+    }, 100);
+
+    var altoImagen = $(".filtered").height();
+    $(document).mousemove(function(event){
+    $(".filtered").offset({
+      left: event.pageX + 20,
+      top: event.pageY - altoImagen / 2
+    });
+  });
+  });
+  </script>
