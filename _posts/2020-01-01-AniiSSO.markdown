@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "ANII Single Sign On"
+date:   2020-02-20 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/sso.jpg
+tags: [diseño web, desarrollo frontend, UX]
+---
+Semanario Brecha es una publicación periodística independiente de izquierda fundada en 1985 en Montevideo, Uruguay.
+
+Servicios:
+- UX
+- Diseño Web
+- Desarrollo
+
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/sso-1.mp4" type="video/mp4" /></video>

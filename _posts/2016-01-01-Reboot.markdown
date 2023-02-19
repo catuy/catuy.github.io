@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "Reboot: Dos leccionnes de arquitectura"
+date:   2016-01-01 17:12:19 -0300
+categories: todos 
+image: /assets/blogimages/tiles/reboot.jpg
+---
+xxxxx
+
+https://issuu.com/miguelfascioli/docs/catalogo_issuu_reboot
+https://arqa.com/arquitectura/proyectos/485892.html
+https://www.dezeen.com/2016/06/01/opinion-mimi-zeiger-venice-architecture-biennale-2016-honest-fronting/
+https://archinect.com/news/article/149947957/dispatch-from-the-venice-biennale-uruguay-s-underground-germany-s-construction-site-britain-s-housekeeping-and-more-from-the-national-pavilions
+https://www.theguardian.com/artanddesign/2016/may/30/venice-architecture-biennale-2016-national-pavilions-review?CMP=share_btn_link
+https://ilgiornaledellarchitettura.com/2016/05/27/uruguay-reboot-architecture-lessons-from-the-guerrilla-tupamara-and-the-andes-plane-crash/
+https://www.archdaily.cl/cl/788708/reboot-2-lecciones-de-arquitectura-pabellon-de-uruguay-en-la-bienal-de-venecia-2016#_=_
+
+<!-- <img class="post-image-full" src="/assets/blogimages/leac-1.jpg"> -->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Vab43N3Zq1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<img class="post-image-full" src="/assets/blogimages/reboot-9.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-11.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-10.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-3.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-4.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-5.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-6.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-7.jpg">
+<img class="post-image-full" src="/assets/blogimages/reboot-8.jpg">

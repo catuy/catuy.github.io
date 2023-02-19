@@ -18,4 +18,4 @@ CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contr
 <img class="post-image-full" src="/assets/blogimages/dedos-1.jpg">
 <img class="post-image-full" src="/assets/blogimages/dedos-2.jpg">
 <img class="post-image-full" src="/assets/blogimages/dedos-3.jpg">
-<iframe src="https://player.vimeo.com/video/63912629?h=624d85c4f4" width="640" height="480" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://player.vimeo.com/video/63912629?h=624d85c4f4" width="480" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>

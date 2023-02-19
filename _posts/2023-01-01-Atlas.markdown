@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "d--i--e--g--o--c--a--t--a--l--d--o"
+title:  "Atlas"
 date:   2023-01-01 17:12:19 -0300
 categories: todos 
-image: /assets/blogimages/tiles/cat.gif
+image: /assets/blogimages/tiles/atlas.gif
 ---
 PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.
 
@@ -18,8 +18,5 @@ Su misión es ser una herramienta que brinde información para la toma de decisi
 </ul>
 
 
-<span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
-<img class="post-image-full" src="/assets/blogimages/atlas-1.png">
-<img class="post-image-full" src="/assets/blogimages/atlas-2.png">
-<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-4.mp4" type="video/mp4" /></video>
-<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-5.mp4" type="video/mp4" /></video>
+<span class="text-sm">[Visitar sitio web](https://atlas.com.uy/){:target="_blank"}</span>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-1.mp4" type="video/mp4" /></video>

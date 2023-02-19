@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Agencia Nacional de Investigación e Innovación - Website"
+title:  "ANII Website"
 date:   2021-01-01 17:12:19 -0300
 categories: todos 
 image: /assets/blogimages/tiles/anii.gif
