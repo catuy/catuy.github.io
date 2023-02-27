@@ -289,3 +289,39 @@ footer{
   transform: rotate(180deg);
 }
 }
+
+@media only screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    display: flex;
+    padding: 1vh;
+}
+.container .item:nth-child(1) {
+  grid-area: header;
+  padding: 0vh;
+}
+.container .item:nth-child(2) {
+  grid-area: main;
+  padding: 0px;
+}
+header ul li {
+  float: left;
+  padding: 0px 10px 0px 0px;
+}
+ul.post-list li {
+  padding: 3px 0px;
+  border-top: 1px solid var(--color-primary);
+  float: left;
+  width: 100%;
+}
+.post-link {
+  text-decoration: none;
+  color: var(--color-primary);
+  float: left;
+  width: 100%;
+}
+ul.post-list li span.post-tags {
+  float: left;
+}
+
+}
