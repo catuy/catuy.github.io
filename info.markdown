@@ -15,4 +15,6 @@ He desarrollado proyectos para marcas internacionales como Coca-Cola, Bayer, Uni
 
 Algunos de mis proyectos han sido premiados, publicados y exhibidos en más de 15 países, destacándose su participación en la XV Muestra Internacional de Arquitectura de la Bienal de Venecia, la Segunda Bienal Iberoamericana de Diseño de Madrid, la Cuarta Bienal de Tipografía Latinoamericana, la International Biennial Print Exhibit de Taiwán y el 30 seconds museum de Tokyo.
 
+CV completo [aquí](https://cv.fadu.edu.uy/mod/data/view.php?d=6&rid=557)
+
 Puedes contactarme en [cataldo.diego@gmail.com](mailto:cataldo.diego@gmail.com)
