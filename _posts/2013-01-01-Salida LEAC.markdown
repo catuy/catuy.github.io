@@ -1,9 +1,10 @@
 ---
 layout: post
-title:  "LEAC: La construcción del espacio público a escala real"
+title:  "LEAC"
 date:   2013-01-01 17:12:19 -0300
-categories: todos 
+categories: todos academicos
 image: /assets/blogimages/tiles/leac.jpg
+tags: [Curso, Extensión]
 ---
 En 2014, el equipo ya ampliado presentó una nueva propuesta de curso opcional “SALIDA:
 laboratorio de emergencia” con similares objetivos y un nuevo problema, la entonces futura
@@ -62,9 +63,9 @@ Yaiza Ares
 Yether Pendas
 
 
-EQUIPO DOCENTE:
+EQUIPO DOCENTE:
 
-Bernardo Monteverde
+Bernardo Monteverde
 Claudia Varín
 Diego Cataldo
 Eloisa Ibarzabal
@@ -76,15 +77,12 @@ Marcelo Danza
 Miguel Fascioli
 Tatiana RimbaudXimena Villemur
 
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo <span class="post-meta">(<a href="https://www.cognus.biz/" target="_blank">Cognus</a>)</span></li>
-</ul>
 
+De esta experiencia, participa de la realización de la revista MAPEO 12 y de la realización de un registro audiovisual de la experiencia.
+- LEAC: [http://www.farq.edu.uy/extension/noticias/leac-integral/](http://www.farq.edu.uy/extension/noticias/leac-integral/)
+- Mapeo 12: [http://farq.edu.uy/tallerdanza/publicaciones/mapeo12-leac/](http://farq.edu.uy/tallerdanza/publicaciones/mapeo12-leac/)
+- Registro audiovisual: [http://vimeo.com/81596631](http://vimeo.com/81596631)
 
-<span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
 <img class="post-image-full" src="/assets/blogimages/leac-1.jpg">
 <img class="post-image-full" src="/assets/blogimages/leac-2.jpg">
 <img class="post-image-full" src="/assets/blogimages/leac-3.jpg">

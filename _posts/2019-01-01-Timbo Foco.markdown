@@ -2,8 +2,9 @@
 layout: post
 title:  "Timbó Foco"
 date:   2019-12-21 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
 image: /assets/blogimages/tiles/foco.jpg
+tags: [Web]
 ---
 Con Timbó podés acceder gratuitamente en línea a la última bibliografía y literatura científica-tecnológica mundial. ¿Querés investigar y saber lo que otros están haciendo en tu campo de estudio? Timbó son las orejas al mundo de todos los uruguayos y todas las uruguayas.
 

@@ -4,7 +4,7 @@ title:  "██ ██████████"
 date:   2020-01-10 17:12:19 -0300
 categories: todos artes-visuales
 image: /assets/blogimages/tiles/cc-10.jpg
-tags: [Aplicación, Creative coding]
+tags: [Aplicación, Arte generativo]
 
 ---
 Prototipo de aplicación mobile, custom code generativa, desarrollada para la producción de imágenes.

@@ -2,8 +2,9 @@
 layout: post
 title:  "Proyecta Uruguay"
 date:   2021-12-21 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
 image: /assets/blogimages/tiles/pu.jpg
+tags: [Web]
 ---
 Proyecta Uruguay es un programa de apoyo a empresas innovadoras impulsado por la Agencia Nacional de Investigación e Innovación de Uruguay.
 

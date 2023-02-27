@@ -2,18 +2,8 @@
 layout: post
 title:  "Wix"
 date:   2018-12-21 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
 image: /assets/blogimages/tiles/wix.gif
+tags: [Web]
 ---
-CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.
-
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño de Producto</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo</li>
-</ul>
-
-<span class="text-sm">[Visitar sitio web](https://cvuy.uy/){:target="_blank"}</span>
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/wix-1.mp4" type="video/mp4" /></video>

@@ -2,8 +2,9 @@
 layout: post
 title:  "Reboot: Dos leccionnes de arquitectura"
 date:   2016-01-01 17:12:19 -0300
-categories: todos 
+categories: todos academicos
 image: /assets/blogimages/tiles/reboot.jpg
+tags: [Instalación]
 ---
 xxxxx
 

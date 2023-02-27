@@ -2,22 +2,20 @@
 layout: post
 title:  "Sistema Nacional de Investigadores - Dashboard"
 date:   2022-01-01 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
+tags: [Web]
 image: /assets/blogimages/tiles/snid.jpg
 ---
-PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.
+El Sistema Nacional de Investigadores promueve, mediante evaluación periódica, la categorización y el incentivo económico de los investigadores, la producción de conocimiento, transversal a todas las áreas, y el fortalecimiento y la expansión de la comunidad científica nacional. Este proyecto implicó el diseño y desarrollo de los sistemas de evaluación y postulación del SNI. 
 
-Es llevado adelante por la Agencia Nacional de Investigación e Innovación (ANII).
-Su misión es ser una herramienta que brinde información para la toma de decisiones al gobierno, academia, sector productivo y población en general.
+https://postulacion.sni.org.uy/
 
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo <span class="post-meta">(<a href="https://www.cognus.biz/" target="_blank">Cognus</a>)</span></li>
-</ul>
+Servicios:
+- Consultoría en el diseño del producto
+- Consultoría general estratégica en UX
+- UI
+- Diseño, desarrollo e implementación del portal web
 
-
-<span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
+[Visitar sitio web](https://postulacion.sni.org.uy/)
 <img class="post-image-full" src="/assets/blogimages/snid-1.png">
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/snid-2.mp4" type="video/mp4" /></video>

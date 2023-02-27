@@ -2,8 +2,9 @@
 layout: post
 title:  "Trama.uy"
 date:   2020-03-21 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
 image: /assets/blogimages/tiles/trama.jpg
+tags: [Web, Aplicación]
 ---
 Es una plataforma digital que conecta talentos, emprendedores, investigadores, empresarios e inversores para que compartan sus proyectos y experiencias, propiciando el trabajo conjunto para potenciar la investigación e  innovación del país.
 

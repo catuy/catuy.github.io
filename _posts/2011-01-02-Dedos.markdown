@@ -2,18 +2,11 @@
 layout: post
 title:  "Dedos"
 date:   2011-12-21 17:12:19 -0300
-categories: todos 
+categories: todos artes-visuales
 image: /assets/blogimages/tiles/dedos.gif
+tags: [Audiovisual]
 ---
-CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.
-
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño de Producto</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo</li>
-</ul>
+Participa como director de arte del cortometraje de egreso de la Escuela de cine del Uruguay de la directora Agustina Willat. 
 
 <img class="post-image-full" src="/assets/blogimages/dedos-1.jpg">
 <img class="post-image-full" src="/assets/blogimages/dedos-2.jpg">

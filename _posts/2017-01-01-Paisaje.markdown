@@ -2,19 +2,10 @@
 layout: post
 title:  "Indagando sobre paisaje"
 date:   2017-01-01 17:12:19 -0300
-categories: todos 
+categories: todos academicos
 image: /assets/blogimages/tiles/tipo.jpg
+tags: [Audiovisual]
 ---
-xxxxx
-
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo <span class="post-meta">(<a href="https://www.cognus.biz/" target="_blank">Cognus</a>)</span></li>
-</ul>
-
-<!-- <img class="post-image-full" src="/assets/blogimages/leac-1.jpg"> -->
 <iframe title="vimeo-player" src="https://player.vimeo.com/video/555754153?h=d856ed52ac" width="640" height="360" frameborder="0" allowfullscreen></iframe>
 <img class="post-image-full" src="/assets/blogimages/tipo-1.jpg">
 <video autobuffer loop controls><source src="/assets/blogimages/tipo-2.mp4" type="video/mp4" /></video>

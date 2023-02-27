@@ -2,23 +2,12 @@
 layout: post
 title:  "Pennny Lane"
 date:   2010-01-01 17:12:19 -0300
-categories: todos 
+categories: todos consultorias
 image: /assets/blogimages/tiles/penny.gif
+tags: [Web, Identidad, Audiovisual]
 ---
-PRISMA es un portal en el que podés acceder de manera dinámica y ágil a los indicadores nacionales más relevantes sobre Ciencia, Tecnología e Innovación.
-
-Es llevado adelante por la Agencia Nacional de Investigación e Innovación (ANII).
-Su misión es ser una herramienta que brinde información para la toma de decisiones al gobierno, academia, sector productivo y población en general.
-
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo <span class="post-meta">(<a href="https://www.cognus.biz/" target="_blank">Cognus</a>)</span></li>
-</ul>
-
-
-<span class="text-sm">[Visitar sitio web](https://prisma.uy/){:target="_blank"}</span>
+Consultoría en DCV. Diseño de identidad, sitio web y comunicación estratégica.
+Sitio web premiado en varias publicaciones referentes en diseño web de la época: Newwebpic, Page Crush, Linkage, American Design Awards, GOWU, WebIndex.
 
 <video autobuffer loop controls><source src="/assets/blogimages/penny-1.mp4" type="video/mp4" /></video>
 <img class="post-image-full" src="/assets/blogimages/penny-2.jpg">

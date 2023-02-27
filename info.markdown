@@ -3,14 +3,16 @@ layout: page
 title: Info
 permalink: /info/
 ---
-Diego Cataldo is a cross-media designer working at the Computational Design and Visualization Lab (CISUC) and mainly interested in the fields of Computational Design (focused on Graphic Design), Computational Creativity and Co-creativity, Evolutionary Computation, Information Visualisation, Computer-aided design and AI ethics.
+Soy un diseñador cross-media, artista y docente que vive y trabaja en Montevideo. 
 
-He holds a PhD in Information Science and Technology from the University of Coimbra, having previously concluded a Masters and a Bachelor's degree also in Design and Multimedia at the same institution. He teaches on the Undergraduate and Master degree courses in Design and Multimedia at the University of Coimbra.
+Licenciado en Diseño Gráfico por la Universidad ORT de Uruguay.
 
-His PhD work focused on on the topic Generation of concept-representative symbols. Currently developing the Visual Blending system Emojinating and collaborating with The Creativity Post as a columnist.
+Desde 2015 docente de Proyecto Final de Carrera en la Licenciatura de Diseño de Comunicación Visual de la Facultad de Arquitectura, Diseño y Urbanismo de la Universidad de la República de Uruguay.
 
-  - Listado
-  - Listado
-  - Listado
+Mi área de actuación profesional se concentra principalmente en los medios digitales y su permanente transformación. Me especializo en proyectos de diseño basados en código que incluyen interfaces complejas, herramientas de diseño personalizadas, sistemas de diseño, así como herramientas experimentales de dibujo y animación. 
 
-Otro texto con [enlace](#)
+He desarrollado proyectos para marcas internacionales como Coca-Cola, Bayer, Unilever, M-Audio, Avid, Wix, Prada, Gillette, Davidoff, Play Boy, Adidas, DHL, Versace, Chanel, Western Union, Philips; y locales como el Ministerio de Educación y Cultura, Latu, Uruguay XXI, Instituto Nacional de Logística, Ministerio de Industria, Energía y Minería, Intendencia de Montevideo, Inavi, Agencia Nacional de Investigación e Innovación y la Universidad Católica del Uruguay.
+
+Algunos de mis proyectos han sido premiados, publicados y exhibidos en más de 15 países, destacándose su participación en la XV Muestra Internacional de Arquitectura de la Bienal de Venecia, la Segunda Bienal Iberoamericana de Diseño de Madrid, la Cuarta Bienal de Tipografía Latinoamericana, la International Biennial Print Exhibit de Taiwán y el 30 seconds museum de Tokyo.
+
+Puedes contactarme en [cataldo.diego@gmail.com](mailto:cataldo.diego@gmail.com)
