@@ -324,4 +324,9 @@ ul.post-list li span.post-tags {
   float: left;
 }
 
+.main-content .images-content .image-wrap img, .main-content .images-content .image-wrap video, .main-content .images-content .image-wrap iframe{
+  max-width: 85vw !important;
+  max-height: 70vh;
+  background-color: #ffffff;
+  }
 }

@@ -10,9 +10,9 @@ $(document).ready(function(){
   $("iframe").each(function() {
     $(this).wrap("<div class='image-wrap'></div>");
     $('<div class="wrap-header"></div>').insertBefore(this);
-});
+  });
   let i = 0;
-  $(".image-wrap").mousedown(function() {
+  $(".image-wrap").on("touchstart", function() {
       i++;
       $(this).draggable();
       $(this).css("z-index", i + 1);
@@ -21,10 +21,16 @@ $(document).ready(function(){
   $(".image-wrap").hide();
   // Keep track of which div to show next
   var divIndex = 0;
-  $("body").click(function(event) {
+  $("body").on("click touchstart", function(event) {
       // Get the click coordinates
-      var x = event.pageX;
-      var y = event.pageY;
+      var x, y;
+      if(event.type == 'click'){
+          x = event.pageX;
+          y = event.pageY;
+      } else if(event.type == 'touchstart'){
+          x = event.originalEvent.touches[0].pageX;
+          y = event.originalEvent.touches[0].pageY;
+      }
       // Show the next div
       $(".image-wrap").eq(divIndex).show();
       i++;
@@ -47,12 +53,11 @@ $(document).ready(function(){
       }
   });
   $(body).css("cursor", "pointer");
-  $(".image-wrap").hover(function() {
+  $(".image-wrap").on("touchend", function() {
     if (divIndex < $(".image-wrap").length) {
       $(this).css("cursor", "move");
     } else {
       $(this).css("cursor", "move");
     }
-  });
-  
+  });  
 });
