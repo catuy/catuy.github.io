@@ -3,7 +3,7 @@ layout: page
 title: Info
 permalink: /info/
 ---
-Soy un diseñador cross-media, artista visual y docente que vive y trabaja en Montevideo. 
+Diseñador cross-media, artista visual y docente que vive y trabaja en Montevideo. 
 
 Licenciado en Diseño Gráfico por la Universidad ORT de Uruguay.
 
