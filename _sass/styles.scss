@@ -310,7 +310,7 @@ header ul li {
   width: min-content;
 }
 ul.post-list li {
-  padding: 3px 0px;
+  padding: 5px 0px;
   border-top: 1px solid var(--color-primary);
   float: left;
   width: 100%;
@@ -320,6 +320,7 @@ ul.post-list li {
   color: var(--color-primary);
   float: left;
   width: 100%;
+  margin-bottom: 3px;
 }
 ul.post-list li span.post-tags {
   float: left;
@@ -330,4 +331,25 @@ ul.post-list li span.post-tags {
   max-height: 60vh;
   background-color: #ffffff;
   }
+  p.nav-categorias a {
+    text-decoration: none;
+    margin-right: 5px;
+    float: right;
+    width: -webkit-fill-available;
+}
+p.nav-categorias {
+  float: left;
+  margin-top: 0px !important;
+
+}
+header.item {
+  margin-bottom: 30px;
+}
+
+ul.post-list li span.post-date {
+  margin-left: 0px;
+  float: right;
+  margin-right: 0px;
+}
+
 }
