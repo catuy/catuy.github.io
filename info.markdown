@@ -3,11 +3,11 @@ layout: page
 title: Info
 permalink: /info/
 ---
-Diseñador cross-media, artista visual y docente que vive y trabaja en Montevideo. 
+Diseñador cross-media, artista visual y docente. Vivo y hago en Montevideo, Uruguay.
 
 Licenciado en Diseño Gráfico por la Universidad ORT de Uruguay.
 
-Desde 2015 docente de Proyecto Final de Carrera en la Licenciatura de Diseño de Comunicación Visual de la Facultad de Arquitectura, Diseño y Urbanismo de la Universidad de la República de Uruguay.
+Desde 2015 soy docente de Proyecto Final de Carrera en la Licenciatura de Diseño de Comunicación Visual de la Facultad de Arquitectura, Diseño y Urbanismo de la Universidad de la República de Uruguay.
 
 Mi área de actuación profesional se concentra principalmente en los medios digitales y su permanente transformación. Me especializo en proyectos de diseño basados en código que incluyen interfaces complejas, herramientas de diseño personalizadas, sistemas de diseño, así como herramientas experimentales de dibujo y animación. 
 
@@ -17,4 +17,4 @@ Algunos de mis proyectos han sido premiados, publicados y exhibidos en más de 1
 
 CV completo [aquí](https://cv.fadu.edu.uy/mod/data/view.php?d=6&rid=557)
 
-Puedes contactarme en [cataldo.diego@gmail.com](mailto:cataldo.diego@gmail.com)
+Contacto en [cataldo.diego@gmail.com](mailto:cataldo.diego@gmail.com)
