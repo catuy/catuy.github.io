@@ -12,11 +12,20 @@ $(document).ready(function(){
     $('<div class="wrap-header"></div>').insertBefore(this);
   });
   let i = 0;
-  $(".image-wrap").on("touchstart", function() {
+  $(".image-wrap").on("mousedown", function() {
       i++;
       $(this).draggable();
       $(this).css("z-index", i + 1);
   });
+  $(".image-wrap").on("touchmove", function(event) {
+    event.preventDefault(); // Evita el scrolling
+    var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
+    $(this).css({
+        left: touch.pageX - ($(this).width() / 2),
+        top: touch.pageY - ($(this).height() / 2)
+    });
+});
+
   // Hide all divs
   $(".image-wrap").hide();
   // Keep track of which div to show next
