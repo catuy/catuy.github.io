@@ -10,36 +10,21 @@ $(document).ready(function(){
   $("iframe").each(function() {
     $(this).wrap("<div class='image-wrap'></div>");
     $('<div class="wrap-header"></div>').insertBefore(this);
-  });
+});
   let i = 0;
-  $(".image-wrap").on("mousedown", function() {
+  $(".image-wrap").mousedown(function() {
       i++;
       $(this).draggable();
       $(this).css("z-index", i + 1);
   });
-  $(".image-wrap").on("touchmove", function(event) {
-    event.preventDefault(); // Evita el scrolling
-    var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
-    $(this).css({
-        left: touch.pageX - ($(this).width() / 2),
-        top: touch.pageY - ($(this).height() / 2)
-    });
-});
-
   // Hide all divs
   $(".image-wrap").hide();
   // Keep track of which div to show next
   var divIndex = 0;
-  $("body").on("click touchstart", function(event) {
+  $("body").click(function(event) {
       // Get the click coordinates
-      var x, y;
-      if(event.type == 'click'){
-          x = event.pageX;
-          y = event.pageY;
-      } else if(event.type == 'touchstart'){
-          x = event.originalEvent.touches[0].pageX;
-          y = event.originalEvent.touches[0].pageY;
-      }
+      var x = event.pageX;
+      var y = event.pageY;
       // Show the next div
       $(".image-wrap").eq(divIndex).show();
       i++;
@@ -62,11 +47,12 @@ $(document).ready(function(){
       }
   });
   $(body).css("cursor", "pointer");
-  $(".image-wrap").on("touchend", function() {
+  $(".image-wrap").hover(function() {
     if (divIndex < $(".image-wrap").length) {
       $(this).css("cursor", "move");
     } else {
       $(this).css("cursor", "move");
     }
-  });  
+  });
+  
 });
