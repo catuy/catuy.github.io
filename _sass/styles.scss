@@ -305,8 +305,9 @@ footer{
   padding: 0px;
 }
 header ul li {
-  float: left;
+  float: none;
   padding: 0px 10px 0px 0px;
+  width: min-content;
 }
 ul.post-list li {
   padding: 3px 0px;
