@@ -6,15 +6,11 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/foco.jpg
 tags: [Web]
 ---
-Con Timbó podés acceder gratuitamente en línea a la última bibliografía y literatura científica-tecnológica mundial. ¿Querés investigar y saber lo que otros están haciendo en tu campo de estudio? Timbó son las orejas al mundo de todos los uruguayos y todas las uruguayas.
+Con la creación de la ANII, nace un proyecto único e innovador para nuestro país: Con Timbó podés acceder gratuitamente en línea a la última bibliografía y literatura científica-tecnológica mundial. FOCO representa la última versión de la plataforma Timbó. Desde el punto de vista del diseño, incorpora la últimas tendencias en comportamiento de búsqueda y tecnologías disponibles en el mercado.
 
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>Diseño de producto</li>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo</li>
-</ul>
+Mi rol en este proyecto abarcó: diseño y definición del producto, consultoría general estratégica en UX, UI y desarrollo. 
+
+Equipo de trabajo: Diego Cataldo, Juan Romang, Equipos de TI y Comunicación de ANII
 
 <span class="text-sm">[Visitar sitio web](https://foco.timbo.org.uy/home){:target="_blank"}</span>
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/foco-1.mp4" type="video/mp4" /></video>

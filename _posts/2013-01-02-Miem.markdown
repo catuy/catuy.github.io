@@ -6,9 +6,8 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/miem.jpg
 tags: [App]
 ---
-Servicios:
-- UX
-- Diseño de Producto
-- Diseño App
-- Desarrollo
+Diseño y desarrollo de aplicación, editorial y sistema visual de la edición 2013 del balance.
+
+Equipo de trabajo: Diego Cataldo, Sergio Rodriguez, Manosanta desarrollo editorial 
+
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/miem-1.mp4" type="video/mp4" /></video>

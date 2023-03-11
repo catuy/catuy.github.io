@@ -6,4 +6,5 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/in.png
 tags: [Web]
 ---
+Revista digital del Laboratorio Tencnológico de Uruguay.
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/in-1.mp4" type="video/mp4" /></video>

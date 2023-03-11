@@ -8,15 +8,7 @@ tags: [Web]
 ---
 El programa de Innovación en Servicios Públicos, ejecutado por la ANII y BID Lab, busca ayudar a mejorar los servicios públicos que utilizan las personas, aprovechando la incorporación de nuevos conocimientos y tecnologías, a partir de mecanismos de innovación abierta y otras herramientas, para beneficio de la población.
 
-La brújula de innovación es una herramienta web que permite conocer el grado de innovación de tu organización y recibir recomendaciones para trazar un mapa de acción a través de una batería de metodologías innovadoras que pueden orientarte para mejorar cada vector y un informe con las habilidades blandas necesarias para impulsar tus equipos de trabajo.
-
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño Web</li>
-  <li>Sistema Visual</li>
-  <li>Desarrollo</li>
-</ul>
+Mi rol en este proyecto abarcó: Consultoría en el diseño del producto, consultoría general estratégica en UX, UI. Diseño, desarrollo e implementación del portal web. 
 
 <span class="text-sm">[Visitar sitio web](https://innovacionpublica.anii.org.uy/){:target="_blank"}</span>
 

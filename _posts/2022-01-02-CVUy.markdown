@@ -6,15 +6,9 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/cvuy.jpg
 tags: [Web]
 ---
-CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay.
+CVUy es una plataforma de cv´s reconocida a nivel nacional y regional que contribuye al mantenimiento y actualización permanente de información validada, acerca de las capacidades del capital humano del Uruguay. Es un proyecto muy importante a nivel país y un gran aporte a la comunidad académica. 
 
-<ul class="right-align">
-<span class="text-sm">Servicios</span>
-  <li>UX</li>
-  <li>Diseño de Producto</li>
-  <li>Diseño Web</li>
-  <li>Desarrollo</li>
-</ul>
+Mi rol en este proyecto, que tuvo una extensión de casi 4 años abarcó: diseño y definición del producto en su etapa temprana, consultoría general estratégica en UX, UI y desarrollo. 
 
 <span class="text-sm">[Visitar sitio web](https://cvuy.uy/){:target="_blank"}</span>
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/cvuy-1.mp4" type="video/mp4" /></video>

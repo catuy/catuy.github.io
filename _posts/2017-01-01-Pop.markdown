@@ -6,6 +6,9 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/pop.gif
 tags: [Identidad]
 ---
+
+Consultoría general en DCV. Diseño de sistema de identidad, arquitectura marcaria, sitio web y comunicación estratégica para la implementación de un sistema de franquicias internacional.
+
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/pop-1.mp4" type="video/mp4" /></video>
 <img class="post-image-full" src="/assets/blogimages/pop-2.jpg">
 <img class="post-image-full" src="/assets/blogimages/pop-3.jpg">

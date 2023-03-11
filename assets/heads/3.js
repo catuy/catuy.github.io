@@ -3,7 +3,7 @@ root.style.setProperty('--color-primary', '#ff0000');
 root.style.setProperty('--second-color', '#ffffff');
 root.style.setProperty('--home-menu-color', '#ffffff');
 head_color = 0Xff0000;
-background_color = '#ff0000';
+background_color = '#ff0000'; 
 
 if (location.pathname === '/') {
 var sketch = function(p) {

@@ -6,6 +6,7 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/escobar.gif
 tags: [Identidad, Graficos]
 ---
+Grafica para serie del canal FUSION de USA sobre Pablo Escobar.
 <img class="post-image-full" src="/assets/blogimages/escobar-1.jpg">
 <img class="post-image-full" src="/assets/blogimages/escobar-2.jpg">
 <img class="post-image-full" src="/assets/blogimages/escobar-3.jpg">

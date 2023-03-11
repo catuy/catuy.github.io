@@ -6,6 +6,4 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/bizarra.gif
 tags: [Web]
 ---
-- Desarrollo web
-
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/bizarra-1.mp4" type="video/mp4" /></video>

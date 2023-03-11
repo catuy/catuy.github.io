@@ -6,5 +6,4 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/cook.jpg
 tags: [Web]
 ---
-- Desarrollo Web
 <video autobuffer autoPlay loop muted><source src="/assets/blogimages/cook-1.mp4" type="video/mp4" /></video>

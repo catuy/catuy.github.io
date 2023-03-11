@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Universidad Católica del Uruguay"
+title:  "Universidad Católica del Uruguay (confidencial)"
 date:   2023-2-1 17:12:19 -0300
 categories: todos consultorias
 tags: [Web, Aplicación]

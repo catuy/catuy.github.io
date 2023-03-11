@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "Untitled"
+date:   2021-01-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/artifact-2.gif
+tags: [Serigrafía, Arte generativo, NFT]
+---
+Prototipo de aplicación mobile, custom code generativa, desarrollada para la producción de imágenes.
+
+[Perfil en objkt](https://objkt.com/profile/tz2P5dzC3HajLgJG4WZvRvkGQtcbirjDhn85/created){:target="_blank"}
+
+[Perfil en Foundation](https://foundation.app/@c_____o){:target="_blank"}
+
+<video autobuffer loop controls><source src="/assets/blogimages/artifact-1.mp4" type="video/mp4" /></video>
+<img class="post-image-full" src="/assets/blogimages/artifact-2.gif">

@@ -6,8 +6,6 @@ categories: todos consultorias
 image: /assets/blogimages/tiles/oriental.jpg
 tags: [Web]
 ---
-- Desarrollo web
-
 <img class="post-image-full" src="/assets/blogimages/oriental-1.jpg">
 <img class="post-image-full" src="/assets/blogimages/oriental-2.jpg">
 <img class="post-image-full" src="/assets/blogimages/oriental-3.jpg">
