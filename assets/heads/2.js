@@ -2,7 +2,7 @@ const root = document.documentElement;
 root.style.setProperty('--color-primary', '#001AFF');
 root.style.setProperty('--second-color', '#ffffff');
 root.style.setProperty('--home-menu-color', '#ffffff');
-head_color = 0X999;
+head_color = 0X0000FF;
 background_color = '#0000FF';
 
 var sketch = function(p) {
