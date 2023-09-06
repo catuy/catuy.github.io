@@ -1,7 +1,7 @@
 const root = document.documentElement;
-root.style.setProperty('--color-primary', '#000');
-root.style.setProperty('--second-color', '#000000');
-root.style.setProperty('--home-menu-color', '#000');
+root.style.setProperty('--color-primary', '#000000');
+root.style.setProperty('--second-color', '#fff');
+root.style.setProperty('--home-menu-color', '#fff');
 head_color = 0X000;
 background_color = '#000000';
 
