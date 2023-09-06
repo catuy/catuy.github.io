@@ -8,12 +8,12 @@ background_color = '#ffffff';
 
 if (location.pathname === '/') {
 
-  $("body").css({
-    "background-image": "url('/assets/heads/data/10.jpg')",
-   });
-   $("header nav ul li").css({
-    "background-color": "#fff",
-   });
+  // $("body").css({
+  //   "background-image": "url('/assets/heads/data/10.jpg')",
+  //  });
+  //  $("header nav ul li").css({
+  //   "background-color": "#fff",
+  //  });
 
 
  
