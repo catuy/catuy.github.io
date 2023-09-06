@@ -3,7 +3,7 @@ root.style.setProperty('--color-primary', '#000');
 root.style.setProperty('--second-color', '#000000');
 root.style.setProperty('--home-menu-color', '#000');
 head_color = 0X000;
-background_color = '#ffffff';
+background_color = '#000000';
 
 
 if (location.pathname === '/') {
