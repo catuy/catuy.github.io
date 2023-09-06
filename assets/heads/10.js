@@ -5,8 +5,20 @@ root.style.setProperty('--home-menu-color', '#000');
 head_color = 0X000;
 background_color = '#000000';
 
-
 if (location.pathname === '/') {
+var sketch = function(p) {
+  p.setup = function() {
+    p.createCanvas(p.displayWidth, p.displayHeight);
+    p.background(background_color);
+  };
+  
+  p.windowResized = function() {
+    p.resizeCanvas(p.displayWidth, p.displayHeight);
+    p.background(background_color);
+  }
+};
+  
+// if (location.pathname === '/') {
 
   // $("body").css({
   //   "background-image": "url('/assets/heads/data/10.jpg')",
