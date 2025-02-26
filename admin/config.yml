@@ -14,21 +14,21 @@ extension: markdown  # Especifica la extensión de los archivos
 format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
 
 collections:
-  - name: "Works"  # Nombre de la colección (por ejemplo, para entradas de blog)
+  - name: "Works"  # Nombre de la colección
     label: "Works"
     folder: "_posts"  # Carpeta donde se guardan los archivos
     create: true  # Permite crear nuevos archivos
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Formato del nombre del archivo
+    extension: md  # Especifica la extensión de los archivos
+    format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Visible", name: "visible", widget: "boolean", default: true }  # Campo para mostrar/ocultar
-      - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Nueva imagen destacada
       - { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "image" } }  # Lista de imágenes
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
       - { label: "Descripción", name: "description", widget: "text" }  # Campo de descripción
-
 
 
   - name: "Pages"  # Nombre de la colección (por ejemplo, para entradas de blog)
