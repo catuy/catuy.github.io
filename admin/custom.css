@@ -1,0 +1,24 @@
+/* Cambiar el logo */
+.nc-appHeader-logo {
+    background-image: url('/assets/logo.png'); /* Ruta a tu logo */
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 150px; /* Ancho del logo */
+    height: 50px; /* Alto del logo */
+  }
+  
+  /* Cambiar el color de fondo del encabezado */
+  .nc-appHeader {
+    background-color: #4A90E2; /* Color azul */
+  }
+  
+  /* Cambiar el color de los botones */
+  .nc-button {
+    background-color: #4A90E2; /* Color azul */
+    border-color: #4A90E2; /* Color azul */
+  }
+  
+  /* Cambiar el color de los enlaces */
+  .nc-link {
+    color: #4A90E2; /* Color azul */
+  }
