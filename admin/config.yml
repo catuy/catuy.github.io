@@ -3,8 +3,8 @@ backend:
   repo: catuy/catuy.github.io  # Reemplaza con tu usuario y repositorio de GitHub
   branch: master  # O la rama que uses (main, master, etc.)
   auth_scope: repo  # Permisos necesarios
-  site_domain: catuy/catuy.github.io  # Para desarrollo local
-  # base_url:  catuy/catuy.github.io  # Para desarrollo local
+  site_domain: https://catuy.github.io  # Para desarrollo local
+  base_url:  https://catuy.github.io  # Para desarrollo local
   client_id: Ov23liZ0qzrw82lHZNR7  # Tu Client ID
   client_secret: 4776b6d5347f5b2091198fbc7ba3db0f729073b5  # Tu Client Secret
 
