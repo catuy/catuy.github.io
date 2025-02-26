@@ -10,6 +10,34 @@
   <body>
     <!-- Include the script that builds the page and powers Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      // Inicializa Decap CMS
+      CMS.init({
+        config: {
+          backend: {
+            name: "github",
+            repo: "catuy/catuy.github.io",  // Tu repositorio
+            branch: "master",  // Tu rama
+          },
+          load_config_file: false,  // No cargar un archivo de configuración externo
+          media_folder: "assets/blogimages",  // Carpeta de medios
+          public_folder: "/assets/blogimages",  // Ruta pública de medios
+          collections: [
+            {
+              name: "posts",
+              label: "Posts",
+              folder: "_posts",
+              create: true,
+              slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
+              fields: [
+                { label: "Title", name: "title", widget: "string" },
+                { label: "Publish Date", name: "date", widget: "datetime" },
+                { label: "Body", name: "body", widget: "markdown" },
+              ],
+            },
+          ],
+        },
+      });
+    </script>
   </body>
 </html>
