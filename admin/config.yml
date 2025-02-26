@@ -2,7 +2,7 @@ backend:
   name: github
   repo: catuy/catuy.github.io  # Reemplaza con tu usuario y repositorio
   branch: master  # Cambia a la rama que uses (main, master, etc.)
-  # auth_scope: repo  # Permisos necesarios
+  auth_scope: repo  # Permisos necesarios
   site_domain: https://catuy.github.io  # URL de tu sitio
   base_url: https://catuy.github.io  # URL base para la autenticación
   client_id: Ov23liZ0qzrw82lHZNR7  # Reemplaza con tu Client ID
