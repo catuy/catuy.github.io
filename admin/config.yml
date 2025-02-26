@@ -22,15 +22,10 @@ collections:
     extension: md  # Especifica la extensión de los archivos
     format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
     # summary: "{{title}} - {{description}}"  # Resumen de la entrada
-    list_fields:  # Campos que se muestran en el listado
-      - { label: "Título", name: "title" }
-      - { label: "Fecha", name: "date" }
-      - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Imagen destacada en el listado
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Visible", name: "visible", widget: "boolean", default: true }  # Campo para mostrar/ocultar
-      - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Nueva imagen destacada
       - { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "image" } }  # Lista de imágenes
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
