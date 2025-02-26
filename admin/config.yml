@@ -4,7 +4,7 @@ backend:
   branch: master  # Cambia a la rama que uses (main, master, etc.)
   auth_scope: repo  # Permisos necesarios
   site_domain: https://catuy.github.io  # URL de tu sitio
-  base_url: https://api.netlify.com  # URL base para la autenticación
+  # base_url: https://api.netlify.com  # URL base para la autenticación
   client_id: Ov23liZ0qzrw82lHZNR7  # Reemplaza con tu Client ID
   client_secret: 4776b6d5347f5b2091198fbc7ba3db0f729073b5  # Reemplaza con tu Client Secret
 
