@@ -25,7 +25,7 @@ collections:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Visible", name: "visible", widget: "boolean", default: true }  # Campo para mostrar/ocultar
-      # - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Nueva imagen destacada
+      - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Nueva imagen destacada
       - { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "image" } }  # Lista de imágenes
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
