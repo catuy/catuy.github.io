@@ -2,7 +2,6 @@ backend:
   name: github
   repo: catuy/catuy.github.io  # Reemplaza con tu usuario y repositorio de GitHub
   branch: master  # O la rama que uses (main, master, etc.)
-  auth_scope: repo  # Permisos necesarios
   site_domain: https://catuy.github.io  # Para desarrollo local
   base_url: https://api.netlify.com  # Para desarrollo local
   client_id: Ov23liZ0qzrw82lHZNR7  # Tu Client ID
