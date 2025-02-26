@@ -21,6 +21,11 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Formato del nombre del archivo
     extension: md  # Especifica la extensión de los archivos
     format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
+    # summary: "{{title}} - {{description}}"  # Resumen de la entrada
+    list_fields:  # Campos que se muestran en el listado
+      - { label: "Título", name: "title" }
+      - { label: "Fecha", name: "date" }
+      - { label: "Imagen destacada", name: "featured_image", widget: "image" }  # Imagen destacada en el listado
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
