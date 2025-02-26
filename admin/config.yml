@@ -23,3 +23,13 @@ collections:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "Pages"  # Nombre de la colección (por ejemplo, para entradas de blog)
+    label: "Pages"
+    folder: "/"  # Carpeta donde se guardan los archivos
+    create: false  # Permite crear nuevos archivos
+    slug: ""  # Formato del nombre del archivo
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
