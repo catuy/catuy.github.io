@@ -22,3 +22,7 @@
   .nc-link {
     color: #4A90E2; /* Color azul */
   }
+
+  body {
+    background-color: red;
+}
