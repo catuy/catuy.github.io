@@ -10,7 +10,7 @@ backend:
 
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
 public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágenes
-extension: md  # Especifica la extensión de los archivos
+extension: markdown  # Especifica la extensión de los archivos
 format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
 
 collections:
