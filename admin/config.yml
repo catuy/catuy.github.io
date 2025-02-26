@@ -28,7 +28,7 @@ collections:
       - { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "object", fields: [
         { label: "Ruta", name: "path", widget: "image" },
         { label: "Descripción", name: "description", widget: "string" }
-        ] } }      
+         ] } }      
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
       - { label: "Descripción", name: "description", widget: "text" }  # Campo de descripción
