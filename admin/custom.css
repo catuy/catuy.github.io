@@ -1,12 +1,14 @@
 /* Cambiar el logo */
 .nc-appHeader-logo {
-    background-image: url('/assets/logo.png'); /* Ruta a tu logo */
+    background-image: url('/assets/blogimages/alver.jpg'); /* Ruta a tu logo */
     background-size: contain;
     background-repeat: no-repeat;
     width: 150px; /* Ancho del logo */
     height: 50px; /* Alto del logo */
   }
-  
+  .css-rdgl1o-IconWrapper-DecapLogoIcon svg {
+    display: none;
+}
   /* Cambiar el color de fondo del encabezado */
   .nc-appHeader {
     background-color: #4A90E2; /* Color azul */
@@ -24,5 +26,5 @@
   }
 
   body {
-    background-color: cyan !important;
+    /* background-color: cyan !important; */
 }
