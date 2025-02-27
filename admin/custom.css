@@ -1,35 +1,64 @@
 /* Cambiar el logo */
-.nc-appHeader-logo {
-    background-image: url('/assets/blogimages/alver.jpg'); /* Ruta a tu logo */
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 150px; /* Ancho del logo */
-    height: 50px; /* Alto del logo */
-  }
-  .css-rdgl1o-IconWrapper-DecapLogoIcon svg {
-    display: none;
+[class*="IconWrapper-DecapLogoIcon"] {
+    background-color: black;
+    width: 350px; /* Ancho del logo */
+    height: 350px; /* Alto del logo */
 }
-  /* Cambiar el color de fondo del encabezado */
-  .nc-appHeader {
-    background-color: #4A90E2; /* Color azul */
-  }
-  
-  /* Cambiar el color de los botones */
-  .nc-button {
-    background-color: #4A90E2; /* Color azul */
-    border-color: #4A90E2; /* Color azul */
-  }
-  
-  /* Cambiar el color de los enlaces */
-  .nc-link {
-    color: #4A90E2; /* Color azul */
-  }
 
-  body {
-    background-color: cyan !important;
+[class*="IconWrapper-DecapLogoIcon"] svg {
+    display: none;
 }
 
 [class*="AppHeaderContent"] {
-  max-width: 2440px;
-  background-color: blueviolet;
+  max-width: 100%;
+}
+
+[class*="AppMainContainer"] {
+  max-width: 100%;
+}
+[class*="CardsGrid"] {
+  display: block;
+  margin-left: 0px;
+}
+[class*="CollectionTopContainer-card-cardTop"] {
+  box-shadow: none;
+  border-radius: 0px;
+  width: 100%;
+  max-width: 100%;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+}
+[class*="CollectionControlsContainer"] {
+  width: 100%;
+}
+[class*="ListCard-card"] {
+  box-shadow: none;
+  border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  margin-left: 0px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+[class*="GridCard-card"] {
+  box-shadow: none;
+  border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  flex: 0 0 335px;
+  height: 240px;
+  overflow: hidden;
+  margin-left: 0px;
+  margin-bottom: 1%;
+  width: calc(33.33% - 0.666%); /* Ancho de cada columna */
+  float: left; /* Alineación en columnas */
+  margin-left: 1%; /* Margen entre columnas */
+}
+
+[class*="GridCard-card"]:nth-child(3n+1) {
+  margin-left: 0px;
+}
+
+.css-pyxbz6-CollectionContainer {
+  /* margin: 0px; */
 }
