@@ -11,48 +11,13 @@
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
   <script>
-    // Inicializa Decap CMS
     CMS.init({
       config: {
         backend: {
           name: "github",
-          repo: "catuy/catuy.github.io",  // Tu repositorio
-          branch: "master",  // Tu rama
+          repo: "catuy/catuy.github.io",  // Reemplaza con tu usuario y repositorio
+          branch: "master",
         },
-        load_config_file: false,  // No cargar un archivo de configuración externo
-        media_folder: "assets/blogimages",  // Carpeta de medios
-        public_folder: "/assets/blogimages",  // Ruta pública de medios
-        collections: [
-          {
-            name: "Works",
-            label: "Works",
-            folder: "_posts",
-            create: true,
-            slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
-            extension: "md",
-            format: "frontmatter",
-            fields: [
-              { label: "Título", name: "title", widget: "string" },
-              { label: "Fecha", name: "date", widget: "datetime" },
-              { label: "Visible", name: "visible", widget: "boolean", default: true },
-              { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "image" } },
-              { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] },
-              { label: "Categorías", name: "categories", widget: "list", default: ["todos"] },
-              { label: "Descripción", name: "description", widget: "text" },
-            ],
-          },
-          {
-            name: "Pages",
-            label: "Pages",
-            folder: "/",
-            create: false,
-            fields: [
-              { label: "Título", name: "title", widget: "string" },
-              { label: "Fecha", name: "date", widget: "datetime" },
-              { label: "Contenido", name: "body", widget: "markdown" },
-            ],
-          },
-        ],
       },
     });
   </script>
