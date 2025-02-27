@@ -4,7 +4,7 @@ backend:
   branch: master
   auth_scope: repo
   site_domain: https://catuy.github.io
-  base_url: https://catuy-github-io.pages.dev
+  base_url: https://decap-auth.cataldo-diego.workers.dev
   auth_endpoint: /api/auth
 
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
