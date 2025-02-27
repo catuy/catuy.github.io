@@ -2,7 +2,6 @@ backend:
   name: github
   repo: catuy/catuy.github.io
   branch: master
-  auth_scope: repo
   site_domain: https://catuy.github.io
   base_url: https://decap-auth.cataldo-diego.workers.dev
   auth_endpoint: /api/auth
