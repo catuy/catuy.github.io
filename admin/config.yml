@@ -1,12 +1,11 @@
 backend:
   name: github
-  repo: catuy/catuy.github.io  # Reemplaza con tu usuario y repositorio
-  branch: master  # Cambia a la rama que uses (main, master, etc.)
-  auth_scope: repo  # Permisos necesarios
-  site_domain: https://catuy.github.io  # URL de tu sitio
+  repo: catuy/catuy.github.io
+  branch: master
+  auth_scope: repo
+  site_domain: https://catuy.github.io
   base_url: https://catuy-github-io.pages.dev
   auth_endpoint: /api/auth
-  # auth_endpoint: /login/oauth/authorize
   client_id: Ov23liZ0qzrw82lHZNR7  # Reemplaza con tu Client ID
   client_secret: 4776b6d5347f5b2091198fbc7ba3db0f729073b5  # Reemplaza con tu Client Secret
 
