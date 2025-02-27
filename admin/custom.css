@@ -26,5 +26,10 @@
   }
 
   body {
-    /* background-color: cyan !important; */
+    background-color: cyan !important;
+}
+
+[class*="AppHeaderContent"] {
+  max-width: 2440px;
+  background-color: blueviolet;
 }
