@@ -2,9 +2,8 @@ backend:
   name: github
   repo: catuy/catuy.github.io
   branch: master
-  site_domain: https://catuy.github.io
+  site_domain: https://catuy-github-io.pages.dev
   base_url: https://decap-auth.cataldo-diego.workers.dev
-
 
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
 public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágenes
