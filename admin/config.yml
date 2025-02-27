@@ -2,14 +2,12 @@ backend:
   name: github
   repo: catuy/catuy.github.io
   branch: master
-  site_domain: https://catuy-github-io.pages.dev
-  base_url: https://decap-auth.cataldo-diego.workers.dev
-
+  base_url: https://catuy-github-io.pages.dev/
+  auth_endpoint: /api/auth
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
 public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágenes
 extension: markdown  # Especifica la extensión de los archivos
 format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
-
 collections:
   - name: "Works"  # Nombre de la colección
     label: "Works"
@@ -18,7 +16,8 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Formato del nombre del archivo
     extension: md  # Especifica la extensión de los archivos
     format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
-    # summary: "{{title}} - {{description}}"  # Resumen de la entrada
+    editor:
+      preview: false
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
