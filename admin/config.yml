@@ -6,8 +6,6 @@ backend:
   site_domain: https://catuy.github.io
   base_url: https://catuy-github-io.pages.dev
   auth_endpoint: /api/auth
-  client_id: Ov23liZ0qzrw82lHZNR7  # Reemplaza con tu Client ID
-  client_secret: 4776b6d5347f5b2091198fbc7ba3db0f729073b5  # Reemplaza con tu Client Secret
 
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
 public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágenes
