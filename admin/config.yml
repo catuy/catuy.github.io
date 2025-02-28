@@ -12,7 +12,7 @@ extension: markdown  # Especifica la extensión de los archivos
 format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
 collections:
   - name: "Work"  # Nombre de la colección
-    label: "Works"
+    label: "Work"
     folder: "_posts"  # Carpeta donde se guardan los archivos
     create: true  # Permite crear nuevos archivos
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"  # Formato del nombre del archivo
