@@ -4,6 +4,8 @@ backend:
   branch: master
   base_url: https://catuy-github-io.pages.dev/
   auth_endpoint: /api/auth
+  # This line should *not* be indented
+publish_mode: editorial_workflow
 media_folder: "assets/blogimages"  # Carpeta donde se guardarán las imágenes subidas
 public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágenes
 extension: markdown  # Especifica la extensión de los archivos
@@ -21,7 +23,6 @@ collections:
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
-      - { label: "Visible", name: "visible", widget: "boolean", default: true }  # Campo para mostrar/ocultar
       - { label: "Imágenes", name: "images", widget: "list", field: { label: "Imagen", name: "image", widget: "image" } }  # Lista de imágenes
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
