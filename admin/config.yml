@@ -27,7 +27,7 @@ collections:
       - { label: "Etiquetas", name: "tags", widget: "list", default: ["Web"] }  # Campo de etiquetas
       - { label: "Categorías", name: "categories", widget: "list", default: ["todos"] }  # Campo de categorías
       - { label: "Descripción", name: "description", widget: "text" }  # Campo de descripción
-      - { label: "Content", name: "content", widget: "text" }  # Campo de descripción
+      - { label: "Content", name: "body", widget: "markdown" }  # Cambia "content" a "body" y usa "markdown"
 
 
 
