@@ -11,7 +11,7 @@ public_folder: "/assets/blogimages"  # Ruta pública para acceder a las imágene
 extension: markdown  # Especifica la extensión de los archivos
 format: frontmatter  # Formato de los archivos (frontmatter es el predeterminado para Jekyll)
 collections:
-  - name: "Works"  # Nombre de la colección
+  - name: "Work"  # Nombre de la colección
     label: "Works"
     folder: "_posts"  # Carpeta donde se guardan los archivos
     create: true  # Permite crear nuevos archivos
