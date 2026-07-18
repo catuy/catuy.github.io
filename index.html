@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <!-- ===== Synthetic-self chat widget — overlay, no toca el three.js ===== -->
 <div id="synth-chat-root">
-  <button id="synth-chat-toggle" type="button"><span id="synth-chat-toggle-icon" aria-hidden="true">✨</span>Preguntá lo que quieras</button>
+  <button id="synth-chat-toggle" type="button"><span id="synth-chat-toggle-icon" aria-hidden="true">✨</span></button>
 
   <div id="synth-chat-panel" hidden>
     <button id="synth-chat-close" type="button" aria-label="Cerrar">×</button>
@@ -288,7 +288,30 @@ document.addEventListener("DOMContentLoaded", function() {
   const WORKER_URL = "https://diego-synth-chat.cataldo-diego.workers.dev";
 
   const MAX_HISTORY_MESSAGES = 8; // turnos recientes que se mandan al Worker
-  const CONTACT_FALLBACK = "Escribime directo y lo vemos: cataldo.diego@gmail.com";
+
+  // Soportamos es/en: cualquier otro idioma de navegador cae a español,
+  // igual que el fallback del lado del Worker.
+  const rawLang = (navigator.language || 'es').slice(0, 2).toLowerCase();
+  const LANG = rawLang === 'en' ? 'en' : 'es';
+
+  const UI_STRINGS = {
+    es: {
+      toggle: 'Preguntá lo que quieras',
+      placeholder: 'Escribime algo…',
+      welcome: 'Hola, soy el yo sintético de Diego. Preguntame lo que quieras.',
+      contactFallback: 'Escribime directo y lo vemos: cataldo.diego@gmail.com',
+      connectError: 'No pude conectarme ahora. '
+    },
+    en: {
+      toggle: 'Ask me anything',
+      placeholder: 'Type something…',
+      welcome: "Hi, I'm Diego's synthetic self. Ask me anything.",
+      contactFallback: 'Email me directly: cataldo.diego@gmail.com',
+      connectError: "Couldn't connect right now. "
+    }
+  };
+  const STR = UI_STRINGS[LANG];
+  const CONTACT_FALLBACK = STR.contactFallback;
 
   const toggleBtn = document.getElementById('synth-chat-toggle');
   const panel = document.getElementById('synth-chat-panel');
@@ -298,6 +321,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById('synth-chat-form');
   const input = document.getElementById('synth-chat-input');
   const sendBtn = document.getElementById('synth-chat-send');
+
+  toggleBtn.append(STR.toggle);
+  input.placeholder = STR.placeholder;
 
   let history = [];
   let started = false;
@@ -314,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function startChat() {
     if (started) return;
     started = true;
-    addMessage('assistant', 'Hola, soy el yo sintético de Diego. Preguntame lo que quieras.');
+    addMessage('assistant', STR.welcome);
     input.focus();
   }
 
@@ -350,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history })
+        body: JSON.stringify({ messages: history, lang: LANG })
       });
 
       if (!res.ok || !res.body) throw new Error('Worker respondió ' + res.status);
@@ -392,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function() {
       history.push({ role: 'assistant', content: acc });
     } catch (err) {
       console.error(err);
-      const errText = 'No pude conectarme ahora. ' + CONTACT_FALLBACK;
+      const errText = STR.connectError + CONTACT_FALLBACK;
       if (assistantDiv) assistantDiv.textContent = errText;
       else addMessage('system', errText);
     } finally {

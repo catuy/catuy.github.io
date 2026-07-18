@@ -70,6 +70,22 @@ function sanitizeHistory(rawMessages) {
     .slice(-MAX_HISTORY_MESSAGES);
 }
 
+// Solo dos idiomas soportados por ahora (es/en): el resto de códigos cae al
+// español por defecto. Whitelist fija — nunca se interpola texto libre del
+// cliente en el prompt.
+function languageDirective(rawLang) {
+  const lang = typeof rawLang === "string" ? rawLang.trim().toLowerCase() : "";
+  if (lang !== "en") return "";
+  return (
+    "LANGUAGE OVERRIDE (this rule wins over everything below, including the " +
+    'part that says "español rioplatense"): the profile below is written in ' +
+    "Spanish, but you must answer ONLY in English from now on, in first " +
+    "person, casual and direct tone. Keep every fact and rule from the " +
+    "profile — only the output language changes, from Spanish to English. " +
+    "If the visitor writes in Spanish, switch back to Spanish for that reply."
+  );
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
@@ -92,7 +108,9 @@ export default {
 
     const history = sanitizeHistory(body.messages);
     const profile = await loadProfile(env);
-    const messages = [{ role: "system", content: profile }, ...history];
+    const langDirective = languageDirective(body.lang);
+    const systemContent = langDirective ? langDirective + "\n\n" + profile : profile;
+    const messages = [{ role: "system", content: systemContent }, ...history];
 
     const stream = await env.AI.run(MODEL, {
       messages,
