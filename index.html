@@ -122,4 +122,330 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
+<!-- ===== Synthetic-self chat widget — overlay, no toca el three.js ===== -->
+<div id="synth-chat-root">
+  <button id="synth-chat-toggle" type="button">◈ Hablá con mi yo sintético</button>
+
+  <div id="synth-chat-panel" hidden>
+    <div id="synth-chat-header">
+      <span>◈ yo sintético</span>
+      <button id="synth-chat-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+
+    <div id="synth-chat-progress-wrap" hidden>
+      <div id="synth-chat-progress-label">Cargando modelo…</div>
+      <div id="synth-chat-progress-track"><div id="synth-chat-progress-fill"></div></div>
+    </div>
+
+    <div id="synth-chat-messages"></div>
+
+    <form id="synth-chat-form">
+      <input id="synth-chat-input" type="text" placeholder="Escribime algo…" autocomplete="off" disabled>
+      <button id="synth-chat-send" type="submit" disabled>➤</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  #synth-chat-root, #synth-chat-root *{ box-sizing: border-box; }
+  #synth-chat-root{
+    position: fixed;
+    right: var(--margin, 20px);
+    bottom: var(--margin, 20px);
+    z-index: 999999;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--font-size-m, 15px);
+  }
+  #synth-chat-toggle{
+    font-family: inherit;
+    font-size: var(--font-size-s, 13px);
+    background: rgba(10,10,10,.88);
+    color: #fff;
+    border: 1px solid var(--color-primary, #fff);
+    border-radius: 999px;
+    padding: 10px 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  }
+  #synth-chat-toggle:hover{ background: rgba(30,30,30,.92); }
+  #synth-chat-panel{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    max-width: 90vw;
+    height: 440px;
+    max-height: 70vh;
+    background: rgba(10,10,10,.92);
+    color: #fff;
+    border: 1px solid var(--color-primary, #fff);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,.35);
+    backdrop-filter: blur(6px);
+  }
+  #synth-chat-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    font-size: var(--font-size-s, 13px);
+  }
+  #synth-chat-close{
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0px 4px;
+  }
+  #synth-chat-progress-wrap{ padding: 8px 14px; }
+  #synth-chat-progress-label{
+    font-size: var(--font-size-s, 13px);
+    opacity: .8;
+    margin-bottom: 6px;
+  }
+  #synth-chat-progress-track{
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.15);
+    overflow: hidden;
+  }
+  #synth-chat-progress-fill{
+    height: 100%;
+    width: 0%;
+    background: var(--color-primary, #fff);
+    transition: width .2s ease;
+  }
+  #synth-chat-messages{
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .synth-msg{
+    font-size: var(--font-size-s, 13px);
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 10px;
+    max-width: 85%;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .synth-msg-assistant{
+    align-self: flex-start;
+    background: rgba(255,255,255,.08);
+  }
+  .synth-msg-user{
+    align-self: flex-end;
+    background: var(--color-primary, #333);
+  }
+  .synth-msg-system{
+    align-self: center;
+    text-align: center;
+    font-style: italic;
+    opacity: .8;
+    max-width: 100%;
+  }
+  #synth-chat-form{
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+  #synth-chat-input{
+    flex: 1;
+    font-family: inherit;
+    font-size: var(--font-size-s, 13px);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 10px;
+  }
+  #synth-chat-input:disabled{ opacity: .5; }
+  #synth-chat-input::placeholder{ color: rgba(255,255,255,.4); }
+  #synth-chat-send{
+    width: 36px;
+    border: none;
+    border-radius: 8px;
+    background: var(--color-primary, #fff);
+    color: #000;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  #synth-chat-send:disabled{ opacity: .4; cursor: default; }
+</style>
+
+<script type="module">
+(function () {
+  const MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC"; // ~0.9 GB, se cachea tras la 1ra vez
+  // const MODEL = "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
+  // const MODEL = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
+  // const MODEL = "gemma-2-2b-it-q4f16_1-MLC";
+
+  const CONTACT_FALLBACK = "Escribime directo y lo vemos: cataldo.diego@gmail.com";
+
+  const FALLBACK_PROFILE = [
+    "Respondés como Diego, en primera persona, español rioplatense, tono relajado y directo.",
+    "Hablás SOLO de Diego: qué hace, cómo trabaja, su experiencia y cómo contactarlo.",
+    "Máximo 2 frases por respuesta. Usá SOLO los datos de acá, no inventes nada.",
+    "Si preguntan algo que no está acá, respondé: \"Uf, eso no lo tengo por acá. " + CONTACT_FALLBACK + "\"",
+    "",
+    "Soy Diego Cataldo, diseñador full-stack (cross-media) y artista visual, de Montevideo,",
+    "20 años en esto. Diseño y programo productos digitales de punta a punta para gobiernos,",
+    "medios y organizaciones internacionales. Tengo mi estudio, Persona S.A.S. Soy licenciado",
+    "en Diseño Gráfico (ORT) y di clases en la FADU (UdelaR) diez años.",
+    "",
+    "Trabajo con Figma para diseño, y React, Next.js, Tailwind, WordPress y Storybook para",
+    "producción. Prefiero open source, evito el vendor lock-in y me importa la soberanía digital.",
+    "",
+    "Ando en ClassWallet (Lead Product Designer, desde 2023), UNESCO-IOC/GOOS (desde 2025) y",
+    "el BID como UX Lead para Uruguay (desde 2022). Antes fui consultor senior de UX de la ANII",
+    "casi diez años, armando su primer sistema de diseño.",
+    "",
+    "También hago arte: serigrafía y arte generativo con código, expuesto en Taiwán, Tokyo y Portugal.",
+    "",
+    "Contacto: cataldo.diego@gmail.com — LinkedIn: https://www.linkedin.com/in/cataldodiego/"
+  ].join("\n");
+
+  const toggleBtn = document.getElementById('synth-chat-toggle');
+  const panel = document.getElementById('synth-chat-panel');
+  const closeBtn = document.getElementById('synth-chat-close');
+  const progressWrap = document.getElementById('synth-chat-progress-wrap');
+  const progressLabel = document.getElementById('synth-chat-progress-label');
+  const progressFill = document.getElementById('synth-chat-progress-fill');
+  const messagesEl = document.getElementById('synth-chat-messages');
+  const form = document.getElementById('synth-chat-form');
+  const input = document.getElementById('synth-chat-input');
+  const sendBtn = document.getElementById('synth-chat-send');
+
+  let engine = null;
+  let history = null;
+  let loading = false;
+  let ready = false;
+
+  function addMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = 'synth-msg synth-msg-' + role;
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  async function loadProfile() {
+    try {
+      const res = await fetch('./perfil.md');
+      if (!res.ok) throw new Error('no perfil.md');
+      const text = await res.text();
+      if (!text.trim()) throw new Error('perfil.md vacío');
+      return text;
+    } catch (e) {
+      return FALLBACK_PROFILE;
+    }
+  }
+
+  async function startChat() {
+    if (loading || ready) return;
+
+    if (!navigator.gpu) {
+      progressWrap.hidden = true;
+      addMessage('system', 'Tu navegador no soporta WebGPU, así que no puedo correr el modelo acá. ' + CONTACT_FALLBACK);
+      return;
+    }
+
+    loading = true;
+    progressWrap.hidden = false;
+    progressLabel.textContent = 'Cargando modelo…';
+
+    try {
+      const [{ CreateMLCEngine }, profile] = await Promise.all([
+        import('https://esm.run/@mlc-ai/web-llm@0.2.84'),
+        loadProfile()
+      ]);
+
+      engine = await CreateMLCEngine(MODEL, {
+        initProgressCallback: (r) => {
+          const pct = Math.round((r.progress || 0) * 100);
+          progressFill.style.width = pct + '%';
+          progressLabel.textContent = (r.text || 'Cargando modelo…') + ' (' + pct + '%)';
+        }
+      });
+
+      history = [{ role: 'system', content: profile }];
+      ready = true;
+      progressWrap.hidden = true;
+      input.disabled = false;
+      sendBtn.disabled = false;
+      addMessage('assistant', 'Hola, soy el yo sintético de Diego. Preguntame lo que quieras.');
+      input.focus();
+    } catch (err) {
+      console.error(err);
+      progressWrap.hidden = true;
+      addMessage('system', 'No pude cargar el modelo acá. ' + CONTACT_FALLBACK);
+    } finally {
+      loading = false;
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    toggleBtn.hidden = true;
+    panel.hidden = false;
+    startChat();
+  });
+
+  closeBtn.addEventListener('click', () => {
+    panel.hidden = true;
+    toggleBtn.hidden = false;
+  });
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (!ready) return;
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.disabled = true;
+    sendBtn.disabled = true;
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+
+    const assistantDiv = addMessage('assistant', '');
+    let acc = '';
+
+    try {
+      const stream = await engine.chat.completions.create({
+        messages: history,
+        stream: true,
+        temperature: 0.6
+      });
+
+      for await (const chunk of stream) {
+        const delta = chunk.choices[0]?.delta?.content || '';
+        if (delta) {
+          acc += delta;
+          assistantDiv.textContent = acc;
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+      }
+
+      history.push({ role: 'assistant', content: acc });
+    } catch (err) {
+      console.error(err);
+      assistantDiv.textContent = 'Se me cortó la respuesta. ' + CONTACT_FALLBACK;
+    } finally {
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  });
+})();
+</script>
 </body>
