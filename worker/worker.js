@@ -111,6 +111,41 @@ function isOffTopicGenerationRequest(text) {
   return typeof text === "string" && OFF_TOPIC_PATTERNS.some((re) => re.test(text));
 }
 
+// El modelo inventa proyectos/clientes/instituciones que no existen cuando
+// le preguntan por su trabajo (probado empíricamente: llegó a inventar
+// que trabajó para el "Ministerio de Educación y Cultura" y la "Secretaría
+// Nacional de Turismo", organismos reales, cosa que nunca pasó). Para esta
+// pregunta puntual no alcanza con reglas de prompt: se responde con un
+// texto fijo, redactado a mano, nunca generado por el modelo.
+const PROJECT_QUESTION_PATTERNS = [
+  /\bproyecto/i,
+  /\bclientes?\b/i,
+  /\btrabajaste\b/i,
+  /\bpara qui[eé]n\b/i,
+  /\bcon qui[eé]n (trabaj|colabor)/i,
+  /\bproject|clients?\b|who.*work(ed)? (for|with)/i,
+];
+
+function isProjectQuestion(text) {
+  return typeof text === "string" && PROJECT_QUESTION_PATTERNS.some((re) => re.test(text));
+}
+
+const PROJECTS_CANNED_ES =
+  "Trabajé en ClassWallet (fintech de educación, EE.UU.), UNESCO-IOC/GOOS y el BID como " +
+  "UX Lead para Uruguay; antes fui consultor senior de UX de la ANII casi diez años. " +
+  "También hice diseño para marcas como Coca-Cola, Unilever, Adidas, Prada, Chanel, " +
+  "Philips y Wix, y organismos públicos uruguayos como MEC, LATU, Intendencia de " +
+  "Montevideo, MIEM y Uruguay XXI. Si querés que profundice en alguno, escribime a " +
+  "cataldo.diego@gmail.com.";
+
+const PROJECTS_CANNED_EN =
+  "I've worked on ClassWallet (education fintech, US), UNESCO-IOC/GOOS and IDB as UX " +
+  "Lead for Uruguay; before that I was ANII's senior UX consultant for almost ten years. " +
+  "I've also designed for brands like Coca-Cola, Unilever, Adidas, Prada, Chanel, " +
+  "Philips and Wix, and Uruguayan public agencies like MEC, LATU, the Montevideo City " +
+  "Government, MIEM and Uruguay XXI. If you want details on any of these, email me at " +
+  "cataldo.diego@gmail.com.";
+
 function languageDirective(rawLang) {
   const lang = typeof rawLang === "string" ? rawLang.trim().toLowerCase() : "";
   if (lang !== "en") return "";
@@ -146,11 +181,20 @@ export default {
 
     const history = sanitizeHistory(body.messages);
     const lastUserMessage = [...history].reverse().find((m) => m.role === "user");
+    const lastUserText = lastUserMessage && lastUserMessage.content;
+    const isEnglish = body.lang === "en";
 
-    if (isOffTopicGenerationRequest(lastUserMessage && lastUserMessage.content)) {
-      const refusal = body.lang === "en" ? CANNED_REFUSAL_EN : CANNED_REFUSAL;
-      const sse = `data: ${JSON.stringify({ response: refusal })}\n\ndata: [DONE]\n\n`;
+    const cannedSse = (text) => {
+      const sse = `data: ${JSON.stringify({ response: text })}\n\ndata: [DONE]\n\n`;
       return new Response(sse, { headers: { ...headers, "content-type": "text/event-stream" } });
+    };
+
+    if (isOffTopicGenerationRequest(lastUserText)) {
+      return cannedSse(isEnglish ? CANNED_REFUSAL_EN : CANNED_REFUSAL);
+    }
+
+    if (isProjectQuestion(lastUserText)) {
+      return cannedSse(isEnglish ? PROJECTS_CANNED_EN : PROJECTS_CANNED_ES);
     }
 
     const profile = await loadProfile(env);
