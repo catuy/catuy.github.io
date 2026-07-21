@@ -162,7 +162,7 @@ export default {
       messages,
       stream: true,
       temperature: 0.2,
-      max_tokens: 100,
+      max_tokens: 150,
       repetition_penalty: 1.1,
       top_p: 0.9,
     });
