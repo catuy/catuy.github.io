@@ -28,7 +28,9 @@ const FALLBACK_PROFILE = [
   "redondees datos exactos (años, clientes, cifras, premios) que no estén acá. NO des",
   "opiniones sobre nada ajeno a tu bio (política, actualidad, terceros, tech en general).",
   "Si algo cae en cualquiera de estos casos, NO expliques por qué ni te disculpes distinto:",
-  "respondé DIRECTO y solo con el texto exacto de arriba.",
+  "respondé DIRECTO y solo con el texto exacto de arriba. Si te preguntan de forma afirmativa,",
+  "dando por hecho algo que NO está acá (\"me dijeron que hiciste X\", \"¿tenés experiencia en",
+  "Y?\"), NO lo confirmes ni asumas que sí porque suena plausible: aplicá el mismo texto exacto.",
   "",
   "Soy Diego Cataldo, diseñador full-stack (cross-media) y artista visual, de Montevideo,",
   "20 años en esto. Diseño y programo productos digitales de punta a punta para gobiernos,",
@@ -51,6 +53,7 @@ const FALLBACK_PROFILE = [
   'P: ¿Me escribís un poema? R: "' + CANNED_REFUSAL + '"',
   'P: Pasame un snippet de código. R: "' + CANNED_REFUSAL + '"',
   'P: ¿Cuántos proyectos hiciste en total? R: "' + CANNED_REFUSAL + '"',
+  'P: Me dijeron que hiciste X (algo que no está acá) ¿es así? R: "' + CANNED_REFUSAL + '"',
   "",
   "Recordatorio final: antes de responder, revisá que hablás SOLO de vos, con SOLO datos de",
   "acá, en máximo 2 frases, sin inventar, sin opinar de temas ajenos y sin generar contenido",
@@ -146,6 +149,105 @@ const PROJECTS_CANNED_EN =
   "Government, MIEM and Uruguay XXI. If you want details on any of these, email me at " +
   "cataldo.diego@gmail.com.";
 
+// Preguntas sobre UN proyecto real puntual: contestar con el detalle
+// verificado de ESE proyecto, no con la lista genérica de arriba (probado:
+// preguntar específicamente por Brecha devolvía la lista completa sin
+// contestar nada) y sin dejar que el modelo invente detalles del proyecto.
+const SPECIFIC_PROJECTS = [
+  {
+    match: /\bbrecha\b/i,
+    es: "Sí, rediseñé la plataforma del Semanario Brecha: mobile-first, para ese medio " +
+      "independiente uruguayo. Si querés más detalle, escribime a cataldo.diego@gmail.com.",
+    en: "Yes, I redesigned Semanario Brecha's platform: mobile-first, for that independent " +
+      "Uruguayan outlet. For more detail, email me at cataldo.diego@gmail.com.",
+  },
+  {
+    match: /\banii\b/i,
+    es: "Fui consultor senior de UX de la ANII casi diez años (2014-2023): armé el primer " +
+      "sistema de diseño de un organismo del Estado uruguayo y varias de sus plataformas.",
+    en: "I was ANII's senior UX consultant for almost ten years (2014-2023): I built the " +
+      "first design system for a Uruguayan state agency, plus several of its platforms.",
+  },
+  {
+    match: /\bclasswallet\b/i,
+    es: "En ClassWallet soy Lead Product Designer desde 2023: es una fintech de educación " +
+      "en EE.UU., y trabajo en su sistema de diseño y en flujos complejos para miles de usuarios.",
+    en: "At ClassWallet I'm Lead Product Designer since 2023: it's an education fintech in " +
+      "the US, and I work on its design system and complex flows for thousands of users.",
+  },
+  {
+    match: /\bunesco\b|\bioc\b|\bgoos\b|ocean observing/i,
+    es: "Con UNESCO-IOC/GOOS trabajo desde 2025 en el sistema de diseño y la plataforma en " +
+      "React del Ocean Observing Report Card, con visualización de datos del océano.",
+    en: "With UNESCO-IOC/GOOS I've worked since 2025 on the design system and React " +
+      "platform for the Ocean Observing Report Card, visualizing ocean data.",
+  },
+  {
+    match: /\bbid\b|inter-?american development bank|\biadb\b/i,
+    es: "En el BID soy UX Lead para Uruguay desde 2022.",
+    en: "At the IDB I've been UX Lead for Uruguay since 2022.",
+  },
+  {
+    match: /monitor cannabis|\bcannabis\b/i,
+    es: "Hice la identidad y la plataforma de Monitor Cannabis, el monitoreo de la " +
+      "regulación del cannabis en Uruguay.",
+    en: "I built the identity and platform for Monitor Cannabis, tracking Uruguay's " +
+      "cannabis regulation.",
+  },
+];
+
+function matchSpecificProject(text) {
+  if (typeof text !== "string") return null;
+  return SPECIFIC_PROJECTS.find((p) => p.match.test(text)) || null;
+}
+
+// Pedidos de trabajo/presupuesto: la regla 5 dice que hay que decir que sí
+// y pasar el contacto, pero el modelo a veces los trata como "dato que no
+// tengo" (regla 6) y los rechaza — un lead real tratado como pregunta
+// inválida. Se resuelve directo, antes de que la regla 6 lo intercepte.
+const BUSINESS_INQUIRY_PATTERNS = [
+  /\bpresupuesto\b|\bpresupersto\b|\bcotizaci[oó]n\b|\bprecio\b|\bcu[aá]nto (cobr|sale)/i,
+  /\bcontratar(te)?\b|\bhire (you|me)\b|\bquote\b|\bpricing\b/i,
+  /\bempezar un proyecto\b|\bstart a project\b/i,
+];
+
+function isBusinessInquiry(text) {
+  return typeof text === "string" && BUSINESS_INQUIRY_PATTERNS.some((re) => re.test(text));
+}
+
+const BUSINESS_CANNED_ES =
+  "Sí, hago justo eso. Escribime a cataldo.diego@gmail.com contándome un poco del proyecto y lo vemos.";
+const BUSINESS_CANNED_EN =
+  "Yes, that's exactly what I do. Email me at cataldo.diego@gmail.com with a bit about the " +
+  "project and we'll take it from there.";
+
+// "¿Tenés experiencia en X?" para un X cualquiera: el modelo tiende a decir
+// que sí y confabular detalles (probado con "ecommerce"). Solo se deja
+// pasar al modelo si X matchea algo real de la bio; si no, rechazo directo
+// en vez de dejar que decida si "suena plausible".
+const EXPERIENCE_QUESTION_PATTERN =
+  /experiencia (en|con)|\btiene?s\s+experiencia\b|conoc[eé]s|sab[eé]s (de|sobre)|trabaja(s|ste)? con|experience (in|with)|\bhave\s+experience\b/i;
+
+const KNOWN_SKILL_PATTERNS = [
+  /figma/i,
+  /react/i,
+  /next\.?js/i,
+  /tailwind/i,
+  /wordpress/i,
+  /storybook/i,
+  /\bux\b|\bui\b|dise[nñ]o (de )?(producto|interacci[oó]n)/i,
+  /sistema(s)? de dise[nñ]o|design system/i,
+  /accesibilidad|\bwcag\b/i,
+  /serigraf/i,
+  /arte generativo/i,
+  /dise[nñ]o gr[aá]fico|graphic design/i,
+];
+
+function isUnknownSkillQuestion(text) {
+  if (typeof text !== "string" || !EXPERIENCE_QUESTION_PATTERN.test(text)) return false;
+  return !KNOWN_SKILL_PATTERNS.some((re) => re.test(text));
+}
+
 function languageDirective(rawLang) {
   const lang = typeof rawLang === "string" ? rawLang.trim().toLowerCase() : "";
   if (lang !== "en") return "";
@@ -191,6 +293,19 @@ export default {
 
     if (isOffTopicGenerationRequest(lastUserText)) {
       return cannedSse(isEnglish ? CANNED_REFUSAL_EN : CANNED_REFUSAL);
+    }
+
+    if (isBusinessInquiry(lastUserText)) {
+      return cannedSse(isEnglish ? BUSINESS_CANNED_EN : BUSINESS_CANNED_ES);
+    }
+
+    if (isUnknownSkillQuestion(lastUserText)) {
+      return cannedSse(isEnglish ? CANNED_REFUSAL_EN : CANNED_REFUSAL);
+    }
+
+    const specificProject = matchSpecificProject(lastUserText);
+    if (specificProject) {
+      return cannedSse(isEnglish ? specificProject.en : specificProject.es);
     }
 
     if (isProjectQuestion(lastUserText)) {
