@@ -13,7 +13,7 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const CANNED_REFUSAL =
-  "Uf, eso no lo tengo por acá. Escribime directo y lo vemos: cataldo.diego@gmail.com";
+  "Uf, eso no lo tengo por acá. Escribime directo y lo vemos: hello@persn.net";
 
 const FALLBACK_PROFILE = [
   "Vos SOS Diego, en primera persona, español rioplatense, tono relajado y directo.",
@@ -34,8 +34,8 @@ const FALLBACK_PROFILE = [
   "",
   "Soy Diego Cataldo, diseñador full-stack (cross-media) y artista visual, de Montevideo,",
   "20 años en esto. Diseño y programo productos digitales de punta a punta para gobiernos,",
-  "medios y organizaciones internacionales. Tengo mi estudio, Persona S.A.S. Soy licenciado",
-  "en Diseño Gráfico (ORT) y di clases en la FADU (UdelaR) diez años.",
+  "medios y organizaciones internacionales. Soy licenciado en Diseño Gráfico (ORT) y di",
+  "clases en la FADU (UdelaR) diez años.",
   "",
   "Trabajo con Figma para diseño, y React, Next.js, Tailwind, WordPress y Storybook para",
   "producción. Prefiero open source, evito el vendor lock-in y me importa la soberanía digital.",
@@ -46,7 +46,7 @@ const FALLBACK_PROFILE = [
   "",
   "También hago arte: serigrafía y arte generativo con código, expuesto en Taiwán, Tokyo y Portugal.",
   "",
-  "Contacto: cataldo.diego@gmail.com — LinkedIn: https://www.linkedin.com/in/cataldodiego/",
+  "Contacto: hello@persn.net",
   "",
   "Ejemplos de rechazo (usá SIEMPRE este texto exacto, sin variarlo):",
   'P: ¿Qué opinás de Bitcoin / de la situación política? R: "' + CANNED_REFUSAL + '"',
@@ -96,7 +96,7 @@ function sanitizeHistory(rawMessages) {
 // español por defecto. Whitelist fija — nunca se interpola texto libre del
 // cliente en el prompt.
 const CANNED_REFUSAL_EN =
-  "I don't have that here. Email me directly: cataldo.diego@gmail.com";
+  "I don't have that here. Email me directly: hello@persn.net";
 
 // Pedidos de contenido generado (poema/canción/chiste, código, traducción):
 // el modelo, aun con reglas y ejemplos explícitos, a veces igual los cumple
@@ -139,7 +139,7 @@ const PROJECTS_CANNED_ES =
   "También hice diseño para marcas como Coca-Cola, Unilever, Adidas, Prada, Chanel, " +
   "Philips y Wix, y organismos públicos uruguayos como MEC, LATU, Intendencia de " +
   "Montevideo, MIEM y Uruguay XXI. Si querés que profundice en alguno, escribime a " +
-  "cataldo.diego@gmail.com.";
+  "hello@persn.net.";
 
 const PROJECTS_CANNED_EN =
   "I've worked on ClassWallet (education fintech, US), UNESCO-IOC/GOOS and IDB as UX " +
@@ -147,7 +147,7 @@ const PROJECTS_CANNED_EN =
   "I've also designed for brands like Coca-Cola, Unilever, Adidas, Prada, Chanel, " +
   "Philips and Wix, and Uruguayan public agencies like MEC, LATU, the Montevideo City " +
   "Government, MIEM and Uruguay XXI. If you want details on any of these, email me at " +
-  "cataldo.diego@gmail.com.";
+  "hello@persn.net.";
 
 // Preguntas sobre UN proyecto real puntual: contestar con el detalle
 // verificado de ESE proyecto, no con la lista genérica de arriba (probado:
@@ -157,9 +157,9 @@ const SPECIFIC_PROJECTS = [
   {
     match: /\bbrecha\b/i,
     es: "Sí, rediseñé la plataforma del Semanario Brecha: mobile-first, para ese medio " +
-      "independiente uruguayo. Si querés más detalle, escribime a cataldo.diego@gmail.com.",
+      "independiente uruguayo. Si querés más detalle, escribime a hello@persn.net.",
     en: "Yes, I redesigned Semanario Brecha's platform: mobile-first, for that independent " +
-      "Uruguayan outlet. For more detail, email me at cataldo.diego@gmail.com.",
+      "Uruguayan outlet. For more detail, email me at hello@persn.net.",
   },
   {
     match: /\banii\b/i,
@@ -216,9 +216,9 @@ function isBusinessInquiry(text) {
 }
 
 const BUSINESS_CANNED_ES =
-  "Sí, hago justo eso. Escribime a cataldo.diego@gmail.com contándome un poco del proyecto y lo vemos.";
+  "Sí, hago justo eso. Escribime a hello@persn.net contándome un poco del proyecto y lo vemos.";
 const BUSINESS_CANNED_EN =
-  "Yes, that's exactly what I do. Email me at cataldo.diego@gmail.com with a bit about the " +
+  "Yes, that's exactly what I do. Email me at hello@persn.net with a bit about the " +
   "project and we'll take it from there.";
 
 // "¿Tenés experiencia en X?" para un X cualquiera: el modelo tiende a decir
