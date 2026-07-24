@@ -123,332 +123,45 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-<!-- ===== Synthetic-self chat widget — overlay, no toca el three.js ===== -->
-<div id="synth-chat-root">
-  <button id="synth-chat-toggle" type="button"><span class="synth-avatar" aria-hidden="true">{-_-}</span><span id="synth-chat-toggle-bubble"></span></button>
-
-  <div id="synth-chat-panel" hidden>
-    <button id="synth-chat-close" type="button" aria-label="Cerrar">×</button>
-
-    <div id="synth-chat-typing" hidden>Pensando<span class="synth-blink">|</span></div>
-
-    <div id="synth-chat-messages"><div id="synth-chat-spacer"></div></div>
-
-    <form id="synth-chat-form">
-      <input id="synth-chat-input" type="text" placeholder="Escribime algo…" autocomplete="off">
-      <button id="synth-chat-send" type="submit">➤</button>
-    </form>
-  </div>
-</div>
-
+<!-- ===== Nav arriba a la derecha: info + contacto ===== -->
+<nav id="site-nav">
+  <a id="nav-info" href="info.html">info</a>
+  <a href="mailto:hello@persn.net">hello@persn.net</a>
+</nav>
 <style>
-  #synth-chat-root, #synth-chat-root *{ box-sizing: border-box; }
-  #synth-chat-root{
+  #site-nav{
     position: fixed;
+    top: var(--margin, 20px);
     right: var(--margin, 20px);
-    bottom: var(--margin, 20px);
     z-index: 999999;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: var(--font-size-m, 15px);
-  }
-  #synth-chat-toggle{
-    display: none;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  #synth-chat-toggle:not([hidden]){ display: inline-flex; }
-  .synth-avatar{
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    white-space: nowrap;
-    font-family: monospace;
-    font-size: 11px;
-    letter-spacing: -0.5px;
-    color: #fff;
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-  }
-  #synth-chat-toggle-bubble{
+    gap: 16px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: var(--font-size-s, 13px);
-    line-height: 1.45;
-    color: #fff;
-    padding: 9px 12px;
-    border-radius: 14px;
-    border-bottom-left-radius: 4px;
-    background: rgba(255,255,255,.10);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.15);
-    box-shadow: 0 4px 16px rgba(0,0,0,.2);
   }
-  #synth-chat-toggle:hover #synth-chat-toggle-bubble{ background: rgba(255,255,255,.18); }
-  #synth-chat-panel{
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: none;
-    flex-direction: column;
-    width: min(380px, 100vw);
-    height: 100vh;
-    background: transparent;
-    color: #fff;
-    padding: 56px 20px 20px;
+  #site-nav a{
+    color: var(--home-menu-color, #fff);
+    text-decoration: none;
   }
-  #synth-chat-panel:not([hidden]){ display: flex; }
-  #synth-chat-close{
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,.10);
-    border: none;
-    border-radius: 50%;
-    color: rgba(255,255,255,.85);
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0;
-  }
-  #synth-chat-close:hover{ background: rgba(255,255,255,.18); }
-  #synth-chat-typing{
-    font-size: var(--font-size-s, 13px);
-    opacity: .7;
-    font-style: italic;
-    margin-bottom: 8px;
-  }
-  .synth-blink{
-    animation: blink .2s linear infinite;
-    margin-left: 2px;
-  }
-  #synth-chat-messages{
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 100%);
-  }
-  #synth-chat-spacer{ flex: 1; }
-  .synth-msg{
-    font-size: var(--font-size-s, 13px);
-    line-height: 1.45;
-    color: #fff;
-    white-space: pre-wrap;
-    word-break: break-word;
-    max-width: 82%;
-    padding: 9px 12px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.10);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.15);
-  }
-  .synth-msg-assistant{ align-self: flex-start; border-bottom-left-radius: 4px; }
-  .synth-msg-user{
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-    background: rgba(255,255,255,.18);
-  }
-  .synth-msg-system{
-    align-self: center;
-    text-align: center;
-    font-style: italic;
-    opacity: .8;
-    max-width: 100%;
-    background: transparent;
-    border: none;
-  }
-  #synth-chat-form{
-    display: flex;
-    gap: 8px;
-    padding-top: 14px;
-  }
-  #synth-chat-input{
-    flex: 1;
-    font-family: inherit;
-    font-size: var(--font-size-s, 13px);
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 8px;
-    color: #fff;
-    padding: 8px 10px;
-  }
-  #synth-chat-input:focus{ outline: none; }
-  #synth-chat-input:disabled{ opacity: .5; }
-  #synth-chat-input::placeholder{ color: rgba(255,255,255,.4); }
-  #synth-chat-send{
-    width: 36px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-    font-size: var(--font-size-m, 15px);
-  }
-  #synth-chat-send:disabled{ opacity: .4; cursor: default; }
+  #site-nav a:hover{ text-decoration: line-through; }
 </style>
-
-<script type="module">
-(function () {
-  // Reemplazar por la URL del Worker una vez desplegado (worker/wrangler.toml).
-  const WORKER_URL = "https://diego-synth-chat.cataldo-diego.workers.dev";
-
-  const MAX_HISTORY_MESSAGES = 8; // turnos recientes que se mandan al Worker
-
-  // Soportamos es/en: cualquier otro idioma de navegador cae a español,
-  // igual que el fallback del lado del Worker.
-  const rawLang = (navigator.language || 'es').slice(0, 2).toLowerCase();
-  const LANG = rawLang === 'en' ? 'en' : 'es';
-
-  const UI_STRINGS = {
-    es: {
-      toggle: 'Preguntá lo que quieras',
-      placeholder: 'Escribime algo…',
-      contactFallback: 'Escribime directo y lo vemos: hello@persn.net',
-      connectError: 'No pude conectarme ahora. '
-    },
-    en: {
-      toggle: 'Ask me anything',
-      placeholder: 'Type something…',
-      contactFallback: 'Email me directly: hello@persn.net',
-      connectError: "Couldn't connect right now. "
-    }
-  };
-  const STR = UI_STRINGS[LANG];
-  const CONTACT_FALLBACK = STR.contactFallback;
-
-  const toggleBtn = document.getElementById('synth-chat-toggle');
-  const panel = document.getElementById('synth-chat-panel');
-  const closeBtn = document.getElementById('synth-chat-close');
-  const typingEl = document.getElementById('synth-chat-typing');
-  const messagesEl = document.getElementById('synth-chat-messages');
-  const form = document.getElementById('synth-chat-form');
-  const input = document.getElementById('synth-chat-input');
-  const sendBtn = document.getElementById('synth-chat-send');
-
-  document.getElementById('synth-chat-toggle-bubble').textContent = STR.toggle;
-  input.placeholder = STR.placeholder;
-
-  let history = [];
-  let started = false;
-
-  function addMessage(role, text) {
-    const bubble = document.createElement('div');
-    bubble.className = 'synth-msg synth-msg-' + role;
-    bubble.textContent = text;
-    messagesEl.appendChild(bubble);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-    return bubble;
-  }
-
-  function startChat() {
-    if (started) return;
-    started = true;
-    addMessage('assistant', STR.toggle);
-    input.focus();
-  }
-
-  toggleBtn.addEventListener('click', () => {
-    toggleBtn.hidden = true;
-    panel.hidden = false;
-    startChat();
-  });
-
-  closeBtn.addEventListener('click', () => {
-    panel.hidden = true;
-    toggleBtn.hidden = false;
-  });
-
-  form.addEventListener('submit', async (ev) => {
-    ev.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-
-    input.value = '';
-    input.disabled = true;
-    sendBtn.disabled = true;
-
-    addMessage('user', text);
-    history.push({ role: 'user', content: text });
-    history = history.slice(-MAX_HISTORY_MESSAGES);
-
-    typingEl.hidden = false;
-    let assistantDiv = null;
-    let acc = '';
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history, lang: LANG })
-      });
-
-      if (!res.ok || !res.body) throw new Error('Worker respondió ' + res.status);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-
-        const events = buffer.split('\n\n');
-        buffer = events.pop(); // resto incompleto, se completa en la próxima vuelta
-
-        for (const evt of events) {
-          const line = evt.trim();
-          if (!line.startsWith('data:')) continue;
-          const data = line.slice(5).trim();
-          if (data === '[DONE]') continue;
-
-          try {
-            const parsed = JSON.parse(data);
-            const delta = parsed.response || '';
-            if (delta) {
-              if (!assistantDiv) assistantDiv = addMessage('assistant', '');
-              acc += delta;
-              assistantDiv.textContent = acc;
-              messagesEl.scrollTop = messagesEl.scrollHeight;
-            }
-          } catch (e) {
-            // chunk parcial no-JSON, se ignora
-          }
-        }
+<script>
+  // Al ir a info le paso: el ?from (si el visitante viene de un sitio que hice yo)
+  // y el color actual de la cabeza, para que info herede el color random del home.
+  (function(){
+    var from = new URLSearchParams(location.search).get('from');
+    var link = document.getElementById('nav-info');
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var q = [];
+      if (from) q.push('from=' + encodeURIComponent(from));
+      var c = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+      if (c) {
+        q.push('c=' + encodeURIComponent(c));
+        try { localStorage.setItem('siteColor', c); } catch (err) {}
       }
-
-      if (!acc) throw new Error('Respuesta vacía del Worker');
-      history.push({ role: 'assistant', content: acc });
-    } catch (err) {
-      console.error(err);
-      const errText = STR.connectError + CONTACT_FALLBACK;
-      if (assistantDiv) assistantDiv.textContent = errText;
-      else addMessage('system', errText);
-    } finally {
-      typingEl.hidden = true;
-      input.disabled = false;
-      sendBtn.disabled = false;
-      input.focus();
-    }
-  });
-})();
+      location.href = 'info.html' + (q.length ? '?' + q.join('&') : '');
+    });
+  })();
 </script>
 </body>

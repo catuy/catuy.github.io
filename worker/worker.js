@@ -32,7 +32,7 @@ const FALLBACK_PROFILE = [
   "dando por hecho algo que NO está acá (\"me dijeron que hiciste X\", \"¿tenés experiencia en",
   "Y?\"), NO lo confirmes ni asumas que sí porque suena plausible: aplicá el mismo texto exacto.",
   "",
-  "Soy Diego Cataldo, diseñador full-stack (cross-media) y artista visual, de Montevideo,",
+  "Soy Diego, diseñador full-stack (cross-media) y artista visual, de Montevideo,",
   "20 años en esto. Diseño y programo productos digitales de punta a punta para gobiernos,",
   "medios y organizaciones internacionales. Soy licenciado en Diseño Gráfico (ORT) y di",
   "clases en la FADU (UdelaR) diez años.",
@@ -194,6 +194,34 @@ const SPECIFIC_PROJECTS = [
     en: "I built the identity and platform for Monitor Cannabis, tracking Uruguay's " +
       "cannabis regulation.",
   },
+  {
+    match: /yaugur[uú]/i,
+    es: "Sí, el sitio de Yaugurú lo diseñé y desarrollé yo. Si querés que profundice, " +
+      "escribime a hello@persn.net.",
+    en: "Yes, I designed and built the Yaugurú site myself. If you want me to go deeper, " +
+      "email me at hello@persn.net.",
+  },
+  {
+    match: /bardanca/i,
+    es: "Sí, el sitio de Héctor Bardanca lo diseñé y desarrollé yo. Si querés que " +
+      "profundice, escribime a hello@persn.net.",
+    en: "Yes, I designed and built Héctor Bardanca's site myself. If you want me to go " +
+      "deeper, email me at hello@persn.net.",
+  },
+  {
+    match: /text[ií]culos|\bmaca\b/i,
+    es: "Sí, textículos (el sitio de Maca) lo diseñé y desarrollé yo. Si querés que " +
+      "profundice, escribime a hello@persn.net.",
+    en: "Yes, I designed and built textículos (Maca's site) myself. If you want me to go " +
+      "deeper, email me at hello@persn.net.",
+  },
+  {
+    match: /alter\s*ediciones|alterediciones/i,
+    es: "Sí, el sitio de Alter Ediciones lo diseñé y desarrollé yo. Si querés que " +
+      "profundice, escribime a hello@persn.net.",
+    en: "Yes, I designed and built the Alter Ediciones site myself. If you want me to go " +
+      "deeper, email me at hello@persn.net.",
+  },
 ];
 
 function matchSpecificProject(text) {
@@ -208,7 +236,20 @@ function matchSpecificProject(text) {
 const BUSINESS_INQUIRY_PATTERNS = [
   /\bpresupuesto\b|\bpresupersto\b|\bcotizaci[oó]n\b|\bprecio\b|\bcu[aá]nto (cobr|sale)/i,
   /\bcontratar(te)?\b|\bhire (you|me)\b|\bquote\b|\bpricing\b/i,
+  // pedir ayuda / arrancar algo (leads)
+  /\bayud(arme|arte|ame|áme|arnos)\b/i,
+  /\b(puedes|pod[eé]s|podrias|podr[ií]as)\s+ayud/i,
+  /\b(me\s+)?d(a|á)s?\s+una\s+mano\b/i,
+  /\bhow can you help\b|\bcan you help\b|\bhelp me\b/i,
+  // querer/hacer/necesitar un proyecto o sitio
+  /\bquiero\b.{0,25}\b(proyecto|sitio|web|p[aá]gina|app|tienda|hacer|crear|dise[ñn])/i,
+  /\bhacer\b.{0,15}\b(un|una|mi)\b.{0,10}\b(proyecto|sitio|web|p[aá]gina|app|tienda)\b/i,
+  /\bnecesito\b/i,
   /\bempezar un proyecto\b|\bstart a project\b/i,
+  /\bi\s*(want|'?d like|would like)\s+to\b.{0,25}\b(project|site|website|work|build|design)\b/i,
+  // trabajar juntos / servicios
+  /\btrabajar\b.{0,15}\b(con|juntos|contigo|vos)\b|\bwork (with you|together)\b/i,
+  /\bservicios?\b|\bservices?\b/i,
 ];
 
 function isBusinessInquiry(text) {
@@ -248,6 +289,21 @@ function isUnknownSkillQuestion(text) {
   return !KNOWN_SKILL_PATTERNS.some((re) => re.test(text));
 }
 
+// El idioma de las respuestas fijas debe seguir el idioma REAL del mensaje
+// (no el del navegador): un visitante con navegador en inglés puede escribir
+// en español, y las respuestas fijas tienen que acompañarlo, igual que el modelo.
+function detectLang(text, fallback) {
+  if (typeof text !== "string") return fallback;
+  const t = text.toLowerCase();
+  let es = 0, en = 0;
+  if (/[áéíóúñ¿¡]/.test(t)) es += 2;
+  es += (t.match(/\b(qu[eé]|c[oó]mo|puedes|pod[eé]s|hac(er|[eé]s)|proyecto|ayud\w*|quiero|necesito|m[aá]s|hola|gracias|sitio|p[aá]gina|trabaj\w*|dise[ñn]\w*|para|sobre|vos|tu|tus|con)\b/g) || []).length;
+  en += (t.match(/\b(the|you|your|can|help|want|make|project|more|hi|thanks|need|site|page|work|design|with|for|about|how|what)\b/g) || []).length;
+  if (es > en) return "es";
+  if (en > es) return "en";
+  return fallback;
+}
+
 function languageDirective(rawLang) {
   const lang = typeof rawLang === "string" ? rawLang.trim().toLowerCase() : "";
   if (lang !== "en") return "";
@@ -284,7 +340,7 @@ export default {
     const history = sanitizeHistory(body.messages);
     const lastUserMessage = [...history].reverse().find((m) => m.role === "user");
     const lastUserText = lastUserMessage && lastUserMessage.content;
-    const isEnglish = body.lang === "en";
+    const isEnglish = detectLang(lastUserText, body.lang === "en" ? "en" : "es") === "en";
 
     const cannedSse = (text) => {
       const sse = `data: ${JSON.stringify({ response: text })}\n\ndata: [DONE]\n\n`;
