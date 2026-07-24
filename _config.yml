@@ -36,6 +36,7 @@ plugins:
 # La sección Archivo está oculta por ahora (contenido conservado, sin publicar).
 exclude:
   - worker/
+  - HANDOFF.md
   - proyectos.markdown
   - academicos.markdown
   - artes-visuales.markdown
