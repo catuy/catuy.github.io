@@ -1,7 +1,0 @@
-name = "diego-synth-chat"
-main = "worker.js"
-compatibility_date = "2024-11-01"
-account_id = "be7acf760e8b0d6f85782aa76c388f2b"
-
-[ai]
-binding = "AI"
