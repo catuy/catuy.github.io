@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Yí - El río que no se corta"
+date:   2019-01-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/yi.jpg
+tags: [Afiche]
+---
+Gráfica para el film de la directora Karin Porley von Bergen. Ganadora del Jose Ignacio International Film Festival.
+<img class="post-image-full" src="/assets/blogimages/yi-1.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/yi-2.mp4" type="video/mp4" /></video>

@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "OJO"
+date:   2020-02-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/un-9.jpg
+tags: [Serigrafía]
+
+---
+Serigrafía<br>96x66cm<br>Hojas Fedrigoni 200g<br>1 tinta
+
+<img class="post-image-full" src="/assets/blogimages/un-7.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-8.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-9.jpg">

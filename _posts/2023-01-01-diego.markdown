@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "d--i--e--g--o--c--a--t--a--l--d--o"
+date:   2023-02-12 17:12:19 -0300
+categories: todos
+image: /assets/blogimages/tiles/cat.gif
+tags: [Web]
+---
+Bienvenidx a mi sitio. 
+
+Detenerse y mirar el recorrido. 
+
+Esto no ha terminado, por el contrario, está en constante deriva.
+
+Errare humanum est… siempre. 
+
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-4.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-5.mp4" type="video/mp4" /></video>

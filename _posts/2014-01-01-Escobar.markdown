@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "Pablo Escobar - An oral Story"
+date:   2014-01-01 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/escobar.gif
+tags: [Identidad, Graficos]
+---
+Grafica para serie del canal FUSION de USA sobre Pablo Escobar.
+<img class="post-image-full" src="/assets/blogimages/escobar-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/escobar-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/escobar-3.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/escobar-4.mp4" type="video/mp4" /></video>

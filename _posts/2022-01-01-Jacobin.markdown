@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "Revista Jacobin"
+date:   2022-01-01 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/jacobin.jpg
+tags: [Web]
+---
+
+Jacobin es una voz destacada de la izquierda que ofrece un punto de vista socialista sobre política, economía y cultura.
+
+Mi rol en este proyecto: Consultoría en el diseño del producto digital. Consultoría general estratégica en UX, UI. Diseño, desarrollo e implementaciones en el portal web. 
+
+[Visitar sitio web](https://jacobinlat.com/){:target="_blank"}
+<img class="post-image-full" src="/assets/blogimages/jacobin-1.png">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/jacobin-2.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/jacobin-3.mp4" type="video/mp4" /></video>
+
+
+

@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "Indagando sobre paisaje"
+date:   2017-01-01 17:12:19 -0300
+categories: todos academicos
+image: /assets/blogimages/tiles/tipo.jpg
+tags: [Audiovisual]
+---
+
+Publicación audiovisual exploratorio llevado adelante por el equipo docente del Taller de Tipografía de la LDCV. Participación en relación al desarrollo del video documental en clave de productor. Edición y producción de Ignacio Campal: https://vimeo.com/555754153, Agosto 2017
+
+<iframe title="vimeo-player" src="https://player.vimeo.com/video/555754153?h=d856ed52ac" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+<img class="post-image-full" src="/assets/blogimages/tipo-1.jpg">
+<video autobuffer loop controls><source src="/assets/blogimages/tipo-2.mp4" type="video/mp4" /></video>
+<img class="post-image-full" src="/assets/blogimages/tipo-3.jpg">

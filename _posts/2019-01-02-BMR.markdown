@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "BMR - Broadreach Medical Resources"
+date:   2019-12-21 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/bmr.jpg
+tags: [Web]
+---
+<img class="post-image-full" src="/assets/blogimages/bmr-1.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/bmr-2.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/bmr-3.mp4" type="video/mp4" /></video>

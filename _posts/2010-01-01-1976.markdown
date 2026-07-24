@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "Uruguay 1976"
+date:   2009-01-01 17:12:19 -0300
+categories: todos academicos
+image: /assets/blogimages/tiles/1976.jpg
+tags: [Tipografía]
+---
+Uruguay 1976 contiene la mayor parte de las imágenes de detenidos desaparecidos durante la dictadura uruguaya entre 1973 y 1985. Es un proyecto abierto, que invita a diseñadores de distintos países latinoamericanos a relevar y continuar con esta propuesta desde sus propios pueblos e historia.
+
+- Seleccionada en la 4ta Bienal de Tipografía Latinoamericana
+- Seleccionada para representar a Uruguay en la II Bienal Iberoamericana de Diseño de Madrid
+- Selección Festival Madrid Gráfica (2017 - Madrid, España): proyecto seleccionado de entre los más de 700 trabajos de gráfica participantes en las 5 ediciones de la Bienal Iberoamericana de Diseño hasta la fecha como unas de los 20 proyectos mas relevantes de todas las ediciones de la Bienal. 
+- Selección Exposição Novo Mundo - MUDE (Museu do Design e da Moda, 2017 - Lisboa, Portugal): proyecto seleccionado de entre los más de 700 trabajos de gráfica participantes en las 5 ediciones de la Bienal Iberoamericana de Diseño hasta la fecha como unas de los 20 proyectos mas relevantes de todas las ediciones de la Bienal.
+
+Ver: [Catálogo Tipos Latinos Argentina](https://issuu.com/tiposlatinos/docs/tl2010) (pa9. 94-95)
+
+<img class="post-image-full" src="/assets/blogimages/1976-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/1976-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/1976-3.jpg">

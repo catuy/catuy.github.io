@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "Wix"
+date:   2018-12-21 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/wix.gif
+tags: [Web]
+---
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/wix-1.mp4" type="video/mp4" /></video>

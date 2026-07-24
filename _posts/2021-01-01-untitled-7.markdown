@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "Untitled"
+date:   2021-01-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/un-36.jpg
+tags: [Serigrafía, Arte generativo]
+
+---
+Serigrafía<br>70x100cm<br>7 tintas<br>
+Hojas Lucky Bird Woodfree 250g
+
+Proyecto seleccionado como finalista en la [International Biennial Print](https://printbiennial.ntmofa.gov.tw/print20/en/index.aspx){:target="_blank"}
+ organizada por el Ministerio de Cultura de Taiwan y el National Taiwan Museum of Fine Arts. 
+
+<img class="post-image-full" src="/assets/blogimages/un-27.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-28.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-29.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-30.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-31.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-32.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-33.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-34.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-35.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-36.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/un-37.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/un-38.mp4" type="video/mp4" /></video>

@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "Diego Goldsztein - Melu"
+date:   2017-01-01 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/melu.jpg
+tags: [Web]
+---
+"Este disco está dedicado a mi hija mayor Melu (Malanie) quien nació el 22 de noviembre del 2007 y murió el 25 de diciembre del 2015 en un accidente en bicicleta. Melu con 8 años 1 mes y pocos días me ayudó a conocerme más en todo sentido, a recordar quién verdaderamente soy.
+
+Pocos días después del accidente decidí tocar el piano, necesitaba entender a traves de la música qué me estaba pasando y quién seguía siendo..."
+
+Diego Goldsztein
+
+[Visitar sitio web](http://meluweb.com/){:target="_blank"}
+<img class="post-image-full" src="/assets/blogimages/melu-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/melu-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/melu-3.jpg">
+<img class="post-image-full" src="/assets/blogimages/melu-4.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/melu-5.mp4" type="video/mp4" /></video>

@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "Silo"
+date:   2019-01-01 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/silo.jpg
+tags: [Web]
+---
+
+Sistema nacional de repositorios digitales que promueve el acceso abierto a la producción científica y tecnológica de instituciones uruguayas.
+
+Rol en el proyecto: Consultoría general estratégica en UX. 
+<img class="post-image-full" src="/assets/blogimages/silo-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/silo-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/silo-3.jpg">
+
+

@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "Atlas"
+date:   2023-01-01 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/atlas.gif
+tags: [Web]
+---
+Atlas es una consultora de productos digitales especializada en el desarrollo de sistemas de alta complejidad.
+
+Sevicios:
+
+- Diseño de Producto
+-  Diseño Web
+- Desarrollo
+
+<span class="text-sm">[Visitar sitio web](https://atlas.com.uy/){:target="_blank"}</span>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/atlas-1.mp4" type="video/mp4" /></video>

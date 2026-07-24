@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Dedos"
+date:   2011-12-21 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/dedos.gif
+tags: [Audiovisual]
+---
+Participa como director de arte del cortometraje de egreso de la Escuela de cine del Uruguay de la directora Agustina Willat. 
+
+<img class="post-image-full" src="/assets/blogimages/dedos-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/dedos-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/dedos-3.jpg">
+<iframe src="https://player.vimeo.com/video/63912629?h=624d85c4f4" width="480" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>

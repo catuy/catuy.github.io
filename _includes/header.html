@@ -1,0 +1,13 @@
+<header class="item">
+        <nav>
+          <ul>
+          {% for item in site.navigation %}
+              {% unless item.url == page.url %}
+              <li><a href="{{ item.url }}" onclick="fadeOut()">{{ item.title }}</a></li>
+              {% endunless %}
+          {% endfor %}
+          </ul>
+        </nav>    
+  </header>
+
+ 

@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "Revista Tend"
+date:   2017-12-21 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/tend.jpg
+tags: [Web]
+---
+Temas en diálogo (tend) es la primera revista digital de la Asociación Psicoanalítica del Uruguay. Surge con el interés de lograr un diálogo fluido con otras disciplinas y con sus lectores. Constituye una iniciativa para promover la difusión y el intercambio, que emerge desde el Psicoanálisis y pretende llegar a otras tiendas, fomentando así el enriquecimiento mutuo.
+
+Rol en el proyecto: Consultoría general estratégica para la implementación de una revista digital. Diseño del producto, desarrollo e implementación.
+
+[Visitar el sitio](https://tend.uy/){:target="_blank"}
+
+<img class="post-image-full" src="/assets/blogimages/tend-1.jpg">
+<img class="post-image-full" src="/assets/blogimages/tend-2.jpg">
+<img class="post-image-full" src="/assets/blogimages/tend-3.jpg">
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/tend-1.mp4" type="video/mp4" /></video>

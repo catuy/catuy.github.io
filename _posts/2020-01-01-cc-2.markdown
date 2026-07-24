@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "█ ██ █████"
+date:   2020-05-10 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/cc-18.jpg
+tags: [Aplicación, Arte generativo]
+
+---
+Prototipo de aplicación mobile, custom code generativa, desarrollada para la producción de imágenes.
+
+<img class="post-image-full" src="/assets/blogimages/cc-15.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-16.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-17.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-18.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-19.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-20.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-21.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-22.jpg">
+<img class="post-image-full" src="/assets/blogimages/cc-23.jpg">

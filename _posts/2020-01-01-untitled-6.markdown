@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Untitled"
+date:   2020-01-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/un-26.jpg
+tags: [Serigrafía, Arte generativo]
+---
+Serigrafía<br>70x100cm<br>7 tintas<br>
+Hojas Lucky Bird Woodfree 250g
+<img class="post-image-full" src="/assets/blogimages/un-23.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-24.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-25.jpg">
+<img class="post-image-full" src="/assets/blogimages/un-26.jpg">

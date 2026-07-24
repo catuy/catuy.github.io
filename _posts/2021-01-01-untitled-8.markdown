@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "30 seconds Museum Tokyo"
+date:   2021-01-01 17:12:19 -0300
+categories: todos artes-visuales
+image: /assets/blogimages/tiles/shibuya.gif
+tags: [Arte generativo, NFT]
+---
+En 2021 fuí invitado por New Media Art y Neo Shibuya TV a exponer obra digital en el 30 seconds museum, un museo que funciona exponiendo en pantallas gigantes por todo Tokyo.
+
+<video autobuffer loop controls><source src="/assets/blogimages/shibuya-1.mp4" type="video/mp4" /></video>
+<video autobuffer loop controls><source src="/assets/blogimages/shibuya-2.mp4" type="video/mp4" /></video>
+<video autobuffer loop controls><source src="/assets/blogimages/shibuya-3.mp4" type="video/mp4" /></video>

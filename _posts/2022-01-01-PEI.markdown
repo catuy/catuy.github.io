@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "Emprendedores innovadores"
+date:   2021-12-21 17:12:19 -0300
+categories: todos consultorias
+image: /assets/blogimages/tiles/pei.jpg
+tags: [Web]
+---
+
+El Programa de Emprendedores Innovadores es un portal donde los emprendedores más destacados del país comparten herramientas y consejos para que des tus primeros pasos en el mundo lean startup.
+
+Mi rol en este proyecto abarcó: Consultoría en el diseño del producto, consultoría general estratégica en UX, UI. Diseño, desarrollo e implementación del portal web. 
+
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/pei-1.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/pei-2.mp4" type="video/mp4" /></video>
+<video autobuffer autoPlay loop muted><source src="/assets/blogimages/pei-3.mp4" type="video/mp4" /></video>
