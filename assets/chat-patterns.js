@@ -118,6 +118,20 @@ export const SPECIFIC_PROJECTS = [
       "cannabis regulation.",
   },
   {
+    // Sin esta regla el modelo lee "Uruguay 1976" como tema histórico y se pone
+    // a narrar la dictadura en primera persona, inventando (probado: llegó a
+    // atribuirle golpes de Estado a Chile, Argentina y Brasil en ese año). Es
+    // el caso más sensible del corpus: acá no se improvisa.
+    match: /\b1976\b/i,
+    node: "art.1976",
+    es: "Uruguay 1976 es un proyecto tipográfico mío sobre los detenidos " +
+      "desaparecidos de la dictadura uruguaya. Estuvo en varias bienales y en la " +
+      "Bienal de Venecia 2016, en el Pabellón de Uruguay.",
+    en: "Uruguay 1976 is a typographic project of mine about those detained and " +
+      "disappeared under the Uruguayan dictatorship. It went to several biennials " +
+      "and to the 2016 Venice Biennale, in the Uruguay Pavilion.",
+  },
+  {
     match: /yaugur[uú]/i,
     node: "referrer.yauguru",
     es: "Sí, el sitio de Yaugurú lo diseñé y desarrollé yo. Si querés que profundice, " +
