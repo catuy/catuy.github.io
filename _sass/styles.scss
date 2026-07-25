@@ -7,7 +7,7 @@
   --color-secondary: #ffffff;
   --color-tertiary: #ffffff;
   --font-size-s: 12px;
-  --font-size-m: 15px;
+  --font-size-m: 18px;
   --font-size-l: 18px;
   --margin: 30px;
 }
@@ -301,6 +301,122 @@ footer{
     display:inline-block;
   transform: rotate(180deg);
 }
+}
+
+//  ------------------------------------------
+//  INFO CHAT
+//  ------------------------------------------
+
+.chat-log {
+  margin-top: var(--margin);
+}
+.chat-turn {
+  margin-bottom: 22px;
+}
+.chat-say {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.chat-turn.you {
+  text-align: right;
+}
+.chat-turn.you .chat-say {
+  opacity: .6;
+}
+.chat-mail {
+  color: inherit;
+  text-decoration: underline;
+}
+// Imagen de un nodo del grafo: acompaña al texto, no lo interrumpe.
+.chat-image {
+  display: block;
+  // Interpolado: libsass intenta evaluar min() como función Sass y revienta.
+  max-width: #{"min(100%, 320px)"};
+  height: auto;
+  margin-top: 12px;
+}
+// Sólo para lectores de pantalla: anuncia la respuesta una vez terminada de
+// tipear (si no, se anunciaría letra por letra).
+.chat-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.chat-typing {
+  opacity: .55;
+  font-style: italic;
+  font-size: var(--font-size-s);
+  margin-bottom: 22px;
+}
+.chat-typing .blink {
+  animation: blink .8s steps(1) infinite;
+}
+.chat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 22px;
+}
+.chat-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.2;
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.chat-tag:hover,
+.chat-tag:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-tertiary);
+}
+.chat-tag:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.chat-form {
+  display: inline-flex;
+  margin-bottom: 10px;
+}
+.chat-input {
+  field-sizing: content;
+  min-width: 1ch;
+  max-width: 100%;
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  padding: 3px 10px;
+}
+.chat-input:focus {
+  outline: none;
+}
+.chat-input::placeholder {
+  color: var(--color-primary);
+  opacity: .4;
+}
+.chat-send {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 @media only screen and (max-width: 768px) {

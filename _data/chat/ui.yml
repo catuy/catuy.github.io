@@ -1,0 +1,24 @@
+# Strings de la interfaz del chat de /info/. Todo lo que el visitante lee y no
+# es contenido del grafo vive acá. Ver _data/chat/nodes/ para los nodos.
+
+placeholder:
+  es: "Escribí lo que quieras…"
+  en: "Type anything…"
+
+typing:
+  es: "pensando"
+  en: "thinking"
+
+connect_error:
+  es: "No pude conectarme ahora. Escribime directo y lo vemos: hello@persn.net"
+  en: "Couldn't connect right now. Email me directly: hello@persn.net"
+
+# Intro sin referrer. Con referrer manda el campo `intro` del nodo referrer.*
+intro_default:
+  es: "Hola, soy Diego. Diseñador cross-media y artista visual, de Montevideo."
+  en: "Hi, I'm Diego. Cross-media designer and visual artist, based in Montevideo."
+
+# Nombre accesible de la fila de chips (lectores de pantalla).
+suggestions_label:
+  es: "Sugerencias"
+  en: "Suggestions"

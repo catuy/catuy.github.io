@@ -1,0 +1,467 @@
+<div class="chat-log" id="chat-log">
+  <form class="chat-form" id="chat-form">
+    <input class="chat-input" id="chat-input" type="text" autocomplete="off">
+    <button class="chat-send" id="chat-send" type="submit" aria-label="Enviar"></button>
+  </form>
+  <div class="chat-tags" id="chat-tags" role="group"></div>
+  <p class="chat-sr" id="chat-sr" aria-live="polite"></p>
+</div>
+
+{% comment %}
+El grafo de tags vive en _data/chat/ (ui.yml + nodes/*.yml) y se serializa acá
+una sola vez. El motor de abajo no sabe nada del contenido: para escribir textos
+nuevos se editan los YAML, no este archivo.
+{% endcomment %}
+<script type="application/json" id="chat-graph">{{ site.data.chat | jsonify | replace: '</', '<\/' }}</script>
+
+<script>
+(function () {
+  var WORKER_URL = "https://diego-synth-chat.cataldo-diego.workers.dev";
+  var MAX_HISTORY_MESSAGES = 8;
+  var MAX_CHIPS = 3;          // después de la entrada; la entrada permite 4
+  var CONTACT_AFTER_TURNS = 3; // a partir de acá la ranura de salida es el contacto
+  var MORE_EVERY = 3;          // cada cuántos turnos reaparece el chip "¿qué más?"
+  var EMAIL = "hello@persn.net";
+
+  var rawLang = (navigator.language || 'es').slice(0, 2).toLowerCase();
+  var LANG = rawLang === 'en' ? 'en' : 'es';
+
+  var GRAPH = JSON.parse(document.getElementById('chat-graph').textContent);
+  var UI = GRAPH.ui || {};
+
+  // GRAPH.nodes es { work: [...], art: [...], ... } (un archivo por hub).
+  var NODES = [];
+  Object.keys(GRAPH.nodes || {}).forEach(function (key) {
+    NODES = NODES.concat(GRAPH.nodes[key] || []);
+  });
+  var BY_ID = {};
+  NODES.forEach(function (n) { BY_ID[n.id] = n; });
+
+  // Sólo estos hubs entran al ranking genérico: `referrer` depende de de dónde
+  // venís y `loop` son nodos de sistema.
+  var POOL_HUBS = ['work', 'art', 'me', 'project'];
+  var HUB_AUDIENCE = { work: 'client', art: 'artist', me: 'curious', project: 'client' };
+
+  // Estado en memoria, NO en sessionStorage: el log de la conversación también
+  // vive en memoria, y persistir `visited` dejaría el grafo "agotado" frente a
+  // un log vacío después de recargar.
+  var state = { visited: {}, audience: null, turns: 0 };
+
+  // El matcher de texto libre es opcional: si /assets/chat-patterns.js no carga,
+  // el chat sigue funcionando y sólo se degrada la re-captura post-LLM.
+  var matchNodeId = function () { return null; };
+  try {
+    import('/assets/chat-patterns.js').then(function (m) {
+      if (m && typeof m.matchNodeId === 'function') matchNodeId = m.matchNodeId;
+    }).catch(function () {});
+  } catch (e) { /* navegador sin dynamic import */ }
+
+  var logEl = document.getElementById('chat-log');
+  var tagsRow = document.getElementById('chat-tags');
+  var srEl = document.getElementById('chat-sr');
+  var form = document.getElementById('chat-form');
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('chat-send');
+
+  var history = [];
+  var keyboardNav = false; // si venís navegando con teclado, el foco te sigue
+
+  //  ------------------------------------------
+  //  Helpers
+  //  ------------------------------------------
+
+  // Devuelve el texto en el idioma actual. Si el YAML trae una lista, elige una
+  // variante al azar: es lo que evita que suene a menú de FAQ al repetir visita.
+  function t(field) {
+    if (!field) return '';
+    var val = field[LANG] != null ? field[LANG] : field.es;
+    if (Array.isArray(val)) return val[Math.floor(Math.random() * val.length)];
+    return val || '';
+  }
+
+  function visited(node) { return !!state.visited[node.id]; }
+  function poolable(node) { return POOL_HUBS.indexOf(node.hub) !== -1; }
+
+  function scrollToEnd() { window.scrollTo(0, document.body.scrollHeight); }
+
+  function track(name, params) {
+    try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (e) {}
+  }
+
+  //  ------------------------------------------
+  //  Ranking
+  //  ------------------------------------------
+
+  function score(node) {
+    var s = node.weight || 1;
+    if (state.audience && (node.audience || []).indexOf(state.audience) !== -1) s += 3;
+    if (node.depth === 1) s += 0.5;
+    return s + Math.random(); // jitter: dos visitantes iguales no ven lo mismo
+  }
+
+  function best(candidates) {
+    var top = null, topScore = -Infinity;
+    (candidates || []).forEach(function (n) {
+      var s = score(n);
+      if (s > topScore) { topScore = s; top = n; }
+    });
+    return top;
+  }
+
+  function candidates(filter, taken) {
+    return NODES.filter(function (n) {
+      return !taken[n.id] && !visited(n) && poolable(n) && filter(n);
+    });
+  }
+
+  //  ------------------------------------------
+  //  Las tres ranuras: profundizar / cruzar / salir
+  //  ------------------------------------------
+
+  function pickSibling(hub, taken) {
+    if (POOL_HUBS.indexOf(hub) === -1) return null; // referrer y loop no tienen hermanos
+    return best(candidates(function (n) { return n.hub === hub && n.depth > 0; }, taken));
+  }
+
+  function pickBridge(node, taken) {
+    var bridges = (node.bridges || []).map(function (id) { return BY_ID[id]; })
+      .filter(function (n) { return n && !taken[n.id] && !visited(n); });
+    return best(bridges) || pickOtherHub(node.hub, taken);
+  }
+
+  function pickOtherHub(hub, taken) {
+    return best(candidates(function (n) { return n.depth === 0 && n.hub !== hub; }, taken))
+      || best(candidates(function (n) { return n.hub !== hub; }, taken));
+  }
+
+  // La ranura de salida: primero el contacto (cuando el visitante ya se metió
+  // lo suficiente), y si no "¿qué más?" cada tantos turnos — si estuviera fijo
+  // aparecería en una de cada tres filas y se volvería ruido. Si devuelve null,
+  // la fila se completa con contenido y la circularidad la garantizan igual el
+  // relleno de nextChips() y fallbackChips().
+  function pickExit(node, taken) {
+    var contact = BY_ID['project.contact'];
+    var wantsContact = node.cta || state.turns >= CONTACT_AFTER_TURNS;
+    if (wantsContact && contact && !taken[contact.id] && !visited(contact)) return contact;
+    var more = BY_ID['loop.more'];
+    if (more && !taken[more.id] && state.turns % MORE_EVERY === 0) return more;
+    if (contact && !taken[contact.id] && !visited(contact)) return contact;
+    return null;
+  }
+
+  // Garantía central: esto NUNCA devuelve una lista vacía.
+  function nextChips(node) {
+    var taken = {}, chips = [];
+    function add(n) { if (n && !taken[n.id]) { taken[n.id] = true; chips.push(n); } }
+
+    add(pickSibling(node.hub, taken));
+    add(pickBridge(node, taken));
+    add(pickExit(node, taken));
+
+    // Completar la fila si alguna ranura quedó vacía (p. ej. nodos de referrer,
+    // que no tienen hermanos).
+    while (chips.length < MAX_CHIPS) {
+      var extra = best(candidates(function () { return true; }, taken));
+      if (!extra) break;
+      add(extra);
+    }
+
+    chips = chips.slice(0, MAX_CHIPS);
+    return chips.length ? chips : fallbackChips();
+  }
+
+  // Todo visitado: en vez de dejar la fila vacía, se ofrece cerrar o reiniciar.
+  function fallbackChips() {
+    var out = [BY_ID['project.contact'], BY_ID['loop.restart']].filter(Boolean);
+    return out.length ? out : [BY_ID['loop.more']].filter(Boolean);
+  }
+
+  // "¿Qué más?": hasta 3 nodos no visitados, uno por hub. El Shuffle conversacional.
+  function moreChips() {
+    var taken = {}, hubs = {}, chips = [];
+    var pool = NODES.filter(function (n) { return poolable(n) && !visited(n); })
+      .sort(function (a, b) { return score(b) - score(a); });
+    pool.forEach(function (n) {
+      if (chips.length >= MAX_CHIPS || hubs[n.hub] || taken[n.id]) return;
+      hubs[n.hub] = true; taken[n.id] = true; chips.push(n);
+    });
+    return chips.length ? chips : fallbackChips();
+  }
+
+  function referrerNode() {
+    for (var i = 0; i < NODES.length; i++) {
+      if (NODES[i].hub === 'referrer' && NODES[i].slug === from) return NODES[i];
+    }
+    return null;
+  }
+
+  function entryChips() {
+    var hubs = ['work', 'art', 'me'].map(function (id) { return BY_ID[id]; })
+      .filter(function (n) { return n && !visited(n); });
+    var ref = referrerNode();
+    if (ref && !visited(ref)) return [ref].concat(hubs).slice(0, 4);
+    var project = BY_ID['project'];
+    if (project && !visited(project)) hubs.push(project);
+    return hubs.length ? hubs.slice(0, 4) : fallbackChips();
+  }
+
+  //  ------------------------------------------
+  //  Render
+  //  ------------------------------------------
+
+  function addTurn(role, text) {
+    var turn = document.createElement('div');
+    turn.className = 'chat-turn ' + (role === 'diego' ? 'diego' : 'you');
+    var say = document.createElement('div');
+    say.className = 'chat-say';
+    say.textContent = role === 'diego' ? '' : text;
+    turn.appendChild(say);
+    logEl.insertBefore(turn, form);
+    scrollToEnd();
+    return { turn: turn, say: say };
+  }
+
+  function addImage(turn, src) {
+    if (!src) return;
+    var img = document.createElement('img');
+    img.className = 'chat-image';
+    img.src = src;
+    img.alt = '';
+    img.loading = 'lazy';
+    turn.appendChild(img);
+    scrollToEnd();
+  }
+
+  // El mail siempre clickeable, venga de un nodo o de la respuesta del modelo.
+  function linkifyEmail(el, text) {
+    if (text.indexOf(EMAIL) === -1) return;
+    var parts = text.split(EMAIL);
+    el.textContent = '';
+    parts.forEach(function (part, i) {
+      el.appendChild(document.createTextNode(part));
+      if (i < parts.length - 1) {
+        var a = document.createElement('a');
+        a.href = 'mailto:' + EMAIL;
+        a.className = 'chat-mail';
+        a.textContent = EMAIL;
+        a.addEventListener('click', function () { track('mailto_click', {}); });
+        el.appendChild(a);
+      }
+    });
+  }
+
+  function typeOut(el, text, done) {
+    var i = 0;
+    el.textContent = '';
+    (function step() {
+      i += 1 + Math.floor(Math.random() * 2);
+      el.textContent = text.slice(0, i);
+      scrollToEnd();
+      if (i < text.length) { setTimeout(step, 15 + Math.random() * 15); return; }
+      linkifyEmail(el, text);
+      srEl.textContent = text; // se anuncia una vez, ya terminado de tipear
+      if (done) done();
+    })();
+  }
+
+  function renderChips(nodes) {
+    tagsRow.textContent = '';
+    (nodes || []).forEach(function (n) {
+      if (!n) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chat-tag';
+      b.textContent = t(n.label);
+      b.addEventListener('click', function (ev) {
+        keyboardNav = ev.detail === 0; // 0 = activado con Enter/Espacio
+        select(n);
+      });
+      tagsRow.appendChild(b);
+    });
+    var first = tagsRow.querySelector('.chat-tag');
+    if (keyboardNav && first) first.focus();
+    scrollToEnd();
+  }
+
+  function pushHistory(role, content) {
+    history.push({ role: role, content: content });
+    history = history.slice(-MAX_HISTORY_MESSAGES);
+  }
+
+  //  ------------------------------------------
+  //  Selección de un tag
+  //  ------------------------------------------
+
+  function select(node) {
+    var label = t(node.label);
+    addTurn('you', label);
+    pushHistory('user', label);
+
+    if (!state.audience) {
+      state.audience = HUB_AUDIENCE[node.hub] || (node.audience || [])[0] || null;
+    }
+    if (node.hub !== 'loop') state.visited[node.id] = true;
+    state.turns += 1;
+
+    track('tag_select', { tag_id: node.id, depth: node.depth, audience: state.audience });
+    if (node.cta) track('lead_reveal', { tag_id: node.id });
+
+    if (node.kind === 'restart') {
+      state.visited = {};
+      state.audience = null;
+      state.turns = 0;
+    }
+
+    var text = t(node.say);
+    function after() {
+      if (node.kind === 'more') renderChips(moreChips());
+      else if (node.kind === 'restart') renderChips(entryChips());
+      else renderChips(nextChips(node));
+    }
+
+    if (!text) { after(); return; }
+    var turn = addTurn('diego', '');
+    pushHistory('assistant', text);
+    typeOut(turn.say, text, function () {
+      addImage(turn.turn, node.image);
+      after();
+    });
+  }
+
+  //  ------------------------------------------
+  //  Arranque
+  //  ------------------------------------------
+
+  var from = (sessionStorage.getItem('chatFrom') || '').toLowerCase();
+  input.placeholder = t(UI.placeholder);
+  tagsRow.setAttribute('aria-label', t(UI.suggestions_label));
+
+  var ref = referrerNode();
+  if (ref) state.audience = (ref.audience || [])[0] || null;
+
+  var introText = ref ? t(ref.intro) : t(UI.intro_default);
+  var introTurn = addTurn('diego', '');
+  pushHistory('assistant', introText);
+  typeOut(introTurn.say, introText, function () { renderChips(entryChips()); });
+
+  input.focus();
+
+  //  ------------------------------------------
+  //  Texto libre → Worker → y de vuelta al grafo
+  //  ------------------------------------------
+
+  // Después de una respuesta del modelo el grafo tiene que RECUPERAR al
+  // visitante: si el texto matchea un nodo (mismos patrones que usa el worker
+  // para sus respuestas fijas), se ofrecen sus vecinos; si no, "¿qué más?".
+  function chipsForFreeText(text) {
+    var id = matchNodeId(text);
+    var node = id && BY_ID[id];
+    if (!node) return moreChips();
+    if (!state.audience) {
+      state.audience = HUB_AUDIENCE[node.hub] || (node.audience || [])[0] || null;
+    }
+    if (node.hub !== 'loop') state.visited[node.id] = true; // el worker ya lo contó
+    return nextChips(node);
+  }
+
+  function showTyping() {
+    hideTyping();
+    var el = document.createElement('div');
+    el.className = 'chat-typing';
+    el.id = 'chat-typing';
+    el.textContent = t(UI.typing);
+    var blink = document.createElement('span');
+    blink.className = 'blink';
+    blink.textContent = '_';
+    el.appendChild(blink);
+    logEl.insertBefore(el, form);
+    scrollToEnd();
+  }
+
+  function hideTyping() {
+    var el = document.getElementById('chat-typing');
+    if (el) el.remove();
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var text = input.value.trim();
+    if (!text) return;
+
+    keyboardNav = false; // escribiste: el foco se queda en el input
+    renderChips([]);
+    input.value = '';
+    input.disabled = true;
+    sendBtn.disabled = true;
+
+    addTurn('you', text);
+    pushHistory('user', text);
+    state.turns += 1;
+    track('free_text', {});
+
+    showTyping();
+    var sayEl = null;
+    var acc = '';
+
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history, lang: LANG, from: from })
+    }).then(function (res) {
+      if (!res.ok || !res.body) throw new Error('Worker respondió ' + res.status);
+
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+
+      function pump() {
+        return reader.read().then(function (result) {
+          if (result.done) return;
+          buffer += decoder.decode(result.value, { stream: true });
+
+          var events = buffer.split('\n\n');
+          buffer = events.pop();
+
+          events.forEach(function (evt) {
+            var line = evt.trim();
+            if (line.indexOf('data:') !== 0) return;
+            var data = line.slice(5).trim();
+            if (data === '[DONE]') return;
+            try {
+              var parsed = JSON.parse(data);
+              var delta = parsed.response || '';
+              if (delta) {
+                if (!sayEl) { hideTyping(); sayEl = addTurn('diego', '').say; }
+                acc += delta;
+                sayEl.textContent = acc;
+                scrollToEnd();
+              }
+            } catch (e) { /* chunk parcial */ }
+          });
+
+          return pump();
+        });
+      }
+
+      return pump();
+    }).then(function () {
+      if (!acc) throw new Error('Respuesta vacía del Worker');
+      pushHistory('assistant', acc);
+      if (sayEl) { linkifyEmail(sayEl, acc); srEl.textContent = acc; }
+    }).catch(function (err) {
+      console.error(err);
+      var errText = t(UI.connect_error);
+      if (sayEl) sayEl.textContent = errText;
+      else sayEl = addTurn('diego', errText).say;
+      linkifyEmail(sayEl, errText);
+      srEl.textContent = errText;
+    }).finally(function () {
+      hideTyping();
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+      renderChips(chipsForFreeText(text)); // el grafo vuelve a agarrar la conversación
+    });
+  });
+})();
+</script>

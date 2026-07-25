@@ -1,0 +1,46 @@
+# Hub: el visitante tiene algo entre manos. Es el atractor del grafo — nunca
+# un callejón: después de contactar se sigue ofreciendo volver a otra rama.
+# Ver work.yml para las reglas de escritura.
+
+- id: project
+  hub: project
+  depth: 0
+  weight: 5
+  audience: [client]
+  cta: true
+  bridges: [work.how, work.now]
+  label:
+    es: "Tengo un proyecto y quiero discutirlo"
+    en: "I have a project I'd like to discuss"
+  say:
+    es: "Dale, contame. Hago justo eso: estrategia, research, diseño y front-end, de punta a punta."
+    en: "Sure, tell me about it. That's exactly what I do: strategy, research, design and front-end, end to end."
+
+- id: project.kind
+  hub: project
+  depth: 1
+  weight: 4
+  audience: [client]
+  cta: true
+  bridges: [work.ds, work.state]
+  label:
+    es: "¿Con qué me podés dar una mano?"
+    en: "What can you help me with?"
+  say:
+    es: "Estrategia y research de producto, diseño UX/UI y sistemas de diseño en Figma, front-end en React, Next.js, Tailwind, WordPress y Storybook, y accesibilidad (WCAG). Si tenés algo para crear o rediseñar, lo charlamos."
+    en: "Product strategy and research, UX/UI design and design systems in Figma, front-end in React, Next.js, Tailwind, WordPress and Storybook, and accessibility (WCAG). If you have something to build or redesign, let's talk."
+
+- id: project.contact
+  hub: project
+  depth: 1
+  weight: 5
+  kind: contact
+  cta: true
+  audience: [client, academic, artist, curious]
+  bridges: [work.now, art]
+  label:
+    es: "¿Cómo te escribo?"
+    en: "How do I reach you?"
+  say:
+    es: "Escribime a hello@persn.net contándome un poco del proyecto y lo vemos."
+    en: "Email me at hello@persn.net with a bit about the project and we'll take it from there."

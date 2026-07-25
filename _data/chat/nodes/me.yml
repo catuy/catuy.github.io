@@ -1,0 +1,57 @@
+# Hub: quién soy. Ver work.yml para las reglas de escritura.
+
+- id: me
+  hub: me
+  depth: 0
+  weight: 5
+  audience: [curious, academic, artist, client]
+  bridges: [work, art]
+  label:
+    es: "Contame de vos"
+    en: "Tell me about yourself"
+  say:
+    es:
+      - "Soy Diego, diseñador full-stack cross-media y artista visual, de Montevideo. Veinte años diseñando y programando productos digitales, y una práctica artística propia en paralelo."
+      - "Soy Diego, de Montevideo: diseñador cross-media y artista visual. Diseño, arte y docencia, las tres cosas juntas."
+    en:
+      - "I'm Diego, a full-stack cross-media designer and visual artist, from Montevideo. Twenty years designing and building digital products, with my own art practice alongside."
+      - "I'm Diego, from Montevideo: cross-media designer and visual artist. Design, art and teaching, all three together."
+
+- id: me.who
+  hub: me
+  depth: 1
+  weight: 3
+  audience: [curious, client, academic]
+  bridges: [work.how, art]
+  label:
+    es: "¿De dónde venís?"
+    en: "Where do you come from?"
+  say:
+    es: "Soy licenciado en Diseño Gráfico por la ORT y llevo veinte años en esto, siempre desde Montevideo. Diseño, programo y hago arte: nunca me decidí por una sola de las tres."
+    en: "I have a degree in Graphic Design from ORT and I've been at this for twenty years, always from Montevideo. I design, I code and I make art: I never picked just one of the three."
+
+- id: me.teach
+  hub: me
+  depth: 1
+  weight: 3
+  audience: [academic, artist, curious]
+  bridges: [work.how, art.1976]
+  label:
+    es: "¿Diste clases?"
+    en: "Have you taught?"
+  say:
+    es: "Diez años en la FADU (UdelaR), entre 2013 y 2023, y desde 2015 llevé el Proyecto Final de Carrera en la Licenciatura de Diseño de Comunicación Visual. Acompañé a cientos de estudiantes en sus proyectos."
+    en: "Ten years at FADU (UdelaR), between 2013 and 2023, and from 2015 I led the final degree project in the Visual Communication Design program. I've walked hundreds of students through their projects."
+
+- id: me.values
+  hub: me
+  depth: 1
+  weight: 4
+  audience: [client, academic, artist]
+  bridges: [work.state, art.1976]
+  label:
+    es: "¿Qué te importa a la hora de elegir un proyecto?"
+    en: "What matters to you when picking a project?"
+  say:
+    es: "Prefiero open source, le escapo al vendor lock-in y me importa la soberanía digital. Me copo con proyectos con propósito: que dejen algo bueno, más justo e inclusivo."
+    en: "I prefer open source, I stay away from vendor lock-in and digital sovereignty matters to me. I'm into projects with purpose: ones that leave something good, fairer and more inclusive."

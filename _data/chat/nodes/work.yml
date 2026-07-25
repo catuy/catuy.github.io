@@ -1,0 +1,91 @@
+# Hub: trabajo profesional.
+#
+# Reglas de escritura (valen para todos los nodos):
+#   - `say` en primera persona, máximo 2 frases.
+#   - Sólo datos que estén en perfil.md o verificados en _posts/.
+#   - `label` escrito como lo diría el VISITANTE, nunca como etiqueta de menú.
+#   - `bridges` son saltos a OTRO hub: es lo que hace circular la navegación.
+
+- id: work
+  hub: work
+  depth: 0
+  weight: 5
+  audience: [client, academic, curious]
+  bridges: [art, me]
+  label:
+    es: "Contame de tu laburo"
+    en: "Tell me about your work"
+  say:
+    es:
+      - "Diseño y programo productos digitales de punta a punta, de la estrategia al código, para gobiernos, medios y organizaciones internacionales. Veinte años en esto, desde Montevideo."
+      - "Hago productos digitales de punta a punta: research, UX/UI, sistemas de diseño y front-end. Trabajo para gobiernos, medios y organizaciones internacionales."
+    en:
+      - "I design and build digital products end-to-end, from strategy to code, for governments, media and international organizations. Twenty years at it, from Montevideo."
+      - "I do digital products end-to-end: research, UX/UI, design systems and front-end, for governments, media and international organizations."
+
+- id: work.now
+  hub: work
+  depth: 1
+  weight: 4
+  audience: [client, curious]
+  bridges: [project, me.who]
+  label:
+    es: "¿En qué andás ahora?"
+    en: "What are you working on now?"
+  say:
+    es: "Ahora estoy en tres: ClassWallet como Lead Product Designer (fintech de educación en EE.UU., desde 2023), UNESCO-IOC/GOOS en diseño y desarrollo de producto (desde 2025) y el BID como UX Lead para Uruguay (desde 2022)."
+    en: "Right now I'm on three: ClassWallet as Lead Product Designer (education fintech in the US, since 2023), UNESCO-IOC/GOOS on product design and development (since 2025) and the IDB as UX Lead for Uruguay (since 2022)."
+
+- id: work.how
+  hub: work
+  depth: 1
+  weight: 4
+  audience: [client, academic, artist]
+  bridges: [me.teach, project]
+  label:
+    es: "¿Cómo trabajás?"
+    en: "How do you work?"
+  say:
+    es: "Llevo un producto de la estrategia al código: research, UX/UI, sistemas de diseño y front-end, sin tirarlo por encima de la pared entre etapas. Diseño en Figma y produzco en React, Next.js, Tailwind, WordPress y Storybook."
+    en: "I take a product from strategy to code: research, UX/UI, design systems and front-end, without throwing it over the wall between stages. I design in Figma and build in React, Next.js, Tailwind, WordPress and Storybook."
+
+- id: work.state
+  hub: work
+  depth: 1
+  weight: 4
+  audience: [client, academic]
+  image: /assets/blogimages/tiles/anii.jpg
+  bridges: [me.values, art.1976]
+  label:
+    es: "¿Trabajaste con el Estado?"
+    en: "Have you worked with government?"
+  say:
+    es: "Fui consultor senior de UX de la ANII casi diez años (2014-2023): armé el primer sistema de diseño de un organismo del Estado uruguayo y varias de sus plataformas. También pasé por el MEC, LATU, la Intendencia de Montevideo, MIEM y Uruguay XXI."
+    en: "I was ANII's senior UX consultant for almost ten years (2014-2023): I built the first design system for a Uruguayan state agency, plus several of its platforms. I've also worked with MEC, LATU, the Montevideo City Government, MIEM and Uruguay XXI."
+
+- id: work.ds
+  hub: work
+  depth: 1
+  weight: 3
+  audience: [client, artist]
+  bridges: [art.gen, me.values]
+  label:
+    es: "¿Qué sistemas de diseño armaste?"
+    en: "Which design systems have you built?"
+  say:
+    es: "El de la ANII —el primero de un organismo público uruguayo—, el de ClassWallet y el de UNESCO-IOC para el Ocean Observing Report Card, que además lleva visualización de datos del océano en React. Es la parte que más disfruto: interfaces complejas que tienen que quedar consistentes entre plataformas."
+    en: "ANII's — the first for a Uruguayan public agency — plus ClassWallet's and UNESCO-IOC's for the Ocean Observing Report Card, which also does ocean data visualization in React. It's the part I enjoy most: complex interfaces that have to stay consistent across platforms."
+
+- id: work.media
+  hub: work
+  depth: 1
+  weight: 3
+  audience: [client, academic, curious]
+  image: /assets/blogimages/tiles/brecha.gif
+  bridges: [me.values, project]
+  label:
+    es: "¿Y con medios?"
+    en: "What about media?"
+  say:
+    es: "Rediseñé la plataforma del Semanario Brecha, mobile-first, para ese medio independiente uruguayo, y trabajé en el portal de la revista Jacobin. Me copo con proyectos que dejan algo bueno."
+    en: "I redesigned Semanario Brecha's platform, mobile-first, for that independent Uruguayan outlet, and I worked on Jacobin magazine's portal. I'm into projects that leave something good behind."

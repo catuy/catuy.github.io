@@ -4,6 +4,15 @@
 </footer>
 <script>
    $(document).ready(function(){
+    // los sitios externos linkean a la home con ?from=<slug>; se guarda para
+    // que el chat de /info/ lo lea al navegar ahí (ya no llega por URL).
+    if (location.pathname === '/') {
+        var from = new URLSearchParams(location.search).get('from');
+        if (from) {
+            try { sessionStorage.setItem('chatFrom', from.toLowerCase()); } catch (err) {}
+        }
+    }
+
     // array of file paths
     var scripts = [
         '/assets/heads/1.js',
@@ -32,6 +41,18 @@
     var script = document.createElement('script');
     // set the source to the selected/stored path
     script.src = scriptPath;
+    // once the head script ran, --color-primary is set: paint the favicon with it
+    script.onload = function () {
+        var color = getComputedStyle(document.documentElement)
+            .getPropertyValue('--color-primary').trim() || '#000';
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+            + '<circle cx="50" cy="50" r="47" fill="' + color + '"/></svg>';
+        var favicon = document.getElementById('favicon');
+        if (favicon) {
+            favicon.type = 'image/svg+xml';
+            favicon.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+    };
     // append the script to the head of the document
     document.getElementsByTagName('head')[0].appendChild(script);
 

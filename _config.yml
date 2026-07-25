@@ -47,9 +47,9 @@ permalink: /archivo/:title/
 
 # Nav menu
 navigation:
-  - title: Home
+  - title: /
     url: /
-  - title: Info
+  - title: /Info
     url: /info/
 
 # Nav categories

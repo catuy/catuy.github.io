@@ -1,0 +1,32 @@
+# Nodos de sistema: los que garantizan que el circuito nunca cierre en un
+# callejón. Nunca entran al pool genérico de candidatos (hub: loop).
+#
+#   kind: more    → ofrece 3 nodos no visitados de hubs distintos (el Shuffle
+#                   conversacional, hermano del Shuffle de la home).
+#   kind: restart → limpia lo visitado y vuelve al nivel de entrada.
+
+- id: loop.more
+  hub: loop
+  depth: 0
+  kind: more
+  label:
+    es: "¿Qué más?"
+    en: "What else?"
+  say:
+    es:
+      - "Hay más por acá:"
+      - "También puedo contarte de esto:"
+    en:
+      - "There's more over here:"
+      - "I can also tell you about this:"
+
+- id: loop.restart
+  hub: loop
+  depth: 0
+  kind: restart
+  label:
+    es: "Empecemos de nuevo"
+    en: "Let's start over"
+  say:
+    es: "Dale, arrancamos otra vez."
+    en: "Sure, let's go again."

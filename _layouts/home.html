@@ -16,11 +16,15 @@ layout: default
     color: var(--home-menu-color);
   }
   .contact-mail{
+    top: var(--margin);
+    right: var(--margin);
+    bottom: auto;
+    left: auto;
     color: var(--home-menu-color);
   }
   #mvd-clock{
     position: fixed;
-    top: var(--margin);
+    bottom: var(--margin);
     right: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
@@ -35,7 +39,7 @@ layout: default
   #shuffle{
     position: fixed;
     bottom: var(--margin);
-    right: var(--margin);
+    left: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
     text-decoration: none;
@@ -45,9 +49,9 @@ layout: default
   /* En mobile, los 4 items se pegan a los márgenes como en /info/ (1vh). */
   @media only screen and (max-width: 768px){
     .container > header.item:nth-child(1){ top: 1vh; left: 1vh; }
-    #mvd-clock{ top: 1vh; right: 1vh; }
-    .contact-mail{ bottom: 1vh; left: 1vh; }
-    #shuffle{ bottom: 1vh; right: 1vh; }
+    .contact-mail{ top: 1vh; right: 1vh; }
+    #mvd-clock{ bottom: 1vh; right: 1vh; }
+    #shuffle{ bottom: 1vh; left: 1vh; }
   }
 </style>
 <div id="preloader">
@@ -58,23 +62,25 @@ layout: default
     {{ content }}
   </div>
 </article>
-<div id="mvd-clock"><span class="mvd-place-full">Montevideo, UY</span><span class="mvd-place-short">MVD</span> <span id="mvd-time"></span></div>
+<div id="mvd-clock"><span class="mvd-place-full">Montevideo, UY</span><span class="mvd-place-short">MVD</span> · <span id="mvd-offset"></span> · <span id="mvd-time"></span></div>
 <a id="shuffle" href="#" aria-label="Cambiar cabeza y color">Shuffle</a>
 <script>
   // Reloj de Montevideo (para que quien mire desde otra parte del mundo sepa mi hora).
   (function(){
     var timeEl = document.getElementById('mvd-time');
+    var offsetEl = document.getElementById('mvd-offset');
     function tick(){
-      var parts = new Intl.DateTimeFormat('en-GB', {
+      var parts = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Montevideo',
-        hour: '2-digit', minute: '2-digit', hour12: false,
+        hour: 'numeric', minute: '2-digit', hour12: true,
         timeZoneName: 'shortOffset'
       }).formatToParts(new Date());
       var get = function(t){ var p = parts.find(function(x){ return x.type === t; }); return p ? p.value : ''; };
-      var time = get('hour') + ':' + get('minute');
+      var time = get('hour') + ':' + get('minute') + ' ' + get('dayPeriod');
       var off = get('timeZoneName');
-      off = off ? off.replace('GMT', 'UTC') : 'UTC-3';
-      timeEl.textContent = '(' + off + ') ' + time;
+      off = off ? off.replace('GMT', 'UTC').replace('-', '−') : 'UTC−3';
+      offsetEl.textContent = off;
+      timeEl.textContent = time;
     }
     tick();
     setInterval(tick, 1000);
