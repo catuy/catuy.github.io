@@ -34,16 +34,20 @@ layout: default
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
+  /* Ícono, no texto: mismo lenguaje visual que los botones de la ventana
+     de proyecto en /info/ (trazo currentColor, stroke-width 2, sin relleno
+     salvo los puntos del dado) — ver EXPAND_ICON/COMPRESS_ICON en
+     info-chat.html. El hover también es el mismo (opacity, sin línea). */
   #shuffle{
     position: fixed;
     top: var(--margin);
     right: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
-    text-decoration: none;
+    display: flex;
     cursor: pointer;
   }
-  #shuffle:hover{ text-decoration: line-through; }
+  #shuffle:hover{ opacity: .5; }
   /* En mobile, los 4 items se pegan a los márgenes como en /info/ (1vh). */
   @media only screen and (max-width: 768px){
     .container > header.item:nth-child(1){ top: 1vh; left: 1vh; }
@@ -61,7 +65,7 @@ layout: default
   </div>
 </article>
 <div id="mvd-clock"><span id="mvd-offset"></span> · <span id="mvd-time"></span></div>
-<a id="shuffle" href="#" aria-label="Cambiar cabeza y color">Shuffle</a>
+<a id="shuffle" href="#" aria-label="Cambiar cabeza y color"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" ry="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/><circle cx="16" cy="8" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="8" cy="16" r="1.6" fill="currentColor"/><circle cx="16" cy="16" r="1.6" fill="currentColor"/></svg></a>
 <script>
   // Reloj de Montevideo (para que quien mire desde otra parte del mundo sepa mi hora).
   (function(){
