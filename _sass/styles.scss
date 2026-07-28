@@ -149,6 +149,13 @@ header{
       float: left;
       padding: 0px 5px 0px 5px;
     }
+    // Separador del breadcrumb de /info/ (Home / Info / Brecha). En el resto
+    // del sitio el nav sólo tiene 1 <li> (contextual), así que esto nunca
+    // aplica ahí.
+    li + li::before {
+      content: "/";
+      margin-right: 5px;
+    }
   }
 }
 
@@ -317,25 +324,7 @@ footer{
   white-space: pre-wrap;
   word-break: break-word;
 }
-.chat-turn.you {
-  text-align: right;
-}
-.chat-turn.you .chat-say {
-  opacity: .6;
-}
-.chat-mail {
-  color: inherit;
-  text-decoration: underline;
-}
-// Imagen de un nodo del grafo: acompaña al texto, no lo interrumpe.
-.chat-image {
-  display: block;
-  // Interpolado: libsass intenta evaluar min() como función Sass y revienta.
-  max-width: #{"min(100%, 320px)"};
-  height: auto;
-  margin-top: 12px;
-}
-// Sólo para lectores de pantalla: anuncia la respuesta una vez terminada de
+// Sólo para lectores de pantalla: anuncia el texto una vez terminado de
 // tipear (si no, se anunciaría letra por letra).
 .chat-sr {
   position: absolute;
@@ -347,76 +336,123 @@ footer{
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 }
-.chat-typing {
-  opacity: .55;
-  font-style: italic;
-  font-size: var(--font-size-s);
-  margin-bottom: 22px;
+
+//  ------------------------------------------
+//  CURSOR AMBIENTE (footer.html, sólo layout home/info)
+//  ------------------------------------------
+
+// Acompaña al cursor nativo (no lo reemplaza) en esas dos páginas: un mini
+// círculo que lo sigue con lag (lerp en requestAnimationFrame, en
+// footer.html), siempre presente — no depende del chat ni de ningún click.
+// transform, no margin negativo: así centra igual de bien el círculo
+// (14x14 fijo) que el texto "click" del hint (ancho variable).
+.cursor-dot {
+  position: fixed;
+  z-index: 9999;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
 }
-.chat-typing .blink {
-  animation: blink .8s steps(1) infinite;
+// El color primario ya es el que eligió la sesión (cabeza random, ver
+// footer.html/heads/*.js) — el punto lo sigue, no define uno propio.
+// :not(.hint): si no, esta regla (más específica que .cursor-dot.hint de
+// abajo) le seguía ganando al `background: none` del hint — el texto
+// "click" quedaba invisible sobre un rectángulo del mismo color.
+body.layout-info .cursor-dot:not(.hint) {
+  background: var(--color-primary);
 }
-.chat-tags {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin: 4px 0 22px;
+body.layout-home .cursor-dot:not(.hint) {
+  background: white;
 }
-.chat-tag {
-  display: inline-block;
-  padding: 3px 10px;
-  border: 1.5px solid var(--color-primary);
-  border-radius: 999px;
-  font-family: inherit;
-  font-size: 15px;
-  line-height: 1.2;
-  text-align: left;
-  text-decoration: none;
+// Hint inicial en /info/ (hasta el primer click, ver footer.html): el texto
+// "click" en vez del círculo, mismo seguimiento del mouse.
+.cursor-dot.hint {
+  width: auto;
+  height: auto;
+  border-radius: 0;
   background: none;
   color: var(--color-primary);
-  cursor: pointer;
-}
-.chat-tag:hover,
-.chat-tag:focus-visible {
-  background: var(--color-primary);
-  color: var(--color-tertiary);
-}
-.chat-tag:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-.chat-form {
-  display: inline-flex;
-  margin-bottom: 10px;
-}
-.chat-input {
-  field-sizing: content;
-  min-width: 1ch;
-  max-width: 100%;
   font-family: inherit;
   font-size: var(--font-size-m);
-  background: none;
-  border: none;
-  color: var(--color-primary);
-  padding: 3px 10px;
+  white-space: nowrap;
 }
-.chat-input:focus {
-  outline: none;
+
+//  ------------------------------------------
+//  GALLERY (modo "ver proyectos" del chat, startProjectGallery())
+//  ------------------------------------------
+
+// Misma "ventanita" que .image-wrap en el detalle de proyecto (hoy oculto):
+// header con borde, esquinas redondeadas arriba, imagen abajo. Sin
+// transition acá: arrastrar y el reposicionamiento al aparecer tienen que
+// ser instantáneos. expand()/collapse() en info-chat.html ponen la
+// transition inline SÓLO mientras dura esa animación puntual.
+.gallery-window {
+  position: fixed;
+  z-index: 10;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px 8px 0 0;
+  background: var(--color-tertiary);
 }
-.chat-input::placeholder {
-  color: var(--color-primary);
-  opacity: .4;
+.gallery-window-header {
+  position: relative;
+  height: var(--margin);
+  border-bottom: 1px solid var(--color-primary);
+  border-radius: 8px 8px 0 0;
 }
-.chat-send {
+// Botones del header: mismo tamaño, uno a cada punta. El color del ícono
+// nunca cambia — el hover sólo le baja la opacidad, sin fondo ni borde.
+.gallery-window-close,
+.gallery-window-expand {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  top: 0;
+  width: var(--margin);
+  height: var(--margin);
+  line-height: var(--margin);
   padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+}
+.gallery-window-close:hover,
+.gallery-window-expand:hover {
+  opacity: .5;
+}
+// Cierra la ventana (vuelve la imagen a la cola, ver startProjectGallery).
+.gallery-window-close {
+  right: 0;
+}
+// Amplía/achica estilo lightbox (ver expand()/collapse() en info-chat.html).
+.gallery-window-expand {
+  left: 0;
+}
+.gallery-window img {
+  display: block;
+  max-width: 45vw;
+  max-height: 70vh;
+}
+// Expandida: sin los caps normales, el tamaño lo define expand() en JS.
+.gallery-window.expanded img {
+  max-width: none;
+  max-height: none;
+}
+// Bloquea y difumina todo lo demás mientras una ventana está expandida.
+// El fallback (navegadores sin backdrop-filter) es el tinte de background.
+.gallery-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .15);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {

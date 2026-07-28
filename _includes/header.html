@@ -1,5 +1,11 @@
 <header class="item">
         <nav>
+          {% if page.layout == 'info' %}
+          <ul id="info-breadcrumb">
+            <li><a href="/" onclick="fadeOut()">..</a></li>
+            <li><span aria-current="page">Info</span></li>
+          </ul>
+          {% else %}
           <ul>
           {% for item in site.navigation %}
               {% unless item.url == page.url %}
@@ -7,7 +13,8 @@
               {% endunless %}
           {% endfor %}
           </ul>
-        </nav>    
+          {% endif %}
+        </nav>
   </header>
 
  

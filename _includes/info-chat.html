@@ -1,77 +1,31 @@
 <div class="chat-log" id="chat-log">
-  <form class="chat-form" id="chat-form">
-    <input class="chat-input" id="chat-input" type="text" autocomplete="off">
-    <button class="chat-send" id="chat-send" type="submit" aria-label="Enviar"></button>
-  </form>
-  <div class="chat-tags" id="chat-tags" role="group"></div>
   <p class="chat-sr" id="chat-sr" aria-live="polite"></p>
 </div>
 
 {% comment %}
-El grafo de tags vive en _data/chat/ (ui.yml + nodes/*.yml) y se serializa acá
-una sola vez. El motor de abajo no sabe nada del contenido: para escribir textos
-nuevos se editan los YAML, no este archivo.
+Sólo se usa el saludo (about_extended en ui.yml, o el intro contextual de
+_data/chat/nodes/referrer.yml). El resto del grafo de tags quedó sin uso
+tras sacar la experiencia agéntica — ver HANDOFF.md.
 {% endcomment %}
 <script type="application/json" id="chat-graph">{{ site.data.chat | jsonify | replace: '</', '<\/' }}</script>
 
 <script>
 (function () {
-  var WORKER_URL = "https://diego-synth-chat.cataldo-diego.workers.dev";
-  var MAX_HISTORY_MESSAGES = 8;
-  var MAX_CHIPS = 3;          // después de la entrada; la entrada permite 4
-  var CONTACT_AFTER_TURNS = 3; // a partir de acá la ranura de salida es el contacto
-  var MORE_EVERY = 3;          // cada cuántos turnos reaparece el chip "¿qué más?"
-  var EMAIL = "hello@persn.net";
-
   var rawLang = (navigator.language || 'es').slice(0, 2).toLowerCase();
   var LANG = rawLang === 'en' ? 'en' : 'es';
 
   var GRAPH = JSON.parse(document.getElementById('chat-graph').textContent);
   var UI = GRAPH.ui || {};
 
-  // GRAPH.nodes es { work: [...], art: [...], ... } (un archivo por hub).
-  var NODES = [];
-  Object.keys(GRAPH.nodes || {}).forEach(function (key) {
-    NODES = NODES.concat(GRAPH.nodes[key] || []);
-  });
-  var BY_ID = {};
-  NODES.forEach(function (n) { BY_ID[n.id] = n; });
-
-  // Sólo estos hubs entran al ranking genérico: `referrer` depende de de dónde
-  // venís y `loop` son nodos de sistema.
-  var POOL_HUBS = ['work', 'art', 'me', 'project'];
-  var HUB_AUDIENCE = { work: 'client', art: 'artist', me: 'curious', project: 'client' };
-
-  // Estado en memoria, NO en sessionStorage: el log de la conversación también
-  // vive en memoria, y persistir `visited` dejaría el grafo "agotado" frente a
-  // un log vacío después de recargar.
-  var state = { visited: {}, audience: null, turns: 0 };
-
-  // El matcher de texto libre es opcional: si /assets/chat-patterns.js no carga,
-  // el chat sigue funcionando y sólo se degrada la re-captura post-LLM.
-  var matchNodeId = function () { return null; };
-  try {
-    import('/assets/chat-patterns.js').then(function (m) {
-      if (m && typeof m.matchNodeId === 'function') matchNodeId = m.matchNodeId;
-    }).catch(function () {});
-  } catch (e) { /* navegador sin dynamic import */ }
-
   var logEl = document.getElementById('chat-log');
-  var tagsRow = document.getElementById('chat-tags');
   var srEl = document.getElementById('chat-sr');
-  var form = document.getElementById('chat-form');
-  var input = document.getElementById('chat-input');
-  var sendBtn = document.getElementById('chat-send');
-
-  var history = [];
-  var keyboardNav = false; // si venís navegando con teclado, el foco te sigue
 
   //  ------------------------------------------
   //  Helpers
   //  ------------------------------------------
 
   // Devuelve el texto en el idioma actual. Si el YAML trae una lista, elige una
-  // variante al azar: es lo que evita que suene a menú de FAQ al repetir visita.
+  // variante al azar.
   function t(field) {
     if (!field) return '';
     var val = field[LANG] != null ? field[LANG] : field.es;
@@ -79,253 +33,296 @@ nuevos se editan los YAML, no este archivo.
     return val || '';
   }
 
-  function visited(node) { return !!state.visited[node.id]; }
-  function poolable(node) { return POOL_HUBS.indexOf(node.hub) !== -1; }
-
   function scrollToEnd() { window.scrollTo(0, document.body.scrollHeight); }
 
-  function track(name, params) {
-    try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (e) {}
-  }
-
-  //  ------------------------------------------
-  //  Ranking
-  //  ------------------------------------------
-
-  function score(node) {
-    var s = node.weight || 1;
-    if (state.audience && (node.audience || []).indexOf(state.audience) !== -1) s += 3;
-    if (node.depth === 1) s += 0.5;
-    return s + Math.random(); // jitter: dos visitantes iguales no ven lo mismo
-  }
-
-  function best(candidates) {
-    var top = null, topScore = -Infinity;
-    (candidates || []).forEach(function (n) {
-      var s = score(n);
-      if (s > topScore) { topScore = s; top = n; }
-    });
-    return top;
-  }
-
-  function candidates(filter, taken) {
-    return NODES.filter(function (n) {
-      return !taken[n.id] && !visited(n) && poolable(n) && filter(n);
-    });
-  }
-
-  //  ------------------------------------------
-  //  Las tres ranuras: profundizar / cruzar / salir
-  //  ------------------------------------------
-
-  function pickSibling(hub, taken) {
-    if (POOL_HUBS.indexOf(hub) === -1) return null; // referrer y loop no tienen hermanos
-    return best(candidates(function (n) { return n.hub === hub && n.depth > 0; }, taken));
-  }
-
-  function pickBridge(node, taken) {
-    var bridges = (node.bridges || []).map(function (id) { return BY_ID[id]; })
-      .filter(function (n) { return n && !taken[n.id] && !visited(n); });
-    return best(bridges) || pickOtherHub(node.hub, taken);
-  }
-
-  function pickOtherHub(hub, taken) {
-    return best(candidates(function (n) { return n.depth === 0 && n.hub !== hub; }, taken))
-      || best(candidates(function (n) { return n.hub !== hub; }, taken));
-  }
-
-  // La ranura de salida: primero el contacto (cuando el visitante ya se metió
-  // lo suficiente), y si no "¿qué más?" cada tantos turnos — si estuviera fijo
-  // aparecería en una de cada tres filas y se volvería ruido. Si devuelve null,
-  // la fila se completa con contenido y la circularidad la garantizan igual el
-  // relleno de nextChips() y fallbackChips().
-  function pickExit(node, taken) {
-    var contact = BY_ID['project.contact'];
-    var wantsContact = node.cta || state.turns >= CONTACT_AFTER_TURNS;
-    if (wantsContact && contact && !taken[contact.id] && !visited(contact)) return contact;
-    var more = BY_ID['loop.more'];
-    if (more && !taken[more.id] && state.turns % MORE_EVERY === 0) return more;
-    if (contact && !taken[contact.id] && !visited(contact)) return contact;
-    return null;
-  }
-
-  // Garantía central: esto NUNCA devuelve una lista vacía.
-  function nextChips(node) {
-    var taken = {}, chips = [];
-    function add(n) { if (n && !taken[n.id]) { taken[n.id] = true; chips.push(n); } }
-
-    add(pickSibling(node.hub, taken));
-    add(pickBridge(node, taken));
-    add(pickExit(node, taken));
-
-    // Completar la fila si alguna ranura quedó vacía (p. ej. nodos de referrer,
-    // que no tienen hermanos).
-    while (chips.length < MAX_CHIPS) {
-      var extra = best(candidates(function () { return true; }, taken));
-      if (!extra) break;
-      add(extra);
-    }
-
-    chips = chips.slice(0, MAX_CHIPS);
-    return chips.length ? chips : fallbackChips();
-  }
-
-  // Todo visitado: en vez de dejar la fila vacía, se ofrece cerrar o reiniciar.
-  function fallbackChips() {
-    var out = [BY_ID['project.contact'], BY_ID['loop.restart']].filter(Boolean);
-    return out.length ? out : [BY_ID['loop.more']].filter(Boolean);
-  }
-
-  // "¿Qué más?": hasta 3 nodos no visitados, uno por hub. El Shuffle conversacional.
-  function moreChips() {
-    var taken = {}, hubs = {}, chips = [];
-    var pool = NODES.filter(function (n) { return poolable(n) && !visited(n); })
-      .sort(function (a, b) { return score(b) - score(a); });
-    pool.forEach(function (n) {
-      if (chips.length >= MAX_CHIPS || hubs[n.hub] || taken[n.id]) return;
-      hubs[n.hub] = true; taken[n.id] = true; chips.push(n);
-    });
-    return chips.length ? chips : fallbackChips();
-  }
-
   function referrerNode() {
-    for (var i = 0; i < NODES.length; i++) {
-      if (NODES[i].hub === 'referrer' && NODES[i].slug === from) return NODES[i];
+    var refs = (GRAPH.nodes && GRAPH.nodes.referrer) || [];
+    for (var i = 0; i < refs.length; i++) {
+      if (refs[i].slug === from) return refs[i];
     }
     return null;
   }
 
-  function entryChips() {
-    var hubs = ['work', 'art', 'me'].map(function (id) { return BY_ID[id]; })
-      .filter(function (n) { return n && !visited(n); });
-    var ref = referrerNode();
-    if (ref && !visited(ref)) return [ref].concat(hubs).slice(0, 4);
-    var project = BY_ID['project'];
-    if (project && !visited(project)) hubs.push(project);
-    return hubs.length ? hubs.slice(0, 4) : fallbackChips();
+  //  ------------------------------------------
+  //  Texto narrador: un solo slot a la vez (sin historial), tipeado
+  //  ------------------------------------------
+
+  function clearLog() {
+    Array.prototype.slice.call(logEl.children).forEach(function (el) {
+      if (el !== srEl) logEl.removeChild(el);
+    });
   }
 
-  //  ------------------------------------------
-  //  Render
-  //  ------------------------------------------
-
-  function addTurn(role, text) {
+  function addTurn(text) {
     var turn = document.createElement('div');
-    turn.className = 'chat-turn ' + (role === 'diego' ? 'diego' : 'you');
+    turn.className = 'chat-turn diego';
     var say = document.createElement('div');
     say.className = 'chat-say';
-    say.textContent = role === 'diego' ? '' : text;
     turn.appendChild(say);
-    logEl.insertBefore(turn, form);
+    logEl.insertBefore(turn, srEl);
     scrollToEnd();
-    return { turn: turn, say: say };
+    return say;
   }
 
-  function addImage(turn, src) {
-    if (!src) return;
-    var img = document.createElement('img');
-    img.className = 'chat-image';
-    img.src = src;
-    img.alt = '';
-    img.loading = 'lazy';
-    turn.appendChild(img);
-    scrollToEnd();
-  }
-
-  // El mail siempre clickeable, venga de un nodo o de la respuesta del modelo.
-  function linkifyEmail(el, text) {
-    if (text.indexOf(EMAIL) === -1) return;
-    var parts = text.split(EMAIL);
-    el.textContent = '';
-    parts.forEach(function (part, i) {
-      el.appendChild(document.createTextNode(part));
-      if (i < parts.length - 1) {
-        var a = document.createElement('a');
-        a.href = 'mailto:' + EMAIL;
-        a.className = 'chat-mail';
-        a.textContent = EMAIL;
-        a.addEventListener('click', function () { track('mailto_click', {}); });
-        el.appendChild(a);
-      }
-    });
-  }
-
+  // Ritmo tipo streaming de un LLM (ChatGPT/Claude): trozos de varios
+  // caracteres por tick, no letra por letra.
   function typeOut(el, text, done) {
     var i = 0;
     el.textContent = '';
     (function step() {
-      i += 1 + Math.floor(Math.random() * 2);
+      i += 3 + Math.floor(Math.random() * 4);
       el.textContent = text.slice(0, i);
       scrollToEnd();
-      if (i < text.length) { setTimeout(step, 15 + Math.random() * 15); return; }
-      linkifyEmail(el, text);
+      if (i < text.length) { setTimeout(step, 8 + Math.random() * 7); return; }
       srEl.textContent = text; // se anuncia una vez, ya terminado de tipear
       if (done) done();
     })();
   }
 
-  function renderChips(nodes) {
-    tagsRow.textContent = '';
-    (nodes || []).forEach(function (n) {
-      if (!n) return;
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chat-tag';
-      b.textContent = t(n.label);
-      b.addEventListener('click', function (ev) {
-        keyboardNav = ev.detail === 0; // 0 = activado con Enter/Espacio
-        select(n);
+  // Usado tanto para el saludo inicial como para cada comentario de imagen:
+  // reemplaza lo que hubiera antes por el texto nuevo, tipeado.
+  function showText(text) {
+    clearLog();
+    var say = addTurn(text);
+    typeOut(say, text, function () {});
+  }
+
+  //  ------------------------------------------
+  //  Galería de proyectos: click en cualquier lado apila una ventana
+  //  ------------------------------------------
+
+  // Placeholder hasta que Diego defina el pool real de 3-4 proyectos (ver
+  // portfolio.yml, sin uso por ahora): reusa tiles y texto ya verificados
+  // (SPECIFIC_PROJECTS en assets/chat-patterns.js, o el _post real para
+  // ISP). Reemplazar acá cuando esté el pool. `slug`/`label`/`comment` NO
+  // se usan por ahora (la galería es puramente visual: se apila sobre el
+  // about fijo, sin texto ni URL por proyecto) — quedan en los datos por si
+  // se retoma más adelante.
+  var GALLERY_IMAGES = [
+    {
+      src: '/assets/blogimages/tiles/brecha.gif', alt: 'Semanario Brecha',
+      slug: 'brecha', label: 'Brecha',
+      comment: {
+        es: "Rediseñé la plataforma del Semanario Brecha: mobile-first, para ese medio independiente uruguayo.",
+        en: "I redesigned Semanario Brecha's platform: mobile-first, for that independent Uruguayan outlet.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/anii.jpg', alt: 'ANII',
+      slug: 'anii', label: 'ANII',
+      comment: {
+        es: "Fui consultor senior de UX de la ANII casi diez años: armé el primer sistema de diseño de un organismo del Estado uruguayo.",
+        en: "I was ANII's senior UX consultant for almost ten years: I built the first design system for a Uruguayan state agency.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/monitor.gif', alt: 'Monitor Cannabis',
+      slug: 'monitor-cannabis', label: 'Monitor Cannabis',
+      comment: {
+        es: "Hice la identidad y la plataforma de Monitor Cannabis, el monitoreo de la regulación del cannabis en Uruguay.",
+        en: "I built the identity and platform for Monitor Cannabis, tracking Uruguay's cannabis regulation.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/isp.jpg', alt: 'Innovación en Servicios Públicos',
+      slug: 'isp', label: 'ISP',
+      comment: {
+        es: "El portal de Innovación en Servicios Públicos, un programa de la ANII y BID Lab: lo diseñé, desarrollé e implementé de punta a punta.",
+        en: "The Innovation in Public Services portal, an ANII and IDB Lab program: I designed, built and implemented it end to end.",
+      },
+    },
+  ];
+
+  // Misma mecánica que assets/script.js (detalle de proyecto, hoy oculto
+  // del build): cada click en un área vacía apila una ventana nueva
+  // arrastrable (jQuery UI .draggable(), ya cargado site-wide vía
+  // head.html), centrada en el punto de click, con z-index creciente —
+  // las anteriores quedan en pantalla, no se reemplazan. Tocar una ventana
+  // existente la trae al frente (mousedown) y, si no fue un drag real,
+  // también apila una nueva encima (jQuery UI suprime el click nativo que
+  // sigue a un drag real, así que no hace falta distinguirlos a mano). El
+  // cursor ambiente (siempre presente en /info/) lo maneja footer.html,
+  // acá sólo el click-to-reveal. Sólo se ignoran los clicks sobre
+  // elementos interactivos reales (el link de mail del footer, la X de
+  // cerrar, etc.).
+  //
+  // Cola, no cursor lineal: `queue` arranca como una copia de
+  // GALLERY_IMAGES y cada reveal saca la primera (`shift`). Cerrar una
+  // ventana (botón `×` en el header) la devuelve al FINAL de la cola
+  // (`push`) en vez de borrarla — un próximo click la vuelve a mostrar. Con
+  // todo revelado y nada cerrado, la cola queda vacía y un click más no
+  // hace nada; en cuanto se cierra algo, vuelve a haber algo para mostrar.
+  function startProjectGallery() {
+    var queue = GALLERY_IMAGES.slice();
+    var z = 10;
+    // Por encima de cualquier z de ventana normal: el backdrop bloquea todo
+    // lo demás, y la ventana expandida va justo arriba del backdrop.
+    var Z_BACKDROP = 9000, Z_EXPANDED = 9001;
+
+    // La transition va inline, sólo mientras dura expand()/collapse() — si
+    // viviera en el CSS de .gallery-window, tanto arrastrar (jQuery UI pisa
+    // left/top en cada mousemove) como el reposicionamiento al aparecer
+    // (pic.onload, más abajo) quedarían con el mismo delay animado, que no
+    // se quiere ahí.
+    var TRANSITION_MS = 350;
+    function animateOn(win, pic) {
+      win.style.transition = 'left ' + TRANSITION_MS + 'ms ease, top ' + TRANSITION_MS + 'ms ease';
+      pic.style.transition = 'width ' + TRANSITION_MS + 'ms ease, height ' + TRANSITION_MS + 'ms ease';
+    }
+    function animateOffLater(win, pic) {
+      setTimeout(function () {
+        win.style.transition = '';
+        pic.style.transition = '';
+      }, TRANSITION_MS);
+    }
+
+    // Corchetes en diagonal — mismo glyph que reproductores/visores nativos
+    // usan para "pantalla completa" (hacia afuera) y "salir" (hacia adentro).
+    var EXPAND_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+      + '<path d="M9 3H3v6M15 21h6v-6" fill="none" stroke="currentColor" stroke-width="2" '
+      + 'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var COMPRESS_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+      + '<path d="M3 9h6V3M21 15h-6v6" fill="none" stroke="currentColor" stroke-width="2" '
+      + 'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function isInteractive(target) {
+      return !!target.closest('a, button, input');
+    }
+
+    // Ampliar/achicar estilo lightbox: centra y agranda hasta 90vw/90vh sin
+    // pasar el tamaño natural de la imagen (se calcula una sola vez, no se
+    // lee el layout a mitad de la transición CSS), bloquea y difumina el
+    // fondo con un backdrop, y guarda posición/tamaño de origen para volver
+    // exacto (aunque la ventana se haya arrastrado antes de expandir).
+    function expand(win, pic, header, expandBtn) {
+      var naturalW = pic.naturalWidth, naturalH = pic.naturalHeight;
+      var scale = Math.min(1, (window.innerWidth * 0.9) / naturalW, (window.innerHeight * 0.9) / naturalH);
+      var targetImgW = naturalW * scale;
+      var targetImgH = naturalH * scale;
+      var targetLeft = (window.innerWidth - targetImgW) / 2;
+      var targetTop = (window.innerHeight - (targetImgH + header.offsetHeight)) / 2;
+
+      win._restoreState = {
+        left: win.style.left, top: win.style.top,
+        imgWidth: pic.style.width, imgHeight: pic.style.height,
+      };
+
+      $(win).draggable('disable');
+      win.classList.add('expanded');
+      win.style.zIndex = Z_EXPANDED;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'gallery-backdrop';
+      backdrop.style.zIndex = Z_BACKDROP;
+      backdrop.addEventListener('click', function (ev) {
+        ev.stopPropagation(); // si no, burbujea a document y revela una imagen de más
+        collapse(win, pic, header, expandBtn);
       });
-      tagsRow.appendChild(b);
-    });
-    var first = tagsRow.querySelector('.chat-tag');
-    if (keyboardNav && first) first.focus();
-    scrollToEnd();
-  }
+      document.body.appendChild(backdrop);
+      win._backdrop = backdrop;
 
-  function pushHistory(role, content) {
-    history.push({ role: role, content: content });
-    history = history.slice(-MAX_HISTORY_MESSAGES);
-  }
+      function onKeydown(ev) {
+        if (ev.key === 'Escape') collapse(win, pic, header, expandBtn);
+      }
+      win._onKeydown = onKeydown;
+      document.addEventListener('keydown', onKeydown);
 
-  //  ------------------------------------------
-  //  Selección de un tag
-  //  ------------------------------------------
+      animateOn(win, pic);
+      pic.style.width = targetImgW + 'px';
+      pic.style.height = targetImgH + 'px';
+      win.style.left = targetLeft + 'px';
+      win.style.top = targetTop + 'px';
+      animateOffLater(win, pic);
 
-  function select(node) {
-    var label = t(node.label);
-    addTurn('you', label);
-    pushHistory('user', label);
-
-    if (!state.audience) {
-      state.audience = HUB_AUDIENCE[node.hub] || (node.audience || [])[0] || null;
-    }
-    if (node.hub !== 'loop') state.visited[node.id] = true;
-    state.turns += 1;
-
-    track('tag_select', { tag_id: node.id, depth: node.depth, audience: state.audience });
-    if (node.cta) track('lead_reveal', { tag_id: node.id });
-
-    if (node.kind === 'restart') {
-      state.visited = {};
-      state.audience = null;
-      state.turns = 0;
+      expandBtn.innerHTML = COMPRESS_ICON;
+      expandBtn.setAttribute('aria-label', 'Achicar');
     }
 
-    var text = t(node.say);
-    function after() {
-      if (node.kind === 'more') renderChips(moreChips());
-      else if (node.kind === 'restart') renderChips(entryChips());
-      else renderChips(nextChips(node));
+    function collapse(win, pic, header, expandBtn) {
+      var st = win._restoreState;
+      if (win._backdrop) { win._backdrop.remove(); win._backdrop = null; }
+      if (win._onKeydown) { document.removeEventListener('keydown', win._onKeydown); win._onKeydown = null; }
+
+      win.classList.remove('expanded');
+      animateOn(win, pic);
+      win.style.left = st.left;
+      win.style.top = st.top;
+      pic.style.width = st.imgWidth;
+      pic.style.height = st.imgHeight;
+      animateOffLater(win, pic);
+      $(win).draggable('enable');
+      z += 1;
+      win.style.zIndex = z; // vuelve a "al frente de lo normal", no a su z viejo
+
+      expandBtn.innerHTML = EXPAND_ICON;
+      expandBtn.setAttribute('aria-label', 'Ampliar');
     }
 
-    if (!text) { after(); return; }
-    var turn = addTurn('diego', '');
-    pushHistory('assistant', text);
-    typeOut(turn.say, text, function () {
-      addImage(turn.turn, node.image);
-      after();
-    });
+    function reveal(ev) {
+      if (isInteractive(ev.target)) return;
+      if (!queue.length) return;
+
+      var img = queue.shift();
+      var win = document.createElement('div');
+      win.className = 'gallery-window';
+      win.style.left = ev.clientX + 'px';
+      win.style.top = ev.clientY + 'px';
+      z += 1;
+      win.style.zIndex = z;
+
+      var header = document.createElement('div');
+      header.className = 'gallery-window-header';
+      win.appendChild(header);
+
+      var expandBtn = document.createElement('button');
+      expandBtn.type = 'button';
+      expandBtn.className = 'gallery-window-expand';
+      expandBtn.setAttribute('aria-label', 'Ampliar');
+      expandBtn.innerHTML = EXPAND_ICON;
+      header.appendChild(expandBtn);
+
+      var closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'gallery-window-close';
+      closeBtn.setAttribute('aria-label', 'Cerrar');
+      closeBtn.textContent = '×';
+      header.appendChild(closeBtn);
+
+      var pic = document.createElement('img');
+      pic.src = img.src;
+      pic.alt = img.alt;
+      pic.onload = function () {
+        win.style.left = (ev.clientX - win.offsetWidth / 2) + 'px';
+        win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
+      };
+      win.appendChild(pic);
+
+      expandBtn.addEventListener('click', function () {
+        if (win.classList.contains('expanded')) collapse(win, pic, header, expandBtn);
+        else expand(win, pic, header, expandBtn);
+      });
+
+      // Cerrar una ventana expandida tiene que sacar también el backdrop y
+      // el listener de Escape — si no, queda una capa de blur fantasma sin
+      // forma de sacarla (la ventana que la creaba ya no está).
+      closeBtn.addEventListener('click', function () {
+        if (win.classList.contains('expanded')) {
+          if (win._backdrop) win._backdrop.remove();
+          if (win._onKeydown) document.removeEventListener('keydown', win._onKeydown);
+        }
+        win.remove();
+        queue.push(img);
+      });
+
+      document.body.appendChild(win);
+      win.addEventListener('mousedown', function () {
+        if (win.classList.contains('expanded')) return; // no compite con Z_EXPANDED
+        z += 1;
+        win.style.zIndex = z;
+      });
+      $(win).draggable({ cancel: '.gallery-window-close, .gallery-window-expand' });
+    }
+    document.addEventListener('click', reveal);
   }
 
   //  ------------------------------------------
@@ -333,135 +330,9 @@ nuevos se editan los YAML, no este archivo.
   //  ------------------------------------------
 
   var from = (sessionStorage.getItem('chatFrom') || '').toLowerCase();
-  input.placeholder = t(UI.placeholder);
-  tagsRow.setAttribute('aria-label', t(UI.suggestions_label));
-
   var ref = referrerNode();
-  if (ref) state.audience = (ref.audience || [])[0] || null;
-
-  var introText = ref ? t(ref.intro) : t(UI.intro_default);
-  var introTurn = addTurn('diego', '');
-  pushHistory('assistant', introText);
-  typeOut(introTurn.say, introText, function () { renderChips(entryChips()); });
-
-  input.focus();
-
-  //  ------------------------------------------
-  //  Texto libre → Worker → y de vuelta al grafo
-  //  ------------------------------------------
-
-  // Después de una respuesta del modelo el grafo tiene que RECUPERAR al
-  // visitante: si el texto matchea un nodo (mismos patrones que usa el worker
-  // para sus respuestas fijas), se ofrecen sus vecinos; si no, "¿qué más?".
-  function chipsForFreeText(text) {
-    var id = matchNodeId(text);
-    var node = id && BY_ID[id];
-    if (!node) return moreChips();
-    if (!state.audience) {
-      state.audience = HUB_AUDIENCE[node.hub] || (node.audience || [])[0] || null;
-    }
-    if (node.hub !== 'loop') state.visited[node.id] = true; // el worker ya lo contó
-    return nextChips(node);
-  }
-
-  function showTyping() {
-    hideTyping();
-    var el = document.createElement('div');
-    el.className = 'chat-typing';
-    el.id = 'chat-typing';
-    el.textContent = t(UI.typing);
-    var blink = document.createElement('span');
-    blink.className = 'blink';
-    blink.textContent = '_';
-    el.appendChild(blink);
-    logEl.insertBefore(el, form);
-    scrollToEnd();
-  }
-
-  function hideTyping() {
-    var el = document.getElementById('chat-typing');
-    if (el) el.remove();
-  }
-
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var text = input.value.trim();
-    if (!text) return;
-
-    keyboardNav = false; // escribiste: el foco se queda en el input
-    renderChips([]);
-    input.value = '';
-    input.disabled = true;
-    sendBtn.disabled = true;
-
-    addTurn('you', text);
-    pushHistory('user', text);
-    state.turns += 1;
-    track('free_text', {});
-
-    showTyping();
-    var sayEl = null;
-    var acc = '';
-
-    fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history, lang: LANG, from: from })
-    }).then(function (res) {
-      if (!res.ok || !res.body) throw new Error('Worker respondió ' + res.status);
-
-      var reader = res.body.getReader();
-      var decoder = new TextDecoder();
-      var buffer = '';
-
-      function pump() {
-        return reader.read().then(function (result) {
-          if (result.done) return;
-          buffer += decoder.decode(result.value, { stream: true });
-
-          var events = buffer.split('\n\n');
-          buffer = events.pop();
-
-          events.forEach(function (evt) {
-            var line = evt.trim();
-            if (line.indexOf('data:') !== 0) return;
-            var data = line.slice(5).trim();
-            if (data === '[DONE]') return;
-            try {
-              var parsed = JSON.parse(data);
-              var delta = parsed.response || '';
-              if (delta) {
-                if (!sayEl) { hideTyping(); sayEl = addTurn('diego', '').say; }
-                acc += delta;
-                sayEl.textContent = acc;
-                scrollToEnd();
-              }
-            } catch (e) { /* chunk parcial */ }
-          });
-
-          return pump();
-        });
-      }
-
-      return pump();
-    }).then(function () {
-      if (!acc) throw new Error('Respuesta vacía del Worker');
-      pushHistory('assistant', acc);
-      if (sayEl) { linkifyEmail(sayEl, acc); srEl.textContent = acc; }
-    }).catch(function (err) {
-      console.error(err);
-      var errText = t(UI.connect_error);
-      if (sayEl) sayEl.textContent = errText;
-      else sayEl = addTurn('diego', errText).say;
-      linkifyEmail(sayEl, errText);
-      srEl.textContent = errText;
-    }).finally(function () {
-      hideTyping();
-      input.disabled = false;
-      sendBtn.disabled = false;
-      input.focus();
-      renderChips(chipsForFreeText(text)); // el grafo vuelve a agarrar la conversación
-    });
-  });
+  var introText = ref ? t(ref.intro) : t(UI.about_extended);
+  showText(introText);
+  startProjectGallery();
 })();
 </script>

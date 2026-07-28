@@ -10,8 +10,8 @@
   cta: true
   bridges: [work.how, work.now]
   label:
-    es: "Tengo un proyecto y quiero discutirlo"
-    en: "I have a project I'd like to discuss"
+    es: "Tengo un proyecto en mente"
+    en: "I have a project in mind"
   say:
     es: "Dale, contame. Hago justo eso: estrategia, research, diseño y front-end, de punta a punta."
     en: "Sure, tell me about it. That's exactly what I do: strategy, research, design and front-end, end to end."
@@ -39,8 +39,10 @@
   audience: [client, academic, artist, curious]
   bridges: [work.now, art]
   label:
-    es: "¿Cómo te escribo?"
-    en: "How do I reach you?"
+    es: "Quiero tu contacto"
+    en: "Just want your contact info"
+  # Neutral a propósito: se llega acá también directo desde la entrada
+  # ("Quiero tu contacto"), sin saber si es por un proyecto — no asumir.
   say:
-    es: "Escribime a hello@persn.net contándome un poco del proyecto y lo vemos."
-    en: "Email me at hello@persn.net with a bit about the project and we'll take it from there."
+    es: "Escribime a hello@persn.net, aunque sea para decir hola."
+    en: "Email me at hello@persn.net — even if it's just to say hi."

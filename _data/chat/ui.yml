@@ -1,24 +1,11 @@
-# Strings de la interfaz del chat de /info/. Todo lo que el visitante lee y no
-# es contenido del grafo vive acá. Ver _data/chat/nodes/ para los nodos.
+# Strings de la interfaz de /info/. Ver _data/chat/nodes/referrer.yml para el
+# saludo contextual (única otra fuente de texto que sigue en uso — el resto
+# del grafo de tags quedó sin uso, ver HANDOFF.md).
 
-placeholder:
-  es: "Escribí lo que quieras…"
-  en: "Type anything…"
-
-typing:
-  es: "pensando"
-  en: "thinking"
-
-connect_error:
-  es: "No pude conectarme ahora. Escribime directo y lo vemos: hello@persn.net"
-  en: "Couldn't connect right now. Email me directly: hello@persn.net"
-
-# Intro sin referrer. Con referrer manda el campo `intro` del nodo referrer.*
-intro_default:
-  es: "Hola, soy Diego. Diseñador cross-media y artista visual, de Montevideo."
-  en: "Hi, I'm Diego. Cross-media designer and visual artist, based in Montevideo."
-
-# Nombre accesible de la fila de chips (lectores de pantalla).
-suggestions_label:
-  es: "Sugerencias"
-  en: "Suggestions"
+# About extendido: lo primero que ve un visitante frío (sin referrer). Se
+# tipea con el mismo ritmo que el resto (typeOut), no se muestra de una.
+# Párrafos separados por doble salto de línea (no es un array: acá un array
+# significaría "elegir variante al azar", como en `say` de los nodos).
+about_extended:
+  es: "Hola, soy Diego. Soy uruguayo, vivo en Montevideo. Lo visual y el código son los medios con los que me expreso.\n\nPodés llamarme diseñador si querés, pero me veo como algo más fluido: una mezcla de creador, estratega y constructor. Empecé en el diseño gráfico, después me metí a armar interfaces físicas para instrumentos musicales, y terminé programando experiencias digitales.\n\nArmé sistemas de diseño para organismos del Estado, acompañé a futuros diseñadores en la principal escuela de diseño de Uruguay, y le puse estructura al caos en productos fintech. Ya sea definiendo el alma de un producto o metiéndome en las tripas técnicas, me copa cruzar límites.\n\nCuando no estoy diseñando, ando explorando el cruce entre arte y tecnología: arte generativo con código, serigrafía, o imaginando mundos visuales. Creo que el buen diseño vive en la intersección medio caótica entre la lógica y lo sensible — ahí es donde mejor trabajo."
+  en: "Hi, I'm Diego. I'm a Uruguayan he/him living in Montevideo, Uruguay. Visuals and code are the mediums through which I express myself.\n\nYou can call me a Designer if you want, but I see myself as something more fluid—a hybrid of creator, strategist, and builder. My journey began with graphic design, morphed into crafting physical interfaces for musical instruments, and led me to code my way into digital experiences.\n\nI've shaped design systems for government agencies, mentored aspiring designers at Uruguay's top design school, and brought structure to chaos in fintech products. Whether it's defining a product's soul or digging into the technical guts, I thrive on crossing boundaries.\n\nWhen I'm not designing, I'm exploring the interplay of art and tech: creative coding, screen printing, or dreaming up visual worlds. I believe great design lives at the messy intersection of logic and feeling—and that's where I do my best work."

@@ -49,7 +49,7 @@ permalink: /archivo/:title/
 navigation:
   - title: /
     url: /
-  - title: /Info
+  - title: Info
     url: /info/
 
 # Nav categories
