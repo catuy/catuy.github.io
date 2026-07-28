@@ -781,6 +781,34 @@ tamaño propio, hereda el de `body`). El caption ahora suma esas dos
 propiedades a su `font-size: var(--font-size-s)` — mismo cuerpo de texto
 del sitio, en su variante chica.
 
+## Bug: sbdg.mp4 no cargaba (2026-07-29)
+
+Diego reportó que el video de SBDG no arrancaba al ampliar. Con `ffprobe`/
+un parser de boxes MP4 a mano se confirmó: de los 13 `.mp4` de la galería,
+**sbdg.mp4 era el único sin "faststart"** — su `moov` (atom de metadata:
+duración, tracks, códec) estaba al FINAL del archivo, después de 7MB de
+`mdat`, en vez de justo después de `ftyp` como los otros 12. Combinado con
+`preload="none"` (nada se descarga hasta ampliar, ver la sección de
+"Pool real de proyectos + soporte de video" más arriba), el navegador no
+tenía forma barata de encontrar el `moov` antes de poder arrancar —
+se colgaba o no reproducía, en vez de las descargas parciales normales que
+sí funcionan con el resto (confirmado con `curl -H "Range: ..."`: el
+servidor sí soporta range requests, el problema era el layout del
+archivo, no el server).
+
+**Fix**: remux sin recodificar — `ffmpeg -i sbdg.mp4 -c copy -movflags
++faststart sbdg.mp4` (mismo códec H.264, mismas dimensiones/duración,
+mismo tamaño en bytes, sólo se reordenan los boxes). Verificado leyendo
+los boxes top-level del archivo servido por Jekyll después del cambio:
+`ftyp, moov, free, mdat` — igual que los otros 12.
+
+**Nota al margen, no resuelta**: `sbdg-poster.jpg` son en realidad bytes
+PNG (no JPEG) pese a la extensión — el servidor lo manda con
+`Content-Type: image/jpeg`. Los navegadores suelen tolerar esto (sniffean
+el contenido real, no hay `X-Content-Type-Options: nosniff` acá), así que
+no se tocó — si en algún momento se sospecha de la portada de SBDG
+específicamente, este es el primer lugar para mirar.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
