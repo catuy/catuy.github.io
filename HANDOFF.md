@@ -830,6 +830,33 @@ containing block, ya que `.gallery-window` es `position: fixed`) da lo
 mismo que centrarlo respecto al viewport, sin tener que sacarlo de ese
 containing block ni tocar JS.
 
+## About extendido reescrito de punta a punta (2026-07-29)
+
+Diego reemplazó por completo `about_extended.en` (`_data/chat/ui.yml`) por
+un texto nuevo — no un ajuste sobre el anterior, sino otra bio: pasa de un
+tono informal con metáforas ("las tripas técnicas", "le puse estructura al
+caos") a uno de portfolio profesional, que nombra reconocimientos
+puntuales (Bienal de Arquitectura de Venecia, Bienal Iberoamericana de
+Diseño de Madrid, 30 Seconds Museum de Tokio) y el rol de docente adjunto
+en FADU. Pidió explícitamente que la traducción al español la hiciera yo
+a partir de ese inglés — antes, en la misma sesión, Diego había traído su
+propio borrador en español (sobre la versión VIEJA del about) pidiendo
+sólo ajustes de tono; ese plan quedó descartado sin aplicarse cuando trajo
+este texto en inglés nuevo, que reemplaza a los dos por completo.
+
+Traduje fiel al registro del nuevo inglés (profesional pero cálido), sin
+reinyectar las metáforas informales de la versión vieja — el pedido era
+traducir lo que Diego escribió, no reescribirlo. Mantuve voseo ("Podés..."
+no aparece en este texto, pero el resto del sitio sigue en voseo) y dejé
+"en Uruguay" en vez de nombrar "Universidad de la República" en el
+párrafo de FADU porque así lo dice el inglés fuente — no agregué datos que
+Diego no puso en esta versión.
+
+Verificado extrayendo el `<script id="chat-graph">` de `/info/` ya
+renderizado (parseado como JSON): los 4 párrafos de cada idioma llegan
+completos, sin que el em dash (" — "), los paréntesis de "(he/him)" o el
+apóstrofo de "I'm" rompan el string YAML entre comillas dobles.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
