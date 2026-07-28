@@ -468,6 +468,12 @@ body.layout-home .cursor-dot:not(.hint) {
   white-space: pre-wrap;
   word-break: break-word;
   font-size: var(--font-size-s);
+  // .gallery-window cuelga de document.body, no de .container (que es
+  // quien pone color: var(--color-primary) normalmente) — sin esto el
+  // caption hereda el negro por default del navegador en vez del primario
+  // ya elegido para la sesión (mismo motivo por el que los botones del
+  // header ya lo declaran explícito más abajo).
+  color: var(--color-primary);
 }
 // Bloquea y difumina todo lo demás mientras una ventana está expandida.
 // El fallback (navegadores sin backdrop-filter) es el tinte de background.
