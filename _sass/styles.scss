@@ -446,6 +446,19 @@ body.layout-home .cursor-dot:not(.hint) {
   max-width: none;
   max-height: none;
 }
+// Descripción del proyecto (comment en GALLERY_IMAGES) — sólo visible
+// ampliada, ver reveal()/expand()/collapse() en info-chat.html. Sin width
+// propio: hereda el ancho resuelto de la ventana igual que
+// .gallery-window-header (ninguno de los dos lo declara).
+.gallery-window-caption {
+  display: none;
+  padding: 10px var(--margin);
+  border-top: 1px solid var(--color-primary);
+  font-size: var(--font-size-s);
+}
+.gallery-window.expanded .gallery-window-caption {
+  display: block;
+}
 // Bloquea y difumina todo lo demás mientras una ventana está expandida.
 // El fallback (navegadores sin backdrop-filter) es el tinte de background.
 .gallery-backdrop {

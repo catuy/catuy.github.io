@@ -93,18 +93,27 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
 
   // Pool real de proyectos (reemplaza los 4 placeholders de prueba; Diego
   // sacó cafe/escobar/jacobin/leac/melu/prisma/seri3/criolla-2 de la
-  // selección original de 22 — quedan 14).
-  // `slug`/`label`/`comment` NO se usan por ahora (la galería es puramente
-  // visual: se apila sobre el about fijo, sin texto ni URL por proyecto) —
-  // quedan en los datos por si se retoma más adelante. `alt` es un mejor
-  // esfuerzo derivado del nombre de archivo para los proyectos sin texto
-  // verificado todavía (todos salvo Brecha y Monitor Cannabis, que reusan
-  // el comment ya redactado) — revisar si algún nombre/mayúscula no es el
-  // real (ej. sbdg: no se sabe si es sigla).
+  // selección original de 22 — quedan 14). `alt`/`label` y los `comment`
+  // que faltaban salieron de /Users/diego/www/cataldo-pages (otro repo,
+  // portfolio viejo de Diego) — texto en inglés ahí, adaptado acá a 1ª
+  // persona y traducido, mismo registro que ya tenían Brecha/Monitor
+  // Cannabis (los únicos 2 que ya traían comment antes de esto).
+  // `slug`/`label` NO se usan por ahora (la galería es puramente visual:
+  // se apila sobre el about fijo, sin URL por proyecto) — quedan en los
+  // datos por si se retoma más adelante. `comment` SÍ se usa ahora: es el
+  // caption que se ve sólo con la ventana ampliada (ver reveal()/CSS de
+  // `.gallery-window-caption`).
   // `poster`: portada estática de cada .mp4 (ver reveal()/expand()/
   // collapse() — sólo reproducen ampliados, en chico se ve la portada).
   var GALLERY_IMAGES = [
-    { src: '/assets/blogimages/tiles/atlas-1.mp4', poster: '/assets/blogimages/tiles/atlas-1-poster.jpg', alt: 'Atlas', slug: 'atlas', label: 'Atlas' },
+    {
+      src: '/assets/blogimages/tiles/atlas-1.mp4', poster: '/assets/blogimages/tiles/atlas-1-poster.jpg', alt: 'Atlas',
+      slug: 'atlas', label: 'Atlas',
+      comment: {
+        es: "Diseñé y desarrollé el sitio de Atlas, una empresa de desarrollo B2B.",
+        en: "I designed and built the website for Atlas, a B2B development company.",
+      },
+    },
     {
       src: '/assets/blogimages/tiles/brecha-1.mp4', poster: '/assets/blogimages/tiles/brecha-1-poster.jpg', alt: 'Semanario Brecha',
       slug: 'brecha', label: 'Brecha',
@@ -113,11 +122,46 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         en: "I redesigned Semanario Brecha's platform: mobile-first, for that independent Uruguayan outlet.",
       },
     },
-    { src: '/assets/blogimages/tiles/bus1.mp4', poster: '/assets/blogimages/tiles/bus1-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
-    { src: '/assets/blogimages/tiles/bus4.mp4', poster: '/assets/blogimages/tiles/bus4-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
-    { src: '/assets/blogimages/tiles/criolla-1.mp4', poster: '/assets/blogimages/tiles/criolla-1-poster.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
-    { src: '/assets/blogimages/tiles/goos.mp4', poster: '/assets/blogimages/tiles/goos-poster.jpg', alt: 'Goos', slug: 'goos', label: 'Goos' },
-    { src: '/assets/blogimages/tiles/hostburo-1.mp4', poster: '/assets/blogimages/tiles/hostburo-1-poster.jpg', alt: 'Hostburo', slug: 'hostburo', label: 'Hostburo' },
+    {
+      src: '/assets/blogimages/tiles/bus1.mp4', poster: '/assets/blogimages/tiles/bus1-poster.jpg', alt: 'Búsqueda',
+      slug: 'busqueda', label: 'Búsqueda',
+      comment: {
+        es: "Lideré la transformación digital de Búsqueda, uno de los medios de referencia política más importantes de Uruguay.",
+        en: "I led Búsqueda's digital transformation, one of Uruguay's leading agenda-setting media outlets.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/bus4.mp4', poster: '/assets/blogimages/tiles/bus4-poster.jpg', alt: 'Búsqueda',
+      slug: 'busqueda', label: 'Búsqueda',
+      comment: {
+        es: "Lideré la transformación digital de Búsqueda, uno de los medios de referencia política más importantes de Uruguay.",
+        en: "I led Búsqueda's digital transformation, one of Uruguay's leading agenda-setting media outlets.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/criolla-1.mp4', poster: '/assets/blogimages/tiles/criolla-1-poster.jpg', alt: 'Criolla Films',
+      slug: 'criolla-films', label: 'Criolla Films',
+      comment: {
+        es: "Diseñé la identidad y el sitio de Criolla Films, una productora audiovisual uruguaya.",
+        en: "I designed the identity and website for Criolla Films, a Uruguayan film production company.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/goos.mp4', poster: '/assets/blogimages/tiles/goos-poster.jpg', alt: 'UNESCO GOOS',
+      slug: 'unesco-goos', label: 'UNESCO GOOS',
+      comment: {
+        es: "Diseñé y desarrollé la plataforma interactiva de datos oceánicos de UNESCO-GOOS, con su sistema de diseño y visualizaciones en React.",
+        en: "I designed and built UNESCO-GOOS's interactive ocean data platform, including its design system and React-based visualizations.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/hostburo-1.mp4', poster: '/assets/blogimages/tiles/hostburo-1-poster.jpg', alt: 'HostBüro',
+      slug: 'hostburo', label: 'HostBüro',
+      comment: {
+        es: "Diseñé la identidad y el sitio de HostBüro, una empresa de hosting.",
+        en: "I designed the identity and website for HostBüro, a hosting company.",
+      },
+    },
     {
       src: '/assets/blogimages/tiles/monitor-3.mp4', poster: '/assets/blogimages/tiles/monitor-3-poster.jpg', alt: 'Monitor Cannabis',
       slug: 'monitor-cannabis', label: 'Monitor Cannabis',
@@ -126,12 +170,54 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         en: "I built the identity and platform for Monitor Cannabis, tracking Uruguay's cannabis regulation.",
       },
     },
-    { src: '/assets/blogimages/tiles/pop.webp', alt: 'Pop', slug: 'pop', label: 'Pop' },
-    { src: '/assets/blogimages/tiles/reboot.webp', alt: 'Reboot', slug: 'reboot', label: 'Reboot' },
-    { src: '/assets/blogimages/tiles/sbdg.mp4', poster: '/assets/blogimages/tiles/sbdg-poster.jpg', alt: 'Sbdg', slug: 'sbdg', label: 'Sbdg' },
-    { src: '/assets/blogimages/tiles/seri1.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
-    { src: '/assets/blogimages/tiles/seri2.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
-    { src: '/assets/blogimages/tiles/shibuya-1.mp4', poster: '/assets/blogimages/tiles/shibuya-1-poster.jpg', alt: 'Shibuya', slug: 'shibuya', label: 'Shibuya' },
+    {
+      src: '/assets/blogimages/tiles/pop.webp', alt: 'Pop',
+      slug: 'pop', label: 'Pop',
+      comment: {
+        es: "Diseñé la identidad visual de Pop, una franquicia.",
+        en: "I designed the visual identity for Pop, a franchise.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/reboot.webp', alt: 'Reboot',
+      slug: 'reboot', label: 'Reboot',
+      comment: {
+        es: "Formé parte del equipo curatorial que representó a Uruguay en la 15ª Bienal de Arquitectura de Venecia.",
+        en: "I was part of the curatorial team representing Uruguay at the 15th Venice Architecture Biennale.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/sbdg.mp4', poster: '/assets/blogimages/tiles/sbdg-poster.jpg', alt: 'SBDG',
+      slug: 'sbdg', label: 'SBDG',
+      comment: {
+        es: "Diseñé la plataforma interna de SBDG, una holding estadounidense que cotiza en bolsa, para agilizar sus procesos operativos.",
+        en: "I designed the internal platform for SBDG, a publicly traded US holding company, to streamline their operational workflows.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/seri1.png', alt: 'Serigraphic Work',
+      slug: 'serigraphic-work', label: 'Serigraphic Work',
+      comment: {
+        es: "Hice serigrafías premiadas en las bienales de Taiwán y Portugal.",
+        en: "I made screen prints awarded at the Taiwan and Portugal biennials.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/seri2.png', alt: 'Serigraphic Work',
+      slug: 'serigraphic-work', label: 'Serigraphic Work',
+      comment: {
+        es: "Hice serigrafías premiadas en las bienales de Taiwán y Portugal.",
+        en: "I made screen prints awarded at the Taiwan and Portugal biennials.",
+      },
+    },
+    {
+      src: '/assets/blogimages/tiles/shibuya-1.mp4', poster: '/assets/blogimages/tiles/shibuya-1-poster.jpg', alt: 'Neo Shibuya TV',
+      slug: 'neo-shibuya-tv', label: 'Neo Shibuya TV',
+      comment: {
+        es: "Uno de mis proyectos de creative coding se exhibió en Shibuya, Tokio, como parte del NEO Shibuya TV Art Project.",
+        en: "One of my creative coding projects was exhibited in Shibuya, Tokyo, as part of the NEO Shibuya TV Art Project.",
+      },
+    },
   ];
 
   // Misma mecánica que assets/script.js (detalle de proyecto, hoy oculto
@@ -352,6 +438,16 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       }
       pic.src = img.src;
       win.appendChild(pic);
+
+      // Sólo visible ampliada (ver .gallery-window-caption en styles.scss,
+      // atado a .expanded) — texto fijo al crear la ventana, no hace falta
+      // tocarlo en expand()/collapse().
+      if (img.comment) {
+        var caption = document.createElement('div');
+        caption.className = 'gallery-window-caption';
+        caption.textContent = t(img.comment);
+        win.appendChild(caption);
+      }
 
       expandBtn.addEventListener('click', function () {
         if (win.classList.contains('expanded')) collapse(win, pic, header, expandBtn);

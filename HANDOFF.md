@@ -674,23 +674,84 @@ queda en **14 entradas**. Los archivos (`.mp4`/`.webp`/`.jpg` y los
 que los placeholders viejos (`anii.jpg`/`isp.jpg`/etc., ver más arriba):
 quedan sin uso en `assets/blogimages/tiles/` por si se reincorporan.
 
+## Descripciones de proyecto en el lightbox (2026-07-29)
+
+Diego pidió mostrar texto por proyecto, pero acotado: **sólo con la
+ventana ampliada**, no en la vista chica apilada (la galería sigue siendo
+"puramente visual" en su estado normal — ver la decisión del mismo nombre
+más arriba, que sigue vigente para el estado chico). Pidió reusar las
+descripciones ya escritas para estos mismos proyectos en otro repo suyo,
+`/Users/diego/www/cataldo-pages` (portfolio Jekyll separado), en vez de
+redactar de cero.
+
+Ese repo tiene copy de los 12 proyectos (front-matter `description` de
+`_posts/*.md`, o `_data/slideshow.yml` cuando no hay post) pero **todo en
+inglés, en 3ª persona** (tono de portfolio profesional). El `comment` que
+ya existía en este sitio para 2 proyectos (Brecha, Monitor Cannabis, de
+antes de este pivote) está en **1ª persona, bilingüe es/en** — mismo
+registro que el resto del sitio (`about_extended`, la bio de `me.yml`).
+Decisiones de Diego: adaptar los 10 comments que faltaban a esa voz ya
+establecida (no traducir literal), y para HostBüro usar la versión de
+`slideshow.yml` ("empresa de hosting") — el post de cataldo-pages tenía
+una descripción calcada por error del proyecto vecino, Monitor Cannabis
+("plataforma de política de cannabis").
+
+De paso, cataldo-pages dio los nombres reales de los proyectos que hasta
+ahora tenían `alt`/`label`/`slug` adivinados por nombre de archivo — se
+corrigieron: `bus` → **Búsqueda**, `criolla` → **Criolla Films**, `goos` →
+**UNESCO GOOS**, `hostburo` → **HostBüro**, `sbdg` → **SBDG**, `seri` →
+**Serigraphic Work**, `shibuya` → **Neo Shibuya TV** (`atlas`, `pop`,
+`reboot`, `monitor-cannabis`, `brecha` ya estaban bien). Con esto se cierra
+el pendiente de "confirmar alt/label" que estaba en Próximos Pasos.
+
+**Implementación** (`_includes/info-chat.html`): las 14 entradas de
+`GALLERY_IMAGES` tienen `comment` ahora (antes sólo 2). En `reveal()`, si
+`img.comment` existe, se crea un `<div class="gallery-window-caption">`
+con `t(img.comment)` (mismo helper de idioma que ya usa el narrador de
+arriba) y se apila como tercer hijo de la ventana, después de la
+imagen/video. El texto se fija una sola vez al crear la ventana —
+`expand()`/`collapse()` no se tocaron: la visibilidad del caption es puro
+CSS, atado a la misma clase `.expanded` que esas dos funciones ya
+togglean (`.gallery-window-caption { display: none }` /
+`.gallery-window.expanded .gallery-window-caption { display: block }` en
+`_sass/styles.scss`). Sin `width` propio — hereda el ancho resuelto de la
+ventana igual que ya hace `.gallery-window-header`, que tampoco lo
+declara.
+
+**Simplificación consciente**: el cálculo de centrado de `expand()`
+(`targetTop`) sigue basándose sólo en alto de imagen + header, sin sumar
+el alto del caption — con un caption corto (1 oración) el corrimiento es
+mínimo (~20-40px hacia abajo del centro real), mismo trade-off que usan la
+mayoría de lightboxes con caption (la imagen se centra, el caption cuelga
+debajo). No se tocó esa fórmula para no encadenar un problema de timing
+nuevo (medir la altura de un elemento recién hecho visible antes de que la
+imagen tenga su tamaño final).
+
+Verificado con un harness ad-hoc (Node): las 14 ventanas generan caption
+con el texto de `t(img.comment)`, confirmado en es y en. **Bug del
+harness, no del sitio**, encontrado y corregido en el camino: Node 23+
+trae su propio global `navigator` de sólo lectura (compat con APIs web,
+`navigator.language` fijo en `"en-US"`) que pisaba en silencio el stub
+(`global.navigator = {...}` no hacía nada, asignación a un accessor sin
+setter) — las dos corridas (es/en) daban el mismo texto en inglés hasta
+que se cambió a `Object.defineProperty(global, 'navigator', {value:...,
+configurable:true})`. No afecta el sitio real (corre en navegadores de
+verdad, con `navigator.language` normal) — sólo a este harness en
+particular, ninguno de los anteriores en esta sesión necesitaba
+`navigator` con un valor específico.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
-1. **Confirmar alt/label de los proyectos nuevos** (`atlas`, `bus`,
-   `criolla`, `goos`, `hostburo`, `pop`, `reboot`, `sbdg`, `seri`, `shibuya`
-   en `GALLERY_IMAGES`, `_includes/info-chat.html`) — hoy son
-   capitalización literal del nombre de archivo, no texto confirmado por
-   Diego.
-2. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
+1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
    (contenido del chat viejo, hoy sin uso: bio larga en `me.yml`, respuestas
    de `project.yml`, etc.) — reciclar en el nuevo sistema o borrar.
-3. **Decidir qué hacer con `worker/worker.js` y `assets/chat-patterns.js`**:
+2. **Decidir qué hacer con `worker/worker.js` y `assets/chat-patterns.js`**:
    ya no los llama nadie desde el cliente. ¿Se dejan deployados/en el repo
    por si se retoma el chat, o se dan de baja?
-4. Pulir copy/detalles del texto introductorio y de los comentarios por
+3. Pulir copy/detalles del texto introductorio y de los comentarios por
    proyecto (esta pasada fue explícitamente "la cáscara, después
    refinamos").
-5. Cuando esté: mergear `feature/info-gallery` (ex `feature/synth-chat`,
+4. Cuando esté: mergear `feature/info-gallery` (ex `feature/synth-chat`,
    renombrada el 2026-07-29 tras sacar el chat agéntico) → `main` (worker
    excluido del
    build si sigue existiendo, `perfil.md` ya servido igual — sigue siendo
