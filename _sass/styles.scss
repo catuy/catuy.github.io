@@ -434,13 +434,15 @@ body.layout-home .cursor-dot:not(.hint) {
 .gallery-window-expand {
   left: 0;
 }
-.gallery-window img {
+.gallery-window img,
+.gallery-window video {
   display: block;
   max-width: 45vw;
   max-height: 70vh;
 }
 // Expandida: sin los caps normales, el tamaño lo define expand() en JS.
-.gallery-window.expanded img {
+.gallery-window.expanded img,
+.gallery-window.expanded video {
   max-width: none;
   max-height: none;
 }

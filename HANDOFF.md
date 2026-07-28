@@ -560,13 +560,53 @@ dependía de poder ver el hilo anterior para tener sentido).
   agotarse también da sólo opciones principales. Random-walk de 1000 clicks
   sigue sin filas vacías.
 
-## Próximos pasos (post-2026-07-28, sobre el sistema NUEVO)
+## Pool real de proyectos + soporte de video (2026-07-29)
 
-1. **Definir el pool real de proyectos** para `GALLERY_IMAGES` en
-   `_includes/info-chat.html` (hoy: 4 tiles placeholder — Brecha, ANII,
-   Monitor Cannabis, ISP). Reusar texto verificado de `SPECIFIC_PROJECTS` en
-   `assets/chat-patterns.js` para más proyectos (UNESCO, ClassWallet, BID) si
-   se suman, y más imágenes de `/assets/blogimages/tiles/`.
+Diego trajo 22 archivos a `/assets/blogimages/tiles/` (12 `.mp4`, resto
+`.webp/.png/.jpg`) y `GALLERY_IMAGES` en `_includes/info-chat.html` pasó de
+los 4 placeholders (Brecha, ANII, Monitor Cannabis, ISP) a esos 22 —
+**ANII e ISP se sacaron** (pidió Diego, no tenían reemplazo nuevo); Brecha
+y Monitor Cannabis SÍ tienen reemplazo (`brecha-1.mp4`, `monitor-3.mp4`) y
+conservan el `comment` ya verificado de antes. El resto (`atlas`, `bus`,
+`cafe`, `criolla`, `escobar`, `goos`, `hostburo`, `jacobin`, `leac`, `melu`,
+`pop`, `prisma`, `reboot`, `sbdg`, `seri`, `shibuya`) no tiene `comment`
+todavía (es dato muerto hoy, no se usa en pantalla) y su `alt` es un mejor
+esfuerzo capitalizado a partir del nombre de archivo — **revisar mayúsculas
+si alguno es sigla** (ej. `sbdg`, `leac`). `criolla` (2 archivos) y `seri`
+(3 archivos) se muestran como ventanas separadas, una por archivo — no hay
+agrupación por proyecto en la cola.
+
+**El código de `reveal()` sólo creaba `<img>`** — se agregó una rama para
+`.mp4`: `isVideo(src)` detecta la extensión, y si es video se crea un
+`<video autoplay loop muted playsInline>` en vez de `<img>` (mismo
+comportamiento "en loop, sin sonido" que ya tenían los `.gif`). El
+`recenter` (centrar la ventana en el punto de click una vez se conoce el
+tamaño real) usa `'loadeddata'` para video en vez de `onload` de `<img>`.
+`expand()`/`collapse()` (el lightbox) usaban `pic.naturalWidth/Height`
+directo — se generalizó a `mediaSize(pic)`, que devuelve
+`videoWidth/videoHeight` para `<video>` y `naturalWidth/naturalHeight` para
+`<img>`. CSS: `.gallery-window img` y `.gallery-window.expanded img` pasaron
+a incluir también `video` en el selector (mismos caps de tamaño).
+
+Verificado con un harness ad-hoc (Node, sin navegador — mismo patrón de
+siempre): extrae el `<script>` real de `/info/` (cuidado, la página tiene
+varios `<script>` — hay que filtrar por contenido, no tomar "el último"; el
+de `footer.html` también menciona `startProjectGallery` en un comentario),
+stubea DOM/`$`/`sessionStorage`, dispara 22 clicks y confirma que las 22
+ventanas se crean en el orden de `GALLERY_IMAGES`, que cada `.mp4` resulta
+en un `<video>` con `autoplay`/`loop`/`muted` en `true` y el resto en
+`<img>` (13 video / 9 img, cuenta real de la mezcla). No verificable fuera
+de un navegador real: que los `.mp4` efectivamente reproduzcan (autoplay
+con gesto de click previo) y que `videoWidth`/`videoHeight` estén poblados
+a tiempo para el cálculo de `expand()` en redes lentas.
+
+## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
+
+1. **Confirmar alt/label de los proyectos nuevos** (`atlas`, `bus`, `cafe`,
+   `criolla`, `escobar`, `goos`, `hostburo`, `jacobin`, `leac`, `melu`,
+   `pop`, `prisma`, `reboot`, `sbdg`, `seri`, `shibuya` en `GALLERY_IMAGES`,
+   `_includes/info-chat.html`) — hoy son capitalización literal del nombre
+   de archivo, no texto confirmado por Diego.
 2. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
    (contenido del chat viejo, hoy sin uso: bio larga en `me.yml`, respuestas
    de `project.yml`, etc.) — reciclar en el nuevo sistema o borrar.
@@ -576,7 +616,9 @@ dependía de poder ver el hilo anterior para tener sentido).
 4. Pulir copy/detalles del texto introductorio y de los comentarios por
    proyecto (esta pasada fue explícitamente "la cáscara, después
    refinamos").
-5. Cuando esté: mergear `feature/synth-chat` → `main` (worker excluido del
+5. Cuando esté: mergear `feature/info-gallery` (ex `feature/synth-chat`,
+   renombrada el 2026-07-29 tras sacar el chat agéntico) → `main` (worker
+   excluido del
    build si sigue existiendo, `perfil.md` ya servido igual — sigue siendo
    útil independientemente del chat, es el `/perfil.md` público).
 

@@ -91,46 +91,51 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   //  Galería de proyectos: click en cualquier lado apila una ventana
   //  ------------------------------------------
 
-  // Placeholder hasta que Diego defina el pool real de 3-4 proyectos (ver
-  // portfolio.yml, sin uso por ahora): reusa tiles y texto ya verificados
-  // (SPECIFIC_PROJECTS en assets/chat-patterns.js, o el _post real para
-  // ISP). Reemplazar acá cuando esté el pool. `slug`/`label`/`comment` NO
-  // se usan por ahora (la galería es puramente visual: se apila sobre el
-  // about fijo, sin texto ni URL por proyecto) — quedan en los datos por si
-  // se retoma más adelante.
+  // Pool real de proyectos (reemplaza los 4 placeholders de prueba).
+  // `slug`/`label`/`comment` NO se usan por ahora (la galería es puramente
+  // visual: se apila sobre el about fijo, sin texto ni URL por proyecto) —
+  // quedan en los datos por si se retoma más adelante. `alt` es un mejor
+  // esfuerzo derivado del nombre de archivo para los proyectos sin texto
+  // verificado todavía (todos salvo Brecha y Monitor Cannabis, que reusan
+  // el comment ya redactado) — revisar si algún nombre/mayúscula no es el
+  // real (ej. sbdg, leac: no se sabe si son sigla).
   var GALLERY_IMAGES = [
+    { src: '/assets/blogimages/tiles/atlas-1.mp4', alt: 'Atlas', slug: 'atlas', label: 'Atlas' },
     {
-      src: '/assets/blogimages/tiles/brecha.gif', alt: 'Semanario Brecha',
+      src: '/assets/blogimages/tiles/brecha-1.mp4', alt: 'Semanario Brecha',
       slug: 'brecha', label: 'Brecha',
       comment: {
         es: "Rediseñé la plataforma del Semanario Brecha: mobile-first, para ese medio independiente uruguayo.",
         en: "I redesigned Semanario Brecha's platform: mobile-first, for that independent Uruguayan outlet.",
       },
     },
+    { src: '/assets/blogimages/tiles/bus1.mp4', alt: 'Bus', slug: 'bus', label: 'Bus' },
+    { src: '/assets/blogimages/tiles/bus4.mp4', alt: 'Bus', slug: 'bus', label: 'Bus' },
+    { src: '/assets/blogimages/tiles/cafe-1.mp4', alt: 'Café', slug: 'cafe', label: 'Café' },
+    { src: '/assets/blogimages/tiles/criolla-1.mp4', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
+    { src: '/assets/blogimages/tiles/criolla-2.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
+    { src: '/assets/blogimages/tiles/escobar.webp', alt: 'Escobar', slug: 'escobar', label: 'Escobar' },
+    { src: '/assets/blogimages/tiles/goos.mp4', alt: 'Goos', slug: 'goos', label: 'Goos' },
+    { src: '/assets/blogimages/tiles/hostburo-1.mp4', alt: 'Hostburo', slug: 'hostburo', label: 'Hostburo' },
+    { src: '/assets/blogimages/tiles/jacobin-2.mp4', alt: 'Jacobin', slug: 'jacobin', label: 'Jacobin' },
+    { src: '/assets/blogimages/tiles/leac.webp', alt: 'Leac', slug: 'leac', label: 'Leac' },
+    { src: '/assets/blogimages/tiles/melu.webp', alt: 'Melu', slug: 'melu', label: 'Melu' },
     {
-      src: '/assets/blogimages/tiles/anii.jpg', alt: 'ANII',
-      slug: 'anii', label: 'ANII',
-      comment: {
-        es: "Fui consultor senior de UX de la ANII casi diez años: armé el primer sistema de diseño de un organismo del Estado uruguayo.",
-        en: "I was ANII's senior UX consultant for almost ten years: I built the first design system for a Uruguayan state agency.",
-      },
-    },
-    {
-      src: '/assets/blogimages/tiles/monitor.gif', alt: 'Monitor Cannabis',
+      src: '/assets/blogimages/tiles/monitor-3.mp4', alt: 'Monitor Cannabis',
       slug: 'monitor-cannabis', label: 'Monitor Cannabis',
       comment: {
         es: "Hice la identidad y la plataforma de Monitor Cannabis, el monitoreo de la regulación del cannabis en Uruguay.",
         en: "I built the identity and platform for Monitor Cannabis, tracking Uruguay's cannabis regulation.",
       },
     },
-    {
-      src: '/assets/blogimages/tiles/isp.jpg', alt: 'Innovación en Servicios Públicos',
-      slug: 'isp', label: 'ISP',
-      comment: {
-        es: "El portal de Innovación en Servicios Públicos, un programa de la ANII y BID Lab: lo diseñé, desarrollé e implementé de punta a punta.",
-        en: "The Innovation in Public Services portal, an ANII and IDB Lab program: I designed, built and implemented it end to end.",
-      },
-    },
+    { src: '/assets/blogimages/tiles/pop.webp', alt: 'Pop', slug: 'pop', label: 'Pop' },
+    { src: '/assets/blogimages/tiles/prisma-1.mp4', alt: 'Prisma', slug: 'prisma', label: 'Prisma' },
+    { src: '/assets/blogimages/tiles/reboot.webp', alt: 'Reboot', slug: 'reboot', label: 'Reboot' },
+    { src: '/assets/blogimages/tiles/sbdg.mp4', alt: 'Sbdg', slug: 'sbdg', label: 'Sbdg' },
+    { src: '/assets/blogimages/tiles/seri1.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
+    { src: '/assets/blogimages/tiles/seri2.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
+    { src: '/assets/blogimages/tiles/seri3.jpg', alt: 'Seri', slug: 'seri', label: 'Seri' },
+    { src: '/assets/blogimages/tiles/shibuya-1.mp4', alt: 'Shibuya', slug: 'shibuya', label: 'Shibuya' },
   ];
 
   // Misma mecánica que assets/script.js (detalle de proyecto, hoy oculto
@@ -189,13 +194,27 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       return !!target.closest('a, button, input');
     }
 
+    function isVideo(src) {
+      return /\.mp4$/i.test(src);
+    }
+
+    // Tamaño real del media ya cargado: naturalWidth/Height para <img>,
+    // videoWidth/Height para <video> (mismo propósito, distinto nombre de
+    // propiedad según el tag).
+    function mediaSize(pic) {
+      return pic.tagName === 'VIDEO'
+        ? { w: pic.videoWidth, h: pic.videoHeight }
+        : { w: pic.naturalWidth, h: pic.naturalHeight };
+    }
+
     // Ampliar/achicar estilo lightbox: centra y agranda hasta 90vw/90vh sin
     // pasar el tamaño natural de la imagen (se calcula una sola vez, no se
     // lee el layout a mitad de la transición CSS), bloquea y difumina el
     // fondo con un backdrop, y guarda posición/tamaño de origen para volver
     // exacto (aunque la ventana se haya arrastrado antes de expandir).
     function expand(win, pic, header, expandBtn) {
-      var naturalW = pic.naturalWidth, naturalH = pic.naturalHeight;
+      var size = mediaSize(pic);
+      var naturalW = size.w, naturalH = size.h;
       var scale = Math.min(1, (window.innerWidth * 0.9) / naturalW, (window.innerHeight * 0.9) / naturalH);
       var targetImgW = naturalW * scale;
       var targetImgH = naturalH * scale;
@@ -288,13 +307,23 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       closeBtn.textContent = '×';
       header.appendChild(closeBtn);
 
-      var pic = document.createElement('img');
-      pic.src = img.src;
-      pic.alt = img.alt;
-      pic.onload = function () {
+      var video = isVideo(img.src);
+      var pic = document.createElement(video ? 'video' : 'img');
+      var recenter = function () {
         win.style.left = (ev.clientX - win.offsetWidth / 2) + 'px';
         win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
       };
+      if (video) {
+        pic.autoplay = true;
+        pic.loop = true;
+        pic.muted = true;
+        pic.playsInline = true;
+        pic.addEventListener('loadeddata', recenter);
+      } else {
+        pic.alt = img.alt;
+        pic.onload = recenter;
+      }
+      pic.src = img.src;
       win.appendChild(pic);
 
       expandBtn.addEventListener('click', function () {
