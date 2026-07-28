@@ -91,18 +91,18 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   //  Galería de proyectos: click en cualquier lado apila una ventana
   //  ------------------------------------------
 
-  // Pool real de proyectos (reemplaza los 4 placeholders de prueba).
+  // Pool real de proyectos (reemplaza los 4 placeholders de prueba; Diego
+  // sacó cafe/escobar/jacobin/leac/melu/prisma/seri3 de la selección
+  // original de 22 — quedan 15).
   // `slug`/`label`/`comment` NO se usan por ahora (la galería es puramente
   // visual: se apila sobre el about fijo, sin texto ni URL por proyecto) —
   // quedan en los datos por si se retoma más adelante. `alt` es un mejor
   // esfuerzo derivado del nombre de archivo para los proyectos sin texto
   // verificado todavía (todos salvo Brecha y Monitor Cannabis, que reusan
   // el comment ya redactado) — revisar si algún nombre/mayúscula no es el
-  // real (ej. sbdg, leac: no se sabe si son sigla).
-  // `poster` (pendiente, Diego va a pasar portadas estáticas): sólo aplica
-  // a los .mp4 — sin eso, esa ventana no tiene tamaño natural conocido (no
-  // se descarga el video hasta ampliar, ver reveal()) y arranca sin recentrar
-  // en el punto de click, ni portada visible (queda negra hasta ampliar).
+  // real (ej. sbdg: no se sabe si es sigla).
+  // `poster`: portada estática de cada .mp4 (ver reveal()/expand()/
+  // collapse() — sólo reproducen ampliados, en chico se ve la portada).
   var GALLERY_IMAGES = [
     { src: '/assets/blogimages/tiles/atlas-1.mp4', poster: '/assets/blogimages/tiles/atlas-1-poster.jpg', alt: 'Atlas', slug: 'atlas', label: 'Atlas' },
     {
@@ -115,15 +115,10 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     },
     { src: '/assets/blogimages/tiles/bus1.mp4', poster: '/assets/blogimages/tiles/bus1-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
     { src: '/assets/blogimages/tiles/bus4.mp4', poster: '/assets/blogimages/tiles/bus4-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
-    { src: '/assets/blogimages/tiles/cafe-1.mp4', poster: '/assets/blogimages/tiles/cafe-1-poster.jpg', alt: 'Café', slug: 'cafe', label: 'Café' },
     { src: '/assets/blogimages/tiles/criolla-1.mp4', poster: '/assets/blogimages/tiles/criolla-1-poster.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
     { src: '/assets/blogimages/tiles/criolla-2.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
-    { src: '/assets/blogimages/tiles/escobar.webp', alt: 'Escobar', slug: 'escobar', label: 'Escobar' },
     { src: '/assets/blogimages/tiles/goos.mp4', poster: '/assets/blogimages/tiles/goos-poster.jpg', alt: 'Goos', slug: 'goos', label: 'Goos' },
     { src: '/assets/blogimages/tiles/hostburo-1.mp4', poster: '/assets/blogimages/tiles/hostburo-1-poster.jpg', alt: 'Hostburo', slug: 'hostburo', label: 'Hostburo' },
-    { src: '/assets/blogimages/tiles/jacobin-2.mp4', poster: '/assets/blogimages/tiles/jacobin-2-poster.jpg', alt: 'Jacobin', slug: 'jacobin', label: 'Jacobin' },
-    { src: '/assets/blogimages/tiles/leac.webp', alt: 'Leac', slug: 'leac', label: 'Leac' },
-    { src: '/assets/blogimages/tiles/melu.webp', alt: 'Melu', slug: 'melu', label: 'Melu' },
     {
       src: '/assets/blogimages/tiles/monitor-3.mp4', poster: '/assets/blogimages/tiles/monitor-3-poster.jpg', alt: 'Monitor Cannabis',
       slug: 'monitor-cannabis', label: 'Monitor Cannabis',
@@ -133,12 +128,10 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       },
     },
     { src: '/assets/blogimages/tiles/pop.webp', alt: 'Pop', slug: 'pop', label: 'Pop' },
-    { src: '/assets/blogimages/tiles/prisma-1.mp4', poster: '/assets/blogimages/tiles/prisma-1-poster.jpg', alt: 'Prisma', slug: 'prisma', label: 'Prisma' },
     { src: '/assets/blogimages/tiles/reboot.webp', alt: 'Reboot', slug: 'reboot', label: 'Reboot' },
     { src: '/assets/blogimages/tiles/sbdg.mp4', poster: '/assets/blogimages/tiles/sbdg-poster.jpg', alt: 'Sbdg', slug: 'sbdg', label: 'Sbdg' },
     { src: '/assets/blogimages/tiles/seri1.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
     { src: '/assets/blogimages/tiles/seri2.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
-    { src: '/assets/blogimages/tiles/seri3.jpg', alt: 'Seri', slug: 'seri', label: 'Seri' },
     { src: '/assets/blogimages/tiles/shibuya-1.mp4', poster: '/assets/blogimages/tiles/shibuya-1-poster.jpg', alt: 'Shibuya', slug: 'shibuya', label: 'Shibuya' },
   ];
 

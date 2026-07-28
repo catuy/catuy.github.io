@@ -665,13 +665,22 @@ JPG en este harness Node).
      `collapse()`, y que cerrar una ampliada (en vez de achicarla) deja
      `reveal()` funcionando de nuevo en el click siguiente.
 
+**Curación del pool, mismo día**: Diego sacó 7 de los 22 proyectos —
+`cafe`, `escobar`, `jacobin`, `leac`, `melu`, `prisma` (completos) y
+`seri3` (sólo esa imagen; `seri1`/`seri2` quedan). `GALLERY_IMAGES` en
+`_includes/info-chat.html` queda en **15 entradas**. Los archivos
+(`.mp4`/`.webp`/`.jpg` y los `-poster.jpg` correspondientes) NO se
+borraron del repo — mismo criterio que los placeholders viejos
+(`anii.jpg`/`isp.jpg`/etc., ver más arriba): quedan sin uso en
+`assets/blogimages/tiles/` por si se reincorporan.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
-1. **Confirmar alt/label de los proyectos nuevos** (`atlas`, `bus`, `cafe`,
-   `criolla`, `escobar`, `goos`, `hostburo`, `jacobin`, `leac`, `melu`,
-   `pop`, `prisma`, `reboot`, `sbdg`, `seri`, `shibuya` en `GALLERY_IMAGES`,
-   `_includes/info-chat.html`) — hoy son capitalización literal del nombre
-   de archivo, no texto confirmado por Diego.
+1. **Confirmar alt/label de los proyectos nuevos** (`atlas`, `bus`,
+   `criolla`, `goos`, `hostburo`, `pop`, `reboot`, `sbdg`, `seri`, `shibuya`
+   en `GALLERY_IMAGES`, `_includes/info-chat.html`) — hoy son
+   capitalización literal del nombre de archivo, no texto confirmado por
+   Diego.
 2. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
    (contenido del chat viejo, hoy sin uso: bio larga en `me.yml`, respuestas
    de `project.yml`, etc.) — reciclar en el nuevo sistema o borrar.
