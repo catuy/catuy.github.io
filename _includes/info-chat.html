@@ -99,29 +99,33 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   // verificado todavía (todos salvo Brecha y Monitor Cannabis, que reusan
   // el comment ya redactado) — revisar si algún nombre/mayúscula no es el
   // real (ej. sbdg, leac: no se sabe si son sigla).
+  // `poster` (pendiente, Diego va a pasar portadas estáticas): sólo aplica
+  // a los .mp4 — sin eso, esa ventana no tiene tamaño natural conocido (no
+  // se descarga el video hasta ampliar, ver reveal()) y arranca sin recentrar
+  // en el punto de click, ni portada visible (queda negra hasta ampliar).
   var GALLERY_IMAGES = [
-    { src: '/assets/blogimages/tiles/atlas-1.mp4', alt: 'Atlas', slug: 'atlas', label: 'Atlas' },
+    { src: '/assets/blogimages/tiles/atlas-1.mp4', poster: '/assets/blogimages/tiles/atlas-1-poster.jpg', alt: 'Atlas', slug: 'atlas', label: 'Atlas' },
     {
-      src: '/assets/blogimages/tiles/brecha-1.mp4', alt: 'Semanario Brecha',
+      src: '/assets/blogimages/tiles/brecha-1.mp4', poster: '/assets/blogimages/tiles/brecha-1-poster.jpg', alt: 'Semanario Brecha',
       slug: 'brecha', label: 'Brecha',
       comment: {
         es: "Rediseñé la plataforma del Semanario Brecha: mobile-first, para ese medio independiente uruguayo.",
         en: "I redesigned Semanario Brecha's platform: mobile-first, for that independent Uruguayan outlet.",
       },
     },
-    { src: '/assets/blogimages/tiles/bus1.mp4', alt: 'Bus', slug: 'bus', label: 'Bus' },
-    { src: '/assets/blogimages/tiles/bus4.mp4', alt: 'Bus', slug: 'bus', label: 'Bus' },
-    { src: '/assets/blogimages/tiles/cafe-1.mp4', alt: 'Café', slug: 'cafe', label: 'Café' },
-    { src: '/assets/blogimages/tiles/criolla-1.mp4', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
+    { src: '/assets/blogimages/tiles/bus1.mp4', poster: '/assets/blogimages/tiles/bus1-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
+    { src: '/assets/blogimages/tiles/bus4.mp4', poster: '/assets/blogimages/tiles/bus4-poster.jpg', alt: 'Bus', slug: 'bus', label: 'Bus' },
+    { src: '/assets/blogimages/tiles/cafe-1.mp4', poster: '/assets/blogimages/tiles/cafe-1-poster.jpg', alt: 'Café', slug: 'cafe', label: 'Café' },
+    { src: '/assets/blogimages/tiles/criolla-1.mp4', poster: '/assets/blogimages/tiles/criolla-1-poster.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
     { src: '/assets/blogimages/tiles/criolla-2.jpg', alt: 'Criolla', slug: 'criolla', label: 'Criolla' },
     { src: '/assets/blogimages/tiles/escobar.webp', alt: 'Escobar', slug: 'escobar', label: 'Escobar' },
-    { src: '/assets/blogimages/tiles/goos.mp4', alt: 'Goos', slug: 'goos', label: 'Goos' },
-    { src: '/assets/blogimages/tiles/hostburo-1.mp4', alt: 'Hostburo', slug: 'hostburo', label: 'Hostburo' },
-    { src: '/assets/blogimages/tiles/jacobin-2.mp4', alt: 'Jacobin', slug: 'jacobin', label: 'Jacobin' },
+    { src: '/assets/blogimages/tiles/goos.mp4', poster: '/assets/blogimages/tiles/goos-poster.jpg', alt: 'Goos', slug: 'goos', label: 'Goos' },
+    { src: '/assets/blogimages/tiles/hostburo-1.mp4', poster: '/assets/blogimages/tiles/hostburo-1-poster.jpg', alt: 'Hostburo', slug: 'hostburo', label: 'Hostburo' },
+    { src: '/assets/blogimages/tiles/jacobin-2.mp4', poster: '/assets/blogimages/tiles/jacobin-2-poster.jpg', alt: 'Jacobin', slug: 'jacobin', label: 'Jacobin' },
     { src: '/assets/blogimages/tiles/leac.webp', alt: 'Leac', slug: 'leac', label: 'Leac' },
     { src: '/assets/blogimages/tiles/melu.webp', alt: 'Melu', slug: 'melu', label: 'Melu' },
     {
-      src: '/assets/blogimages/tiles/monitor-3.mp4', alt: 'Monitor Cannabis',
+      src: '/assets/blogimages/tiles/monitor-3.mp4', poster: '/assets/blogimages/tiles/monitor-3-poster.jpg', alt: 'Monitor Cannabis',
       slug: 'monitor-cannabis', label: 'Monitor Cannabis',
       comment: {
         es: "Hice la identidad y la plataforma de Monitor Cannabis, el monitoreo de la regulación del cannabis en Uruguay.",
@@ -129,13 +133,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       },
     },
     { src: '/assets/blogimages/tiles/pop.webp', alt: 'Pop', slug: 'pop', label: 'Pop' },
-    { src: '/assets/blogimages/tiles/prisma-1.mp4', alt: 'Prisma', slug: 'prisma', label: 'Prisma' },
+    { src: '/assets/blogimages/tiles/prisma-1.mp4', poster: '/assets/blogimages/tiles/prisma-1-poster.jpg', alt: 'Prisma', slug: 'prisma', label: 'Prisma' },
     { src: '/assets/blogimages/tiles/reboot.webp', alt: 'Reboot', slug: 'reboot', label: 'Reboot' },
-    { src: '/assets/blogimages/tiles/sbdg.mp4', alt: 'Sbdg', slug: 'sbdg', label: 'Sbdg' },
+    { src: '/assets/blogimages/tiles/sbdg.mp4', poster: '/assets/blogimages/tiles/sbdg-poster.jpg', alt: 'Sbdg', slug: 'sbdg', label: 'Sbdg' },
     { src: '/assets/blogimages/tiles/seri1.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
     { src: '/assets/blogimages/tiles/seri2.png', alt: 'Seri', slug: 'seri', label: 'Seri' },
     { src: '/assets/blogimages/tiles/seri3.jpg', alt: 'Seri', slug: 'seri', label: 'Seri' },
-    { src: '/assets/blogimages/tiles/shibuya-1.mp4', alt: 'Shibuya', slug: 'shibuya', label: 'Shibuya' },
+    { src: '/assets/blogimages/tiles/shibuya-1.mp4', poster: '/assets/blogimages/tiles/shibuya-1-poster.jpg', alt: 'Shibuya', slug: 'shibuya', label: 'Shibuya' },
   ];
 
   // Misma mecánica que assets/script.js (detalle de proyecto, hoy oculto
@@ -198,13 +202,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       return /\.mp4$/i.test(src);
     }
 
-    // Tamaño real del media ya cargado: naturalWidth/Height para <img>,
-    // videoWidth/Height para <video> (mismo propósito, distinto nombre de
-    // propiedad según el tag).
+    // Tamaño real del media: naturalWidth/Height para <img>. Para <video>
+    // NO se usa videoWidth/Height (el .mp4 todavía no se descargó — ver
+    // reveal(), preload="none" a propósito) sino `_naturalSize`, tomado de
+    // la portada estática (misma proporción que el video).
     function mediaSize(pic) {
-      return pic.tagName === 'VIDEO'
-        ? { w: pic.videoWidth, h: pic.videoHeight }
-        : { w: pic.naturalWidth, h: pic.naturalHeight };
+      if (pic.tagName === 'VIDEO') return pic._naturalSize || { w: pic.videoWidth, h: pic.videoHeight };
+      return { w: pic.naturalWidth, h: pic.naturalHeight };
     }
 
     // Ampliar/achicar estilo lightbox: centra y agranda hasta 90vw/90vh sin
@@ -253,6 +257,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       win.style.top = targetTop + 'px';
       animateOffLater(win, pic);
 
+      // Los .mp4 sólo reproducen mientras están ampliados: en chico se ve
+      // la portada estática, quieta (ver reveal()). play() dispara la
+      // descarga (preload="none") si todavía no había arrancado.
+      if (pic.tagName === 'VIDEO') pic.play();
+
       expandBtn.innerHTML = COMPRESS_ICON;
       expandBtn.setAttribute('aria-label', 'Achicar');
     }
@@ -269,6 +278,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       pic.style.width = st.imgWidth;
       pic.style.height = st.imgHeight;
       animateOffLater(win, pic);
+      if (pic.tagName === 'VIDEO') pic.pause(); // vuelve a la portada quieta
       $(win).draggable('enable');
       z += 1;
       win.style.zIndex = z; // vuelve a "al frente de lo normal", no a su z viejo
@@ -314,11 +324,23 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
       };
       if (video) {
-        pic.autoplay = true;
+        // En chico se ve quieta (portada estática, sin descargar el .mp4
+        // todavía): sólo reproduce al ampliar (expand()/collapse() más
+        // arriba) — así no hay 22 videos corriendo a la vez en pantalla.
         pic.loop = true;
         pic.muted = true;
         pic.playsInline = true;
-        pic.addEventListener('loadeddata', recenter);
+        pic.preload = 'none';
+        pic.alt = img.alt;
+        if (img.poster) pic.poster = img.poster;
+        // El tamaño para centrar/expandir sale de la portada, no del video
+        // (que con preload="none" todavía no tiene videoWidth/Height).
+        var coverProbe = new Image();
+        coverProbe.onload = function () {
+          pic._naturalSize = { w: coverProbe.naturalWidth, h: coverProbe.naturalHeight };
+          recenter();
+        };
+        if (img.poster) coverProbe.src = img.poster;
       } else {
         pic.alt = img.alt;
         pic.onload = recenter;

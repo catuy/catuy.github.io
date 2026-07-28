@@ -594,11 +594,40 @@ varios `<script>` — hay que filtrar por contenido, no tomar "el último"; el
 de `footer.html` también menciona `startProjectGallery` en un comentario),
 stubea DOM/`$`/`sessionStorage`, dispara 22 clicks y confirma que las 22
 ventanas se crean en el orden de `GALLERY_IMAGES`, que cada `.mp4` resulta
-en un `<video>` con `autoplay`/`loop`/`muted` en `true` y el resto en
-`<img>` (13 video / 9 img, cuenta real de la mezcla). No verificable fuera
-de un navegador real: que los `.mp4` efectivamente reproduzcan (autoplay
-con gesto de click previo) y que `videoWidth`/`videoHeight` estén poblados
-a tiempo para el cálculo de `expand()` en redes lentas.
+en un `<video>` (13 video / 9 img, cuenta real de la mezcla).
+
+**Ajuste el mismo día**: Diego no quería los 13 `.mp4` reproduciendo todos
+a la vez apenas se revelan. Se sacó el `autoplay`: ahora un `.mp4` arranca
+quieto, mostrando sólo su portada estática (`poster`, atributo nativo de
+`<video>`) y con `preload="none"` (no descarga el archivo hasta que hace
+falta) — sólo reproduce (`pic.play()`) al ampliar (`expand()`) y se pausa
+(`pic.pause()`) al achicar (`collapse()`), mismo botón/flujo que ya existía
+para el lightbox. Como con `preload="none"` el navegador no conoce
+`videoWidth`/`videoHeight` hasta reproducir, el tamaño natural para
+centrar la ventana al revelar y para el cálculo de `expand()` sale de la
+portada (un `new Image()` interno mide `naturalWidth`/`naturalHeight` del
+poster, no del video — misma proporción, se guarda en `pic._naturalSize`,
+lee `mediaSize()`). Diego pasó los 13 posters en el momento
+(`{nombre-del-video}-poster.jpg` en `assets/blogimages/tiles/`, mismo
+basename que el `.mp4` — convención que se adivinó y coincidió), ya
+conectados en `GALLERY_IMAGES` vía el nuevo campo `poster`.
+
+Sin poster (no debería pasar ya que los 13 están completos, pero por si se
+agrega un `.mp4` nuevo sin portada): la ventana se revela sin centrar en el
+punto de click (`coverProbe.src` nunca se asigna, `recenter()` no se
+llama) y sin imagen visible hasta ampliar — degradado, no roto, pero hay
+que acordarse de pasar el poster con cada `.mp4` nuevo de acá en más.
+
+Verificado con un segundo harness (mismo patrón, agregando `play()`/
+`pause()`/`Image()` al stub): los 3 primeros `.mp4` revelados arrancan con
+`preload=none`, `autoplay=false`, sin reproducir; clickear "Ampliar" en uno
+dispara `play()` (`playCount` pasa a 1); clickear "Achicar" dispara
+`pause()` (`pauseCount` pasa a 1). No verificable fuera de un navegador
+real: que el navegador efectivamente respete `preload="none"` sin
+descargar nada hasta el `play()` (es comportamiento del motor de video, no
+algo que este código controle), y que la portada se vea nítida como
+`poster` nativo del `<video>` (no hay forma de renderizar/decodificar el
+JPG en este harness Node).
 
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
