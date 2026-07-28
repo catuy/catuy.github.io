@@ -34,11 +34,6 @@ layout: default
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  #mvd-clock .mvd-place-short{ display: none; }
-  @media only screen and (max-width: 600px){
-    #mvd-clock .mvd-place-full{ display: none; }
-    #mvd-clock .mvd-place-short{ display: inline; }
-  }
   #shuffle{
     position: fixed;
     top: var(--margin);
@@ -65,7 +60,7 @@ layout: default
     {{ content }}
   </div>
 </article>
-<div id="mvd-clock"><span class="mvd-place-full">Montevideo, UY</span><span class="mvd-place-short">MVD</span> · <span id="mvd-offset"></span> · <span id="mvd-time"></span></div>
+<div id="mvd-clock"><span id="mvd-offset"></span> · <span id="mvd-time"></span></div>
 <a id="shuffle" href="#" aria-label="Cambiar cabeza y color">Shuffle</a>
 <script>
   // Reloj de Montevideo (para que quien mire desde otra parte del mundo sepa mi hora).
