@@ -937,6 +937,21 @@ resultó ser un bug real, no cosmético.
      confirma **un solo backdrop total**, la segunda ventana nunca queda
      `.expanded`, y la primera sigue intacta.
 
+**Retoque el mismo día, después**: pese al bug de arriba resuelto, Diego
+probó en mobile y los botones `×`/ampliar seguían sin responder bien al
+toque. En vez de seguir iterando la interacción táctil, propuso sacarlos
+directamente en mobile. `.gallery-window-close`/`.gallery-window-expand`
+pasan a `display: none` sólo en el media query mobile (siguen existiendo
+en el DOM/JS, intactos para desktop) y `.gallery-window-header` se achica
+a `14px` — queda como una manija angosta sólo para arrastrar, ya sin
+iconos que quepan ahí. **Costo funcional real, no cosmético**: en mobile
+ya no hay forma de cerrar una ventana (vuelve a la cola) ni de ampliarla
+(ver el caption/lightbox) — sólo apilar y arrastrar. Es la decisión que
+tomó Diego a propósito, no un descuido; si se quiere recuperar esa
+interacción en mobile más adelante, hay que resolver primero por qué el
+toque no las activaba de forma confiable (no se investigó la causa raíz
+táctil, se optó por sacarlas).
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

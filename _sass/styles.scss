@@ -545,27 +545,23 @@ ul.post-list li span.post-tags {
   background-color: #ffffff;
   }
   // Ventanas de la galería de /info/ (chicas, sin ampliar): casi todo el
-  // ancho en mobile en vez del 45vw pensado para desktop, y header/botones
-  // más grandes para que sean más fáciles de tocar (el ícono SVG de
-  // ampliar/achicar se agranda vía CSS — el width/height inline del SVG
-  // es sólo un valor por default, CSS le gana sin tocar el JS).
+  // ancho en mobile en vez del 45vw pensado para desktop.
   .gallery-window img,
   .gallery-window video {
     max-width: 92vw;
   }
+  // Los botones ×/ampliar no respondían bien al toque en mobile (según
+  // Diego) — se sacan del todo ahí (display:none, siguen existiendo en el
+  // DOM/JS para desktop) y la barra queda como una manija angosta, sólo
+  // para arrastrar. Cerrar/ampliar dejan de estar disponibles en mobile:
+  // las ventanas se apilan y arrastran igual, pero no hay forma de
+  // sacarlas de la cola ni ver el caption ampliado ahí.
   .gallery-window-header {
-    height: calc(var(--margin) * 1.5);
+    height: 14px;
   }
   .gallery-window-close,
   .gallery-window-expand {
-    width: calc(var(--margin) * 1.5);
-    height: calc(var(--margin) * 1.5);
-    line-height: calc(var(--margin) * 1.5);
-  }
-  .gallery-window-expand svg,
-  .gallery-window-close svg {
-    width: 20px;
-    height: 20px;
+    display: none;
   }
   p.nav-categorias a {
     text-decoration: none;
