@@ -629,6 +629,42 @@ algo que este código controle), y que la portada se vea nítida como
 `poster` nativo del `<video>` (no hay forma de renderizar/decodificar el
 JPG en este harness Node).
 
+**Dos ajustes más, mismo día**: Diego probó y pidió dos cosas.
+
+1. Al achicar, el video quedaba congelado en el último frame reproducido
+   en vez de volver a la portada. `collapse()` ahora llama `pic.load()`
+   además de `pic.pause()` para los `<video>` — `load()` reinicia el
+   elemento a su estado sin datos (mismo efecto que tenía antes de
+   reproducirse por primera vez: `preload="none"` vuelve a aplicar, así
+   que la próxima vez que se amplíe descarga desde cero otra vez).
+2. Clickear en cualquier lado mientras una ventana está ampliada seguía
+   apilando ventanas nuevas debajo del backdrop — el backdrop bloquea
+   clicks sobre el resto de la pantalla (con `stopPropagation`), pero NO
+   los clicks sobre la propia ventana ampliada (imagen/header), que no
+   tienen motivo propio para frenar el bubbling y terminaban activando
+   `reveal()` en `document`. Se agregó `activeExpanded` (variable en el
+   closure de `startProjectGallery`): `expand()` la setea, `collapse()` la
+   limpia, y `reveal()` corta al principio si hay algo ampliado. Cerrar
+   (`×`) una ventana que está ampliada también tiene que limpiarla —si no,
+   la galería queda bloqueada para siempre después de ese cierre (no hay
+   otro `collapse()` que la reponga).
+   - **Ojo, esto NO era necesario para los botones `×`/Ampliar/Achicar en
+     sí** (a pedido de Diego: "lo mismo debería suceder al cerrar o
+     ampliar o achicar, al clickear esos botones no deberían cargarse
+     imágenes") — eso YA estaba cubierto de antes por `isInteractive()`
+     (`target.closest('a, button, input')`), porque los 3 son `<button>`
+     reales. Se armó un harness aparte que simula bubbling de verdad (un
+     solo evento, mismo `ev.target`, corren primero los listeners del
+     botón y después los de `document` — los harnesses anteriores de esta
+     sesión llamaban `.dispatch('click')` directo sobre el botón, sin
+     pasar por ese camino) para confirmarlo explícitamente: clickear
+     `×`/Ampliar/Achicar, tanto en chico como ampliada, nunca crea una
+     ventana de más. Cero cambios de código hicieron falta ahí — sólo la
+     verificación.
+   - Verificado también que `pic.load()` se llama exactamente 1 vez por
+     `collapse()`, y que cerrar una ampliada (en vez de achicarla) deja
+     `reveal()` funcionando de nuevo en el click siguiente.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Confirmar alt/label de los proyectos nuevos** (`atlas`, `bus`, `cafe`,

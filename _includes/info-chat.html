@@ -167,6 +167,12 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     // Por encima de cualquier z de ventana normal: el backdrop bloquea todo
     // lo demás, y la ventana expandida va justo arriba del backdrop.
     var Z_BACKDROP = 9000, Z_EXPANDED = 9001;
+    // Sólo puede haber una ventana ampliada a la vez (ver expand()/collapse()
+    // más abajo). Mientras haya una, reveal() no debe apilar ventanas nuevas
+    // — el backdrop bloquea los clicks sobre el resto de la pantalla, pero
+    // NO los clicks sobre la propia imagen ampliada (no tiene por qué
+    // frenarlos ella misma), que si no burbujean a document igual.
+    var activeExpanded = null;
 
     // La transition va inline, sólo mientras dura expand()/collapse() — si
     // viviera en el CSS de .gallery-window, tanto arrastrar (jQuery UI pisa
@@ -233,6 +239,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       $(win).draggable('disable');
       win.classList.add('expanded');
       win.style.zIndex = Z_EXPANDED;
+      activeExpanded = win;
 
       var backdrop = document.createElement('div');
       backdrop.className = 'gallery-backdrop';
@@ -278,16 +285,22 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       pic.style.width = st.imgWidth;
       pic.style.height = st.imgHeight;
       animateOffLater(win, pic);
-      if (pic.tagName === 'VIDEO') pic.pause(); // vuelve a la portada quieta
+      // load() (no sólo pause()) para que vuelva a mostrar la portada en
+      // vez de quedar congelado en el último frame reproducido — reinicia
+      // el elemento a su estado sin datos cargados (preload="none"), así
+      // que la próxima reproducción vuelve a descargar desde el principio.
+      if (pic.tagName === 'VIDEO') { pic.pause(); pic.load(); }
       $(win).draggable('enable');
       z += 1;
       win.style.zIndex = z; // vuelve a "al frente de lo normal", no a su z viejo
+      activeExpanded = null;
 
       expandBtn.innerHTML = EXPAND_ICON;
       expandBtn.setAttribute('aria-label', 'Ampliar');
     }
 
     function reveal(ev) {
+      if (activeExpanded) return; // no apilar nada mientras hay una ampliada
       if (isInteractive(ev.target)) return;
       if (!queue.length) return;
 
@@ -360,6 +373,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         if (win.classList.contains('expanded')) {
           if (win._backdrop) win._backdrop.remove();
           if (win._onKeydown) document.removeEventListener('keydown', win._onKeydown);
+          activeExpanded = null; // si no, reveal() queda bloqueado para siempre
         }
         win.remove();
         queue.push(img);
