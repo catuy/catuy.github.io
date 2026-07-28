@@ -471,6 +471,7 @@ body.layout-home .cursor-dot:not(.hint) {
   transform: translateX(-50%);
   width: 90vw;
   padding-top: 10px;
+  text-align: center;
   // Mismo cuerpo de texto que .chat-say (el narrador de arriba), en el
   // tamaño chico del proyecto (--font-size-s) en vez del tamaño de body.
   white-space: pre-wrap;
