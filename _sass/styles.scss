@@ -460,8 +460,16 @@ body.layout-home .cursor-dot:not(.hint) {
   display: block;
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100%;
+  // Ancho fijo (90vw), no el 100% de la ventana: con imágenes verticales
+  // la ventana ampliada es angosta (expand() la limita a EXPAND_CAP del
+  // alto, no del ancho) y el caption quedaba comprimido a 3-4 líneas
+  // cortas. expand() ya centra la ventana en el viewport
+  // (targetLeft = (innerWidth - targetImgW) / 2), así que su propio centro
+  // horizontal coincide con el del viewport — left:50% + translateX(-50%)
+  // centran el caption ahí sin importar qué tan angosta sea la ventana.
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
   padding-top: 10px;
   // Mismo cuerpo de texto que .chat-say (el narrador de arriba), en el
   // tamaño chico del proyecto (--font-size-s) en vez del tamaño de body.

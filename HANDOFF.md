@@ -809,6 +809,27 @@ el contenido real, no hay `X-Content-Type-Options: nosniff` acá), así que
 no se tocó — si en algún momento se sospecha de la portada de SBDG
 específicamente, este es el primer lugar para mirar.
 
+## Caption con ancho fijo, no atado a la ventana (2026-07-29)
+
+Con imágenes verticales (SBDG, `846x1858`), `expand()` limita el tamaño
+por el **alto** (`EXPAND_CAP` del viewport), así que la ventana ampliada
+queda angosta — y como el caption heredaba `width: 100%` de la ventana
+(ver sección de arriba, "Ventanas de proyecto... afuera de la caja"), el
+texto de SBDG quedaba comprimido a 3-4 líneas cortas en vez de leer como
+el resto. Diego pidió parejarlo: mismo ancho para todos los captions,
+sugirió `90vw`.
+
+`.gallery-window.expanded .gallery-window-caption` pasó de `left: 0; width:
+100%` a `left: 50%; transform: translateX(-50%); width: 90vw` — ancho fijo
+en vw, centrado respecto al propio centro de la ventana. Funciona sin
+JS porque `expand()` ya centra la ventana en el viewport
+(`targetLeft = (innerWidth - targetImgW) / 2`), así que el centro
+horizontal de la ventana SIEMPRE coincide con el centro del viewport,
+sea cual sea su ancho — centrar el caption respecto a la ventana (su
+containing block, ya que `.gallery-window` es `position: fixed`) da lo
+mismo que centrarlo respecto al viewport, sin tener que sacarlo de ese
+containing block ni tocar JS.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**
