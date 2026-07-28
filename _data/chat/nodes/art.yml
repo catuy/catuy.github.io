@@ -1,0 +1,74 @@
+# Hub: práctica artística. Ver work.yml para las reglas de escritura.
+
+- id: art
+  hub: art
+  depth: 0
+  weight: 5
+  audience: [artist, curious, academic]
+  bridges: [work, me]
+  label:
+    es: "Contame de tu obra"
+    en: "Tell me about your art"
+  say:
+    es:
+      - "Además del diseño de producto tengo una práctica propia: serigrafía y arte generativo hecho con código. La expuse afuera, en Taiwán, Tokio y Portugal."
+      - "Hago arte en paralelo al diseño: serigrafía y arte generativo con código. Soy diseñador, artista y docente, todo junto."
+    en:
+      - "Besides product design I have my own practice: screen printing and generative art made with code. I've shown it abroad, in Taiwan, Tokyo and Portugal."
+      - "I make art alongside design: screen printing and generative art with code. I'm a designer, an artist and a teacher, all at once."
+
+- id: art.print
+  hub: art
+  depth: 1
+  weight: 3
+  audience: [artist, curious]
+  image: /assets/blogimages/tiles/un-2.jpg
+  bridges: [art.gen, me.who]
+  label:
+    es: "¿Serigrafía?"
+    en: "Screen printing?"
+  say:
+    es: "Sí, imprimo a mano. Fui finalista en la Bienal de Grabado de Taiwán y también mostré grabado en Portugal."
+    en: "Yes, I print by hand. I was a finalist at the Taiwan Print Biennial and I've also shown printmaking in Portugal."
+
+- id: art.gen
+  hub: art
+  depth: 1
+  weight: 4
+  audience: [artist, client, curious]
+  image: /assets/blogimages/tiles/cc-10.jpg
+  bridges: [work.ds, work.how]
+  label:
+    es: "¿Arte generativo con código?"
+    en: "Generative art with code?"
+  say:
+    es: "Sí, el código es material de obra para mí, no sólo herramienta de producto. Es el mismo lugar del que salen las cosas más experimentales que hago de dibujo y animación."
+    en: "Yes, code is a material for my work, not just a product tool. It's the same place my more experimental drawing and animation pieces come from."
+
+- id: art.1976
+  hub: art
+  depth: 1
+  weight: 4
+  audience: [academic, artist, curious]
+  image: /assets/blogimages/tiles/1976.jpg
+  bridges: [me.values, work.state]
+  label:
+    es: "¿Uruguay 1976?"
+    en: "Uruguay 1976?"
+  say:
+    es: "Es un proyecto tipográfico sobre los detenidos desaparecidos de la dictadura, y es lo que más lejos me llevó: estuve con él en varias bienales y en la Bienal de Venecia 2016, en el Pabellón de Uruguay."
+    en: "It's a typographic project about those detained and disappeared under the dictatorship, and it's what took me furthest: it went to several biennials and to the 2016 Venice Biennale, in the Uruguay Pavilion."
+
+- id: art.shows
+  hub: art
+  depth: 1
+  weight: 2
+  audience: [artist, academic]
+  image: /assets/blogimages/tiles/shibuya.gif
+  bridges: [me.who, work.now]
+  label:
+    es: "¿Dónde expusiste?"
+    en: "Where have you shown?"
+  say:
+    es: "Fui finalista en la Bienal de Grabado de Taiwán, mostré obra digital en el 30 Seconds Museum de Tokio y grabado en Portugal. Y estuve en la Bienal de Venecia 2016, en el Pabellón de Uruguay."
+    en: "I was a finalist at the Taiwan Print Biennial, showed digital work at Tokyo's 30 Seconds Museum and printmaking in Portugal. And I was at the 2016 Venice Biennale, in the Uruguay Pavilion."

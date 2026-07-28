@@ -1,0 +1,73 @@
+# Nodos de referrer: sólo aparecen si el visitante llegó desde uno de los sitios
+# de Diego (home con ?from=<slug>, guardado en sessionStorage.chatFrom por
+# _includes/footer.html). Nunca entran al pool genérico de candidatos.
+#
+# `intro` reemplaza el saludo inicial; `say` es la respuesta al chip.
+
+- id: referrer.yauguru
+  hub: referrer
+  depth: 1
+  weight: 5
+  slug: yauguru
+  audience: [artist, curious]
+  bridges: [work.how, project]
+  intro:
+    es: "Ah, venís de Yaugurú — ese sitio lo diseñé y desarrollé yo."
+    en: "Ah, you're coming from Yaugurú — I designed and built that site."
+  label:
+    es: "Contame más de ese proyecto"
+    en: "Tell me more about that project"
+  say:
+    es: "Lo hice de punta a punta, diseño y código. Si querés que profundice en cómo lo encaré, escribime a hello@persn.net."
+    en: "I did it end to end, design and code. If you want me to go deeper into how I approached it, email me at hello@persn.net."
+
+- id: referrer.bardanca
+  hub: referrer
+  depth: 1
+  weight: 5
+  slug: bardanca
+  audience: [artist, curious]
+  bridges: [work.how, project]
+  intro:
+    es: "Ah, venís del sitio de Héctor Bardanca — ese lo diseñé y desarrollé yo."
+    en: "Ah, you're coming from Héctor Bardanca's site — I designed and built that one."
+  label:
+    es: "Contame más de ese proyecto"
+    en: "Tell me more about that project"
+  say:
+    es: "Lo hice de punta a punta, diseño y código. Si querés que profundice en cómo lo encaré, escribime a hello@persn.net."
+    en: "I did it end to end, design and code. If you want me to go deeper into how I approached it, email me at hello@persn.net."
+
+- id: referrer.texticulos
+  hub: referrer
+  depth: 1
+  weight: 5
+  slug: texticulos
+  audience: [artist, curious]
+  bridges: [work.how, project]
+  intro:
+    es: "Ah, venís de textículos, el sitio de Maca — ese lo diseñé y desarrollé yo."
+    en: "Ah, you're coming from textículos, Maca's site — I designed and built that one."
+  label:
+    es: "Contame más de ese proyecto"
+    en: "Tell me more about that project"
+  say:
+    es: "Lo hice de punta a punta, diseño y código. Si querés que profundice en cómo lo encaré, escribime a hello@persn.net."
+    en: "I did it end to end, design and code. If you want me to go deeper into how I approached it, email me at hello@persn.net."
+
+- id: referrer.alter
+  hub: referrer
+  depth: 1
+  weight: 5
+  slug: alter
+  audience: [artist, curious]
+  bridges: [work.how, project]
+  intro:
+    es: "Ah, venís de Alter Ediciones — ese sitio lo diseñé y desarrollé yo."
+    en: "Ah, you're coming from Alter Ediciones — I designed and built that site."
+  label:
+    es: "Contame más de ese proyecto"
+    en: "Tell me more about that project"
+  say:
+    es: "Lo hice de punta a punta, diseño y código. Si querés que profundice en cómo lo encaré, escribime a hello@persn.net."
+    en: "I did it end to end, design and code. If you want me to go deeper into how I approached it, email me at hello@persn.net."

@@ -1,0 +1,19 @@
+# Hub: selección de proyectos ("Ver proyectos"). Placeholder de cáscara: un
+# único nodo hasta que se cargue el pool real de 3-4 proyectos que define
+# Diego. Cuando se agregue ese pool, reusar el texto ya verificado de
+# SPECIFIC_PROJECTS en assets/chat-patterns.js (Brecha, ANII, ClassWallet,
+# UNESCO, BID, Monitor Cannabis) en vez de redactar contenido nuevo.
+# Ver work.yml para las reglas de escritura.
+
+- id: portfolio
+  hub: portfolio
+  depth: 0
+  weight: 5
+  audience: [client, curious, academic]
+  bridges: [project, me]
+  label:
+    es: "Quiero ver tus proyectos"
+    en: "Want to see your projects"
+  say:
+    es: "Estoy armando la selección. Mientras tanto, contame qué tipo de proyecto te interesa y te cuento si hice algo parecido."
+    en: "I'm putting the selection together. Meanwhile, tell me what kind of project you're interested in and I'll tell you if I've done something similar."

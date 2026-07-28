@@ -1,12 +1,10 @@
 ---
-layout: page
+layout: info
 title: Info
 permalink: /info/
 ---
-Diseñador cross-media, artista visual y docente. Vivo y hago en Montevideo, Uruguay.
-
-Mi área de actuación profesional se concentra principalmente en los medios digitales y su permanente transformación. Me especializo en proyectos de diseño basados en código que incluyen interfaces complejas, herramientas de diseño personalizadas, sistemas de diseño, así como herramientas experimentales de dibujo y animación. 
-
-He desarrollado proyectos para marcas internacionales como Coca-Cola, Bayer, Unilever, M-Audio, Avid, Wix, Prada, Gillette, Davidoff, Play Boy, Adidas, DHL, Versace, Chanel, Western Union, Philips; y locales como el Ministerio de Educación y Cultura, Latu, Uruguay XXI, Instituto Nacional de Logística, Ministerio de Industria, Energía y Minería, Intendencia de Montevideo, Inavi, Agencia Nacional de Investigación e Innovación y la Universidad Católica del Uruguay.
-
-Algunos de mis proyectos han sido premiados, publicados y exhibidos en más de 15 países, destacándose la participación en la XV Muestra Internacional de Arquitectura de la Bienal de Venecia, la Segunda Bienal Iberoamericana de Diseño de Madrid, la Cuarta Bienal de Tipografía Latinoamericana, la International Biennial Print Exhibit de Taiwán y el 30 seconds museum de Tokyo.
+{% comment %}
+El chat (_includes/info-chat.html, vía _layouts/info.html) reemplaza la bio
+estática. El texto completo sigue vivo en perfil.md, que es el system
+prompt del chat.
+{% endcomment %}

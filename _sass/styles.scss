@@ -6,8 +6,8 @@
   --color-primary: #ffffff;
   --color-secondary: #ffffff;
   --color-tertiary: #ffffff;
-  --font-size-s: 12px;
-  --font-size-m: 15px;
+  --font-size-s: 15px;
+  --font-size-m: 18px;
   --font-size-l: 18px;
   --margin: 30px;
 }
@@ -148,6 +148,13 @@ header{
     li{
       float: left;
       padding: 0px 5px 0px 5px;
+    }
+    // Separador del breadcrumb de /info/ (Home / Info / Brecha). En el resto
+    // del sitio el nav sólo tiene 1 <li> (contextual), así que esto nunca
+    // aplica ahí.
+    li + li::before {
+      content: "/";
+      margin-right: 5px;
     }
   }
 }
@@ -301,6 +308,191 @@ footer{
     display:inline-block;
   transform: rotate(180deg);
 }
+}
+
+//  ------------------------------------------
+//  INFO CHAT
+//  ------------------------------------------
+
+.chat-log {
+  margin-top: var(--margin);
+}
+.chat-turn {
+  margin-bottom: 22px;
+}
+.chat-say {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+// Sólo para lectores de pantalla: anuncia el texto una vez terminado de
+// tipear (si no, se anunciaría letra por letra).
+.chat-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+//  ------------------------------------------
+//  CURSOR AMBIENTE (footer.html, sólo layout home/info)
+//  ------------------------------------------
+
+// Acompaña al cursor nativo (no lo reemplaza) en esas dos páginas: un mini
+// círculo que lo sigue con lag (lerp en requestAnimationFrame, en
+// footer.html), siempre presente — no depende del chat ni de ningún click.
+// transform, no margin negativo: así centra igual de bien el círculo
+// (14x14 fijo) que el texto "click" del hint (ancho variable).
+.cursor-dot {
+  position: fixed;
+  z-index: 9999;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+// El color primario ya es el que eligió la sesión (cabeza random, ver
+// footer.html/heads/*.js) — el punto lo sigue, no define uno propio.
+// :not(.hint): si no, esta regla (más específica que .cursor-dot.hint de
+// abajo) le seguía ganando al `background: none` del hint — el texto
+// "click" quedaba invisible sobre un rectángulo del mismo color.
+body.layout-info .cursor-dot:not(.hint) {
+  background: var(--color-primary);
+}
+body.layout-home .cursor-dot:not(.hint) {
+  background: white;
+}
+// Hint inicial en /info/ (hasta el primer click, ver footer.html): el texto
+// "click" en vez del círculo, mismo seguimiento del mouse.
+.cursor-dot.hint {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  color: var(--color-primary);
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  white-space: nowrap;
+}
+
+//  ------------------------------------------
+//  GALLERY (modo "ver proyectos" del chat, startProjectGallery())
+//  ------------------------------------------
+
+// Misma "ventanita" que .image-wrap en el detalle de proyecto (hoy oculto):
+// header con borde, esquinas redondeadas arriba, imagen abajo. Sin
+// transition acá: arrastrar y el reposicionamiento al aparecer tienen que
+// ser instantáneos. expand()/collapse() en info-chat.html ponen la
+// transition inline SÓLO mientras dura esa animación puntual.
+.gallery-window {
+  position: fixed;
+  z-index: 10;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px 8px 0 0;
+  background: var(--color-tertiary);
+}
+.gallery-window-header {
+  position: relative;
+  height: var(--margin);
+  border-bottom: 1px solid var(--color-primary);
+  border-radius: 8px 8px 0 0;
+}
+// Botones del header: mismo tamaño, uno a cada punta. El color del ícono
+// nunca cambia — el hover sólo le baja la opacidad, sin fondo ni borde.
+.gallery-window-close,
+.gallery-window-expand {
+  position: absolute;
+  top: 0;
+  width: var(--margin);
+  height: var(--margin);
+  line-height: var(--margin);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+}
+.gallery-window-close:hover,
+.gallery-window-expand:hover {
+  opacity: .5;
+}
+// Cierra la ventana (vuelve la imagen a la cola, ver startProjectGallery).
+.gallery-window-close {
+  right: 0;
+}
+// Amplía/achica estilo lightbox (ver expand()/collapse() en info-chat.html).
+.gallery-window-expand {
+  left: 0;
+}
+.gallery-window img,
+.gallery-window video {
+  display: block;
+  max-width: 45vw;
+  max-height: 70vh;
+}
+// Expandida: sin los caps normales, el tamaño lo define expand() en JS.
+.gallery-window.expanded img,
+.gallery-window.expanded video {
+  max-width: none;
+  max-height: none;
+}
+// Descripción del proyecto (comment en GALLERY_IMAGES) — sólo visible
+// ampliada, colgando AFUERA de la caja de la ventana (position: absolute +
+// top: 100%, sin su borde/fondo). .gallery-window ya es position: fixed,
+// así que es el containing block — no hace falta position: relative
+// aparte. Al quedar fuera del flujo, tampoco aporta altura a la propia
+// ventana: el centrado de expand() (que sólo cuenta imagen + header) da
+// exacto, no hace falta compensar nada ahí.
+.gallery-window-caption {
+  display: none;
+}
+.gallery-window.expanded .gallery-window-caption {
+  display: block;
+  position: absolute;
+  top: 100%;
+  // Ancho fijo (90vw), no el 100% de la ventana: con imágenes verticales
+  // la ventana ampliada es angosta (expand() la limita a EXPAND_CAP del
+  // alto, no del ancho) y el caption quedaba comprimido a 3-4 líneas
+  // cortas. expand() ya centra la ventana en el viewport
+  // (targetLeft = (innerWidth - targetImgW) / 2), así que su propio centro
+  // horizontal coincide con el del viewport — left:50% + translateX(-50%)
+  // centran el caption ahí sin importar qué tan angosta sea la ventana.
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  padding-top: 10px;
+  text-align: center;
+  // Mismo cuerpo de texto que .chat-say (el narrador de arriba), en el
+  // tamaño chico del proyecto (--font-size-s) en vez del tamaño de body.
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: var(--font-size-s);
+  // .gallery-window cuelga de document.body, no de .container (que es
+  // quien pone color: var(--color-primary) normalmente) — sin esto el
+  // caption hereda el negro por default del navegador en vez del primario
+  // ya elegido para la sesión (mismo motivo por el que los botones del
+  // header ya lo declaran explícito más abajo).
+  color: var(--color-primary);
+}
+// Bloquea y difumina todo lo demás mientras una ventana está expandida.
+// El fallback (navegadores sin backdrop-filter) es el tinte de background.
+.gallery-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .15);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {

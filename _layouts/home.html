@@ -15,39 +15,45 @@ layout: default
   nav ul li a{
     color: var(--home-menu-color);
   }
+  /* Shuffle <-> mail intercambiaron posición: mail ahora abajo-izq, Shuffle
+     arriba-der (antes al revés). Nav (arriba-izq) y reloj (abajo-der) no
+     se tocaron. */
   .contact-mail{
+    bottom: var(--margin);
+    left: var(--margin);
+    top: auto;
+    right: auto;
     color: var(--home-menu-color);
   }
   #mvd-clock{
     position: fixed;
-    top: var(--margin);
+    bottom: var(--margin);
     right: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  #mvd-clock .mvd-place-short{ display: none; }
-  @media only screen and (max-width: 600px){
-    #mvd-clock .mvd-place-full{ display: none; }
-    #mvd-clock .mvd-place-short{ display: inline; }
-  }
+  /* Ícono, no texto: mismo lenguaje visual que los botones de la ventana
+     de proyecto en /info/ (trazo currentColor, stroke-width 2, sin relleno
+     salvo los puntos del dado) — ver EXPAND_ICON/COMPRESS_ICON en
+     info-chat.html. El hover también es el mismo (opacity, sin línea). */
   #shuffle{
     position: fixed;
-    bottom: var(--margin);
+    top: var(--margin);
     right: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
-    text-decoration: none;
+    display: flex;
     cursor: pointer;
   }
-  #shuffle:hover{ text-decoration: line-through; }
+  #shuffle:hover{ opacity: .5; }
   /* En mobile, los 4 items se pegan a los márgenes como en /info/ (1vh). */
   @media only screen and (max-width: 768px){
     .container > header.item:nth-child(1){ top: 1vh; left: 1vh; }
-    #mvd-clock{ top: 1vh; right: 1vh; }
     .contact-mail{ bottom: 1vh; left: 1vh; }
-    #shuffle{ bottom: 1vh; right: 1vh; }
+    #mvd-clock{ bottom: 1vh; right: 1vh; }
+    #shuffle{ top: 1vh; right: 1vh; }
   }
 </style>
 <div id="preloader">
@@ -58,26 +64,53 @@ layout: default
     {{ content }}
   </div>
 </article>
-<div id="mvd-clock"><span class="mvd-place-full">Montevideo, UY</span><span class="mvd-place-short">MVD</span> <span id="mvd-time"></span></div>
-<a id="shuffle" href="#" aria-label="Cambiar cabeza y color">Shuffle</a>
+<div id="mvd-clock"><span id="mvd-offset"></span> · <span id="mvd-time"></span></div>
+<a id="shuffle" href="#" aria-label="Cambiar cabeza y color"><svg id="shuffle-die" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" ry="4" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
 <script>
   // Reloj de Montevideo (para que quien mire desde otra parte del mundo sepa mi hora).
   (function(){
     var timeEl = document.getElementById('mvd-time');
+    var offsetEl = document.getElementById('mvd-offset');
     function tick(){
-      var parts = new Intl.DateTimeFormat('en-GB', {
+      var parts = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Montevideo',
-        hour: '2-digit', minute: '2-digit', hour12: false,
+        hour: 'numeric', minute: '2-digit', hour12: true,
         timeZoneName: 'shortOffset'
       }).formatToParts(new Date());
       var get = function(t){ var p = parts.find(function(x){ return x.type === t; }); return p ? p.value : ''; };
-      var time = get('hour') + ':' + get('minute');
+      var time = get('hour') + ':' + get('minute') + ' ' + get('dayPeriod');
       var off = get('timeZoneName');
-      off = off ? off.replace('GMT', 'UTC') : 'UTC-3';
-      timeEl.textContent = '(' + off + ') ' + time;
+      off = off ? off.replace('GMT', 'UTC').replace('-', '−') : 'UTC−3';
+      offsetEl.textContent = off;
+      timeEl.textContent = time;
     }
     tick();
     setInterval(tick, 1000);
+  })();
+  // Cara del dado: al azar en cada carga de la página. Clickear Shuffle
+  // también recarga (ver abajo), así que "al recargar" ya cubre "al
+  // presionar" — no hace falta redibujar en el click aparte, el reload es
+  // instantáneo y no da tiempo a ver una animación intermedia.
+  var DICE_FACES = {
+    1: [[12, 12]],
+    2: [[8, 8], [16, 16]],
+    3: [[8, 8], [12, 12], [16, 16]],
+    4: [[8, 8], [16, 8], [8, 16], [16, 16]],
+    5: [[8, 8], [16, 8], [12, 12], [8, 16], [16, 16]],
+    6: [[8, 8], [16, 8], [8, 12], [16, 12], [8, 16], [16, 16]],
+  };
+  (function () {
+    var svg = document.getElementById('shuffle-die');
+    if (!svg) return;
+    var face = 1 + Math.floor(Math.random() * 6);
+    DICE_FACES[face].forEach(function (pt) {
+      var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', pt[0]);
+      dot.setAttribute('cy', pt[1]);
+      dot.setAttribute('r', '1.6');
+      dot.setAttribute('fill', 'currentColor');
+      svg.appendChild(dot);
+    });
   })();
   // Shuffle: recarga con una cabeza/color nuevos (igual que volver a la home).
   document.getElementById('shuffle').addEventListener('click', function(e){

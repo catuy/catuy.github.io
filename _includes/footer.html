@@ -1,9 +1,18 @@
-{% unless page.url == '/info/' %}<a class="contact-mail" href="mailto:{{ site.email }}">{{ site.email }}</a>{% endunless %}
+<a class="contact-mail" href="mailto:{{ site.email }}">{{ site.email }}</a>
 <footer class="item">
     <!-- <span class="copyleft">©</span> Copyleft - {{ site.title | escape }} {{ 'now' | date: "%Y" }} - subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> -->
 </footer>
 <script>
    $(document).ready(function(){
+    // los sitios externos linkean a la home con ?from=<slug>; se guarda para
+    // que el chat de /info/ lo lea al navegar ahí (ya no llega por URL).
+    if (location.pathname === '/') {
+        var from = new URLSearchParams(location.search).get('from');
+        if (from) {
+            try { sessionStorage.setItem('chatFrom', from.toLowerCase()); } catch (err) {}
+        }
+    }
+
     // array of file paths
     var scripts = [
         '/assets/heads/1.js',
@@ -32,6 +41,18 @@
     var script = document.createElement('script');
     // set the source to the selected/stored path
     script.src = scriptPath;
+    // once the head script ran, --color-primary is set: paint the favicon with it
+    script.onload = function () {
+        var color = getComputedStyle(document.documentElement)
+            .getPropertyValue('--color-primary').trim() || '#000';
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+            + '<circle cx="50" cy="50" r="47" fill="' + color + '"/></svg>';
+        var favicon = document.getElementById('favicon');
+        if (favicon) {
+            favicon.type = 'image/svg+xml';
+            favicon.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+    };
     // append the script to the head of the document
     document.getElementsByTagName('head')[0].appendChild(script);
 
@@ -63,3 +84,55 @@
   });
   });
   </script>
+{% if page.layout == "home" or page.layout == "info" %}
+<script>
+  // Cursor ambiente (círculo que sigue al mouse con lag): rojo en /info/,
+  // blanco en la home, siempre presente en esas dos páginas — no depende del
+  // chat ni de ningún click (a diferencia de startProjectGallery en
+  // info-chat.html, que sólo agrega el click-to-reveal de proyectos).
+  //
+  // En /info/, hasta el primer click, el punto se muestra como la palabra
+  // "click" (mismo seguimiento del mouse, sin la forma circular) — es la
+  // única pista de que hacer click revela proyectos. Una vez que clickea,
+  // vuelve a ser el círculo de siempre y sessionStorage evita que reaparezca
+  // el resto de la sesión (ver 'chatFrom'/'scriptPath' más arriba: mismo
+  // criterio de "una vez por sesión", no por visita a la página).
+  document.addEventListener("DOMContentLoaded", function () {
+    var dot = document.createElement("div");
+    dot.className = "cursor-dot";
+
+    var isInfo = document.body.classList.contains("layout-info");
+    var alreadyClicked = false;
+    try { alreadyClicked = sessionStorage.getItem("infoClicked") === "1"; } catch (err) {}
+
+    if (isInfo && !alreadyClicked) {
+      dot.classList.add("hint");
+      dot.textContent = "click";
+    }
+
+    document.body.appendChild(dot);
+
+    var targetX = 0, targetY = 0, curX = 0, curY = 0;
+    document.addEventListener("mousemove", function (ev) {
+      targetX = ev.clientX;
+      targetY = ev.clientY;
+    });
+    (function tick() {
+      curX += (targetX - curX) * 0.15;
+      curY += (targetY - curY) * 0.15;
+      dot.style.left = curX + "px";
+      dot.style.top = curY + "px";
+      requestAnimationFrame(tick);
+    })();
+
+    if (isInfo && !alreadyClicked) {
+      document.addEventListener("click", function onFirstClick() {
+        dot.classList.remove("hint");
+        dot.textContent = "";
+        try { sessionStorage.setItem("infoClicked", "1"); } catch (err) {}
+        document.removeEventListener("click", onFirstClick);
+      });
+    }
+  });
+</script>
+{% endif %}
