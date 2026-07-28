@@ -316,10 +316,18 @@ nuevos se editan los YAML, no `info-chat.html`.**
 - Contacto único: **hello@persn.net**. Sin LinkedIn, sin "Persona S.A.S.",
   sin apellido en el contenido.
 - Home: 4 items fijos en las esquinas — nav contextual (arriba-izq, muestra
-  la *otra* página), reloj Montevideo (arriba-der), mail (abajo-izq, oculto
-  en `/info/`), **Shuffle** (abajo-der). Todos a `var(--margin)` (30px desk /
+  la *otra* página), **Shuffle** (arriba-der), reloj Montevideo (abajo-der),
+  mail (abajo-izq, oculto en `/info/`). Todos a `var(--margin)` (30px desk /
   `1vh` mobile). La alineación necesitó `.container > header.item:nth-child(1)`
   para ganarle en especificidad a la regla del grid.
+  **2026-07-29**: Diego pidió intercambiar mail y Shuffle de posición
+  (antes mail arriba-der, Shuffle abajo-izq) — se tocó sólo el `<style>`
+  scopeado a `_layouts/home.html` (desktop y su media query de mobile);
+  nav y reloj no se movieron. La posición de mail en home quedó igual a su
+  regla base site-wide (`.contact-mail` en `_sass/styles.scss`, abajo-izq)
+  — la que hoy pisa `home.html` es puramente redundante en posición, sigue
+  haciendo falta por el `color: var(--home-menu-color)` que sí difiere del
+  default.
 - Color/cabeza: elegido 1 vez, **sticky toda la sesión** (`sessionStorage
   'scriptPath'`); **solo Shuffle lo cambia** (`removeItem` + `reload`). Se
   removió el handler `#nav-home` que re-randomizaba (era un bug con el nav

@@ -15,11 +15,14 @@ layout: default
   nav ul li a{
     color: var(--home-menu-color);
   }
+  /* Shuffle <-> mail intercambiaron posición: mail ahora abajo-izq, Shuffle
+     arriba-der (antes al revés). Nav (arriba-izq) y reloj (abajo-der) no
+     se tocaron. */
   .contact-mail{
-    top: var(--margin);
-    right: var(--margin);
-    bottom: auto;
-    left: auto;
+    bottom: var(--margin);
+    left: var(--margin);
+    top: auto;
+    right: auto;
     color: var(--home-menu-color);
   }
   #mvd-clock{
@@ -38,8 +41,8 @@ layout: default
   }
   #shuffle{
     position: fixed;
-    bottom: var(--margin);
-    left: var(--margin);
+    top: var(--margin);
+    right: var(--margin);
     z-index: 10;
     color: var(--home-menu-color, #fff);
     text-decoration: none;
@@ -49,9 +52,9 @@ layout: default
   /* En mobile, los 4 items se pegan a los márgenes como en /info/ (1vh). */
   @media only screen and (max-width: 768px){
     .container > header.item:nth-child(1){ top: 1vh; left: 1vh; }
-    .contact-mail{ top: 1vh; right: 1vh; }
+    .contact-mail{ bottom: 1vh; left: 1vh; }
     #mvd-clock{ bottom: 1vh; right: 1vh; }
-    #shuffle{ bottom: 1vh; left: 1vh; }
+    #shuffle{ top: 1vh; right: 1vh; }
   }
 </style>
 <div id="preloader">
