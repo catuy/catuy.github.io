@@ -665,14 +665,14 @@ JPG en este harness Node).
      `collapse()`, y que cerrar una ampliada (en vez de achicarla) deja
      `reveal()` funcionando de nuevo en el click siguiente.
 
-**Curación del pool, mismo día**: Diego sacó 7 de los 22 proyectos —
-`cafe`, `escobar`, `jacobin`, `leac`, `melu`, `prisma` (completos) y
-`seri3` (sólo esa imagen; `seri1`/`seri2` quedan). `GALLERY_IMAGES` en
-`_includes/info-chat.html` queda en **15 entradas**. Los archivos
-(`.mp4`/`.webp`/`.jpg` y los `-poster.jpg` correspondientes) NO se
-borraron del repo — mismo criterio que los placeholders viejos
-(`anii.jpg`/`isp.jpg`/etc., ver más arriba): quedan sin uso en
-`assets/blogimages/tiles/` por si se reincorporan.
+**Curación del pool, mismo día**: Diego sacó 8 de los 22 proyectos —
+`cafe`, `escobar`, `jacobin`, `leac`, `melu`, `prisma` (completos), `seri3`
+(sólo esa imagen; `seri1`/`seri2` quedan) y `criolla-2` (sólo esa imagen;
+`criolla-1.mp4` queda). `GALLERY_IMAGES` en `_includes/info-chat.html`
+queda en **14 entradas**. Los archivos (`.mp4`/`.webp`/`.jpg` y los
+`-poster.jpg` correspondientes) NO se borraron del repo — mismo criterio
+que los placeholders viejos (`anii.jpg`/`isp.jpg`/etc., ver más arriba):
+quedan sin uso en `assets/blogimages/tiles/` por si se reincorporan.
 
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
