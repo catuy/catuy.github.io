@@ -868,11 +868,74 @@ apóstrofo de "I'm" rompan el string YAML entre comillas dobles.
 3. Pulir copy/detalles del texto introductorio y de los comentarios por
    proyecto (esta pasada fue explícitamente "la cáscara, después
    refinamos").
-4. Cuando esté: mergear `feature/info-gallery` (ex `feature/synth-chat`,
-   renombrada el 2026-07-29 tras sacar el chat agéntico) → `main` (worker
-   excluido del
-   build si sigue existiendo, `perfil.md` ya servido igual — sigue siendo
-   útil independientemente del chat, es el `/perfil.md` público).
+4. ~~Cuando esté: mergear `feature/info-gallery`... → `main`~~ → **hecho el
+   2026-07-29** (commit `5af6200`, deploy verificado en
+   https://catuy.github.io). Único conflicto real: `worker/worker.js`
+   (borrado en `main`, modificado en la rama) — resuelto a favor de la
+   rama por pedido explícito de Diego ("lo que estoy viendo en la rama
+   info-gallery"); `worker/wrangler.toml` se restauró igual para no
+   dejarlo a medias. Todo lo demás entró limpio (workflow de deploy,
+   `Gemfile.lock`, `perfil.md`, exclusiones de `_config.yml`, todos
+   agregados/tocados sólo por `main` desde que las ramas divergieron).
+   Se sigue trabajando sobre `feature/info-gallery` — falta un segundo
+   merge cuando se acumule más.
+
+## Ajustes de mobile en /info/ + bug real de doble-expand (2026-07-29)
+
+Feedback de Diego en viewport mobile (425×812), 4 puntos — 3 de CSS y 1 que
+resultó ser un bug real, no cosmético.
+
+1. **Breadcrumb ".. / Info" partido en 2 líneas en mobile**: la regla
+   `header ul li { float: none; ... }` del media query mobile (pensada
+   para el nav de 1 solo `<li>` que tiene el resto del sitio) también
+   rompía el breadcrumb de 2 `<li>` de `/info/`. Agregado
+   `#info-breadcrumb li { float: left; width: auto; }` — gana por
+   especificidad (id + elemento vs 3 elementos) sin `!important`.
+2. **Mail fijo abajo-izq tapaba/quedaba desconectado del about en
+   mobile**: Diego pidió que en mobile fluya justo después del texto del
+   about, alineado al mismo margen izquierdo. `.contact-mail` es hijo
+   directo de `.container` (ver `default.html`), mismo nivel que el
+   `<div class="item page-content">` del about — un `<style>` nuevo
+   scopeado a `_layouts/info.html` (mismo patrón que ya usa
+   `home.html`) le pone `position: static` sólo en mobile: cae solo
+   justo debajo en el orden del DOM, mismo margen izquierdo que el about
+   (ninguno de los dos declara padding-left ahí), sin tocar nada del
+   `.contact-mail` que usa el resto del sitio.
+3. **Ventanas de la galería chicas en mobile**: `max-width: 45vw` estaba
+   pensado para desktop. En el mismo media query: `.gallery-window img,
+   video` a `92vw` ("casi 100%"), y el header + botones `×`/ampliar
+   suben de `var(--margin)` (30px) a `var(--margin) * 1.5` (45px) para
+   que sean más fáciles de tocar — incluye el ícono SVG de
+   ampliar/achicar (`width`/`height` inline en el JS son sólo el default,
+   CSS le gana sin tocar `info-chat.html`).
+4. **"A veces" el botón Ampliar no respondía, sobre todo con varias
+   ventanas abiertas** — Diego pidió buscar un div invisible
+   bloqueándolo. Encontrado y confirmado: **bug real, no de CSS**. `z`
+   (el contador de z-index de ventanas normales) no tiene techo — sube
+   con cada `reveal()` y cada `mousedown` (traer al frente), así que en
+   una sesión larga con harto drag/click puede superar
+   `Z_BACKDROP`/`Z_EXPANDED` (9000/9001). Cuando eso pasa, una ventana
+   normal puede terminar con z-index más alto que el backdrop de OTRA
+   ventana ya ampliada — queda clickeable por encima de él pese al
+   backdrop. `reveal()` ya se protegía con el guard `activeExpanded`
+   (agregado en una ronda anterior, ver arriba), pero el listener de
+   `expandBtn` NO lo chequeaba: clickear "Ampliar" en esa segunda ventana
+   abría una expand() nueva sin cerrar la primera, dejando el backdrop
+   de la primera **huérfano** — nadie vuelve a sacarlo (`activeExpanded`
+   quedaba apuntando a la segunda ventana), bloqueando clicks en el
+   resto de la página para siempre. Ese backdrop huérfano (blur + 15%
+   de tinte oscuro, fácil de pasar por alto) es el "div invisible" que
+   describió Diego. Fix: mismo guard `if (activeExpanded && activeExpanded
+   !== win) return;` agregado también al click de `expandBtn`, antes de
+   llamar `expand()`.
+   - Verificado con un harness que reproduce el escenario real: revela 2
+     ventanas, dispara 9500 `mousedown` sobre la primera (simula uso
+     prolongado) hasta que su z-index pasa los 9500, la amplía (backdrop
+     #1), sube el z-index de la segunda por encima de `Z_EXPANDED`, y
+     clickea su "Ampliar" mientras la primera sigue ampliada — sin el fix
+     esto creaba un backdrop #2 y dejaba el #1 huérfano; con el fix, se
+     confirma **un solo backdrop total**, la segunda ventana nunca queda
+     `.expanded`, y la primera sigue intacta.
 
 ## Cómo verificar (sistema nuevo)
 

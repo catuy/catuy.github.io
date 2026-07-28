@@ -454,8 +454,19 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       }
 
       expandBtn.addEventListener('click', function () {
-        if (win.classList.contains('expanded')) collapse(win, pic, header, expandBtn);
-        else expand(win, pic, header, expandBtn);
+        if (win.classList.contains('expanded')) { collapse(win, pic, header, expandBtn); return; }
+        // Bug real (no sólo de CSS): `z` no tiene techo — sube con cada
+        // reveal()/mousedown-al-frente, así que en una sesión larga puede
+        // superar Z_BACKDROP/Z_EXPANDED (9000/9001). Si eso pasa, una
+        // ventana normal puede terminar con z-index más alto que el
+        // backdrop de OTRA que ya está ampliada, quedando clickeable por
+        // encima de él — clickear su "Ampliar" abría una segunda
+        // expand() sin que la primera se cerrara nunca, dejando su
+        // backdrop huérfano (nadie vuelve a sacarlo) bloqueando clicks en
+        // el resto de la página para siempre. `reveal()` ya se protegía
+        // con `activeExpanded`; acá faltaba el mismo guard.
+        if (activeExpanded && activeExpanded !== win) return;
+        expand(win, pic, header, expandBtn);
       });
 
       // Cerrar una ventana expandida tiene que sacar también el backdrop y

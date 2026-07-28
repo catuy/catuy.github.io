@@ -514,6 +514,14 @@ header ul li {
   padding: 0px 10px 0px 0px;
   width: min-content;
 }
+// El breadcrumb de /info/ ("../Info", 2 <li>) necesita quedar en la misma
+// línea — la regla de arriba (pensada para el nav de 1 solo <li> del
+// resto del sitio) lo rompía en mobile con `float: none`. Más específica
+// (id + element) le gana sin necesitar !important.
+#info-breadcrumb li {
+  float: left;
+  width: auto;
+}
 ul.post-list li {
   padding: 5px 0px;
   border-top: 1px solid var(--color-primary);
@@ -535,6 +543,29 @@ ul.post-list li span.post-tags {
   max-width: 85vw !important;
   max-height: 60vh;
   background-color: #ffffff;
+  }
+  // Ventanas de la galería de /info/ (chicas, sin ampliar): casi todo el
+  // ancho en mobile en vez del 45vw pensado para desktop, y header/botones
+  // más grandes para que sean más fáciles de tocar (el ícono SVG de
+  // ampliar/achicar se agranda vía CSS — el width/height inline del SVG
+  // es sólo un valor por default, CSS le gana sin tocar el JS).
+  .gallery-window img,
+  .gallery-window video {
+    max-width: 92vw;
+  }
+  .gallery-window-header {
+    height: calc(var(--margin) * 1.5);
+  }
+  .gallery-window-close,
+  .gallery-window-expand {
+    width: calc(var(--margin) * 1.5);
+    height: calc(var(--margin) * 1.5);
+    line-height: calc(var(--margin) * 1.5);
+  }
+  .gallery-window-expand svg,
+  .gallery-window-close svg {
+    width: 20px;
+    height: 20px;
   }
   p.nav-categorias a {
     text-decoration: none;

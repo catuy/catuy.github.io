@@ -1,6 +1,23 @@
 ---
 layout: default
 ---
+<style>
+  /* En mobile, el mail deja de estar fijo abajo-izq (eso es sólo para el
+     resto del sitio, ver .contact-mail en styles.scss) y pasa a fluir
+     justo después del about — .contact-mail ya es hijo directo de
+     .container, mismo nivel que el <div class="item page-content"> del
+     about (ver default.html), así que con position:static alcanza: cae
+     justo debajo en el orden del DOM, sin margen izquierdo propio (mismo
+     0 que .item.page-content en mobile, ver la media query de abajo en
+     styles.scss) — quedan alineados contra la izquierda solos. */
+  @media only screen and (max-width: 768px) {
+    .contact-mail {
+      position: static;
+      display: block;
+      margin-top: var(--margin);
+    }
+  }
+</style>
 <article class="main-content">
   <div class="text-lg">
     {% include info-chat.html %}
