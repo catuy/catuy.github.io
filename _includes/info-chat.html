@@ -295,15 +295,18 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       return { w: pic.naturalWidth, h: pic.naturalHeight };
     }
 
-    // Ampliar/achicar estilo lightbox: centra y agranda hasta 90vw/90vh sin
-    // pasar el tamaño natural de la imagen (se calcula una sola vez, no se
-    // lee el layout a mitad de la transición CSS), bloquea y difumina el
-    // fondo con un backdrop, y guarda posición/tamaño de origen para volver
-    // exacto (aunque la ventana se haya arrastrado antes de expandir).
+    // Ampliar/achicar estilo lightbox: centra y agranda hasta EXPAND_CAP del
+    // viewport sin pasar el tamaño natural de la imagen (se calcula una
+    // sola vez, no se lee el layout a mitad de la transición CSS), bloquea
+    // y difumina el fondo con un backdrop, y guarda posición/tamaño de
+    // origen para volver exacto (aunque la ventana se haya arrastrado antes
+    // de expandir). Deja margen abajo para el caption (ver reveal()), que
+    // ahora cuelga afuera de la ventana en vez de ir adentro.
+    var EXPAND_CAP = 0.75;
     function expand(win, pic, header, expandBtn) {
       var size = mediaSize(pic);
       var naturalW = size.w, naturalH = size.h;
-      var scale = Math.min(1, (window.innerWidth * 0.9) / naturalW, (window.innerHeight * 0.9) / naturalH);
+      var scale = Math.min(1, (window.innerWidth * EXPAND_CAP) / naturalW, (window.innerHeight * EXPAND_CAP) / naturalH);
       var targetImgW = naturalW * scale;
       var targetImgH = naturalH * scale;
       var targetLeft = (window.innerWidth - targetImgW) / 2;
@@ -439,7 +442,8 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       pic.src = img.src;
       win.appendChild(pic);
 
-      // Sólo visible ampliada (ver .gallery-window-caption en styles.scss,
+      // Sólo visible ampliada, colgando AFUERA de la ventana (position:
+      // absolute, top:100% — ver .gallery-window-caption en styles.scss,
       // atado a .expanded) — texto fijo al crear la ventana, no hace falta
       // tocarlo en expand()/collapse().
       if (img.comment) {

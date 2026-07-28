@@ -740,6 +740,30 @@ verdad, con `navigator.language` normal) — sólo a este harness en
 particular, ninguno de los anteriores en esta sesión necesitaba
 `navigator` con un valor específico.
 
+**Ajuste el mismo día**: Diego probó y pidió dos retoques al lightbox.
+
+1. **Ventanas ampliadas un poco más chicas**: el cap de `expand()` pasó de
+   90% del viewport a un nuevo `EXPAND_CAP = 0.75` (75%), mismo uso en los
+   dos ejes (ancho/alto) — una sola constante en vez de los dos `0.9`
+   sueltos que había antes.
+2. **El caption pasa a colgar AFUERA de la ventana**: antes era un tercer
+   hijo en flujo normal, con borde superior y fondo heredado de
+   `.gallery-window`. Ahora `.gallery-window.expanded .gallery-window-caption`
+   usa `position: absolute; top: 100%` — sale del flujo, se ve debajo del
+   borde inferior de la ventana, sin su fondo/borde (el fondo de
+   `.gallery-window` sólo pinta su propia caja, que ya no incluye al
+   caption). `.gallery-window` ya era `position: fixed`, así que sirve como
+   containing block sin agregar `position: relative` aparte.
+   - **Efecto colateral bueno, no buscado**: la "simplificación consciente"
+     de la ronda anterior (el centrado de `expand()` no contaba la altura
+     del caption) deja de ser una simplificación — ahora es simplemente
+     correcto, porque al estar fuera del flujo el caption YA NO aporta
+     altura a la ventana bajo ningún escenario. `targetTop` (imagen +
+     header) es exacto de nuevo.
+   - Bajar el cap a 75% de paso deja más margen abajo para que el caption
+     (que ahora puede extenderse por debajo del borde de la ventana) no
+     quede pegado al piso del viewport.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**

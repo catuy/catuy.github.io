@@ -447,17 +447,23 @@ body.layout-home .cursor-dot:not(.hint) {
   max-height: none;
 }
 // Descripción del proyecto (comment en GALLERY_IMAGES) — sólo visible
-// ampliada, ver reveal()/expand()/collapse() en info-chat.html. Sin width
-// propio: hereda el ancho resuelto de la ventana igual que
-// .gallery-window-header (ninguno de los dos lo declara).
+// ampliada, colgando AFUERA de la caja de la ventana (position: absolute +
+// top: 100%, sin su borde/fondo). .gallery-window ya es position: fixed,
+// así que es el containing block — no hace falta position: relative
+// aparte. Al quedar fuera del flujo, tampoco aporta altura a la propia
+// ventana: el centrado de expand() (que sólo cuenta imagen + header) da
+// exacto, no hace falta compensar nada ahí.
 .gallery-window-caption {
   display: none;
-  padding: 10px var(--margin);
-  border-top: 1px solid var(--color-primary);
-  font-size: var(--font-size-s);
 }
 .gallery-window.expanded .gallery-window-caption {
   display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding-top: 10px;
+  font-size: var(--font-size-s);
 }
 // Bloquea y difumina todo lo demás mientras una ventana está expandida.
 // El fallback (navegadores sin backdrop-filter) es el tinte de background.
