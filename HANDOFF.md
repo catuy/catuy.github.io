@@ -764,6 +764,15 @@ particular, ninguno de los anteriores en esta sesión necesitaba
      (que ahora puede extenderse por debajo del borde de la ventana) no
      quede pegado al piso del viewport.
 
+**Tipografía del caption, mismo día**: Diego pidió "el cuerpo de texto
+chico que tenemos definido en el proyecto". `--font-size-s` (12px) ya
+estaba puesto desde la primera versión del caption — lo que faltaba era el
+resto del tratamiento de "cuerpo de texto" que ya usa el narrador de
+arriba (`.chat-say`: `white-space: pre-wrap; word-break: break-word;`, sin
+tamaño propio, hereda el de `body`). El caption ahora suma esas dos
+propiedades a su `font-size: var(--font-size-s)` — mismo cuerpo de texto
+del sitio, en su variante chica.
+
 ## Próximos pasos (post-2026-07-29, sobre el sistema NUEVO)
 
 1. **Decidir qué hacer con `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`**

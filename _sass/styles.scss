@@ -463,6 +463,10 @@ body.layout-home .cursor-dot:not(.hint) {
   left: 0;
   width: 100%;
   padding-top: 10px;
+  // Mismo cuerpo de texto que .chat-say (el narrador de arriba), en el
+  // tamaño chico del proyecto (--font-size-s) en vez del tamaño de body.
+  white-space: pre-wrap;
+  word-break: break-word;
   font-size: var(--font-size-s);
 }
 // Bloquea y difumina todo lo demás mientras una ventana está expandida.
