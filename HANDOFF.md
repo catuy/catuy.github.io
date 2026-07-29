@@ -1299,6 +1299,41 @@ a `reboot.webp` (`_expandSrc`), clickear "Achicar" lo devuelve a
 `reboot.jpg`; en mobile arranca directo en `reboot.webp`, sin pasar por
 la portada — igual que ya pasaba con los videos.
 
+**Dos bugs reales en ese mismo mecanismo, encontrados por Diego probándolo
+en el momento:**
+
+1. **Reboot quedaba descentrado al ampliar.** Causa: `pic.onload` seguía
+   apuntando al `recenter()` de `reveal()` (nunca se limpiaba). Cambiar
+   `pic.src` en `expand()` dispara un `onload` nuevo — ese `recenter()`
+   viejo pisaba el centrado recién calculado (basado en el viewport) con
+   uno centrado en el punto de click ORIGINAL de cuando se reveló la
+   ventana. Fix: `pic.onload = null;` antes de hacer el swap.
+2. **Escobar (y, mismo motivo, Melu) quedaban chicas al ampliar, sin
+   escalar.** Causa: `mediaSize()` usa `pic.naturalWidth`/`naturalHeight`
+   — en el momento de `expand()`, el `<img>` todavía tiene cargada la
+   PORTADA (el swap a la animación real pasa recién después, ver
+   arriba), y la portada puede ser mucho más chica que la animación real
+   (medido con PIL: `escobar.gif` 304×188 vs `escobar.webp` 1903×1066 —
+   6 veces más chica). El cap `Math.min(1, ...)` de `expand()` (no
+   agrandar más allá del tamaño natural) terminaba capeando al tamaño de
+   la portada, no al de la animación. Fix: en `reveal()`, además del
+   `_posterSrc`/`_expandSrc` ya guardados, un `new Image()` extra
+   (`expandProbe`) precarga en paralelo el tamaño real de la animación
+   (`img.src`, no `img.poster`) en `pic._expandNaturalSize` — no bloquea
+   nada (corre en paralelo, sin esperar a que el usuario haga nada).
+   `mediaSize()` ahora prefiere `_expandNaturalSize` sobre
+   `naturalWidth`/`naturalHeight` cuando está disponible. Si el click en
+   "Ampliar" llega antes de que el probe cargue (poco probable, son
+   portadas livianas), cae de vuelta al tamaño de la portada — degradado,
+   no roto.
+
+Verificado con un harness con dimensiones reales por archivo (medidas con
+PIL, no todas 1280x720 como en harnesses anteriores) para los 3
+proyectos: el tamaño ampliado calculado coincide con el que da la
+animación real (no la portada) en los tres casos, y la ventana se
+mantiene centrada después de simular que el `<img>` recién swappeado
+termina de "cargar" (confirma que `onload` no vuelve a pisar la posición).
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

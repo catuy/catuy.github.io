@@ -409,9 +409,15 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     // Tamaño real del media: naturalWidth/Height para <img>. Para <video>
     // NO se usa videoWidth/Height (el .mp4 todavía no se descargó — ver
     // reveal(), preload="none" a propósito) sino `_naturalSize`, tomado de
-    // la portada estática (misma proporción que el video).
+    // la portada estática (misma proporción que el video). Para <img> con
+    // portada propia (reboot/escobar/melu) se prefiere `_expandNaturalSize`
+    // si ya se conoce (ver reveal()): la portada puede ser mucho más chica
+    // que la animación real (ej. escobar: portada 304×188, animación
+    // 1903×1066) — usar el tamaño de la portada capeaba el ampliado a ese
+    // tamaño chico, sin escalar de verdad.
     function mediaSize(pic) {
       if (pic.tagName === 'VIDEO') return pic._naturalSize || { w: pic.videoWidth, h: pic.videoHeight };
+      if (pic._expandNaturalSize) return pic._expandNaturalSize;
       return { w: pic.naturalWidth, h: pic.naturalHeight };
     }
 
@@ -473,7 +479,15 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       // animado, ej. reboot/escobar/melu): no hay un "poster" nativo como
       // <video>, así que el swap de src se hace a mano acá — ver reveal()
       // para cómo se guardan `_posterSrc`/`_expandSrc` en `pic`.
-      else if (pic._expandSrc) pic.src = pic._expandSrc;
+      else if (pic._expandSrc) {
+        // `pic.onload` todavía apunta al `recenter()` de reveal() (nunca
+        // se limpió) — sin sacarlo, cambiar el src dispara un onload que
+        // vuelve a centrar la ventana en el punto de click ORIGINAL,
+        // pisando el centrado en el viewport que se acaba de calcular acá
+        // arriba. Quedaba descentrada al ampliar.
+        pic.onload = null;
+        pic.src = pic._expandSrc;
+      }
 
       expandBtn.innerHTML = COMPRESS_ICON;
       expandBtn.setAttribute('aria-label', 'Achicar');
@@ -619,6 +633,18 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
           pic._posterSrc = img.poster;
           pic._expandSrc = img.src;
           pic.src = IS_MOBILE ? img.src : img.poster;
+          if (!IS_MOBILE) {
+            // Precarga en paralelo el tamaño real de la animación (no la
+            // portada) para que expand() escale a partir de ESE tamaño —
+            // ver mediaSize(). No bloquea nada: si el click en "Ampliar"
+            // llega antes de que esto cargue, mediaSize() cae de vuelta a
+            // la portada (degradado, no roto).
+            var expandProbe = new Image();
+            expandProbe.onload = function () {
+              pic._expandNaturalSize = { w: expandProbe.naturalWidth, h: expandProbe.naturalHeight };
+            };
+            expandProbe.src = img.src;
+          }
         } else {
           pic.src = img.src;
         }
