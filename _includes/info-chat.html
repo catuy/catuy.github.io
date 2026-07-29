@@ -13,6 +13,8 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
 (function () {
   var rawLang = (navigator.language || 'es').slice(0, 2).toLowerCase();
   var LANG = rawLang === 'en' ? 'en' : 'es';
+  // Mismo breakpoint que usa el CSS (max-width: 768px, ver styles.scss).
+  var IS_MOBILE = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
 
   var GRAPH = JSON.parse(document.getElementById('chat-graph').textContent);
   var UI = GRAPH.ui || {};
@@ -65,8 +67,15 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   }
 
   // Ritmo tipo streaming de un LLM (ChatGPT/Claude): trozos de varios
-  // caracteres por tick, no letra por letra.
+  // caracteres por tick, no letra por letra. En mobile aparece de una —
+  // Diego lo pidió así, el efecto no sumaba ahí.
   function typeOut(el, text, done) {
+    if (IS_MOBILE) {
+      el.textContent = text;
+      srEl.textContent = text;
+      if (done) done();
+      return;
+    }
     var i = 0;
     el.textContent = '';
     (function step() {
@@ -251,6 +260,10 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     // NO los clicks sobre la propia imagen ampliada (no tiene por qué
     // frenarlos ella misma), que si no burbujean a document igual.
     var activeExpanded = null;
+    // Sólo en mobile: una sola imagen visible a la vez (ver reveal() más
+    // abajo) — guarda la ventana/imagen actual para poder sacarla antes
+    // de mostrar la siguiente. En desktop queda siempre en null, sin usarse.
+    var mobileWin = null;
 
     // La transition va inline, sólo mientras dura expand()/collapse() — si
     // viviera en el CSS de .gallery-window, tanto arrastrar (jQuery UI pisa
@@ -380,10 +393,31 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       expandBtn.setAttribute('aria-label', 'Ampliar');
     }
 
+    // Saca una ventana de encima (misma limpieza que hacía el botón × antes
+    // de sacárselo en mobile — ver `closeBtn` más abajo, sigue existiendo
+    // para desktop) y devuelve su imagen al final de la cola.
+    function removeWindow(win, img) {
+      if (win.classList.contains('expanded')) {
+        if (win._backdrop) win._backdrop.remove();
+        if (win._onKeydown) document.removeEventListener('keydown', win._onKeydown);
+        activeExpanded = null;
+      }
+      win.remove();
+      queue.push(img);
+    }
+
     function reveal(ev) {
       if (activeExpanded) return; // no apilar nada mientras hay una ampliada
       if (isInteractive(ev.target)) return;
       if (!queue.length) return;
+
+      // Sólo en mobile: nunca más de una imagen en pantalla — la anterior
+      // se saca (vuelve al final de la cola) antes de mostrar la
+      // siguiente. En desktop `mobileWin` nunca se setea, esto no hace nada.
+      if (IS_MOBILE && mobileWin) {
+        removeWindow(mobileWin.win, mobileWin.img);
+        mobileWin = null;
+      }
 
       var img = queue.shift();
       var win = document.createElement('div');
@@ -469,20 +503,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         expand(win, pic, header, expandBtn);
       });
 
-      // Cerrar una ventana expandida tiene que sacar también el backdrop y
-      // el listener de Escape — si no, queda una capa de blur fantasma sin
-      // forma de sacarla (la ventana que la creaba ya no está).
       closeBtn.addEventListener('click', function () {
-        if (win.classList.contains('expanded')) {
-          if (win._backdrop) win._backdrop.remove();
-          if (win._onKeydown) document.removeEventListener('keydown', win._onKeydown);
-          activeExpanded = null; // si no, reveal() queda bloqueado para siempre
-        }
-        win.remove();
-        queue.push(img);
+        removeWindow(win, img);
+        if (mobileWin && mobileWin.win === win) mobileWin = null;
       });
 
       document.body.appendChild(win);
+      if (IS_MOBILE) mobileWin = { win: win, img: img };
       win.addEventListener('mousedown', function () {
         if (win.classList.contains('expanded')) return; // no compite con Z_EXPANDED
         z += 1;
@@ -497,8 +524,14 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   //  Arranque
   //  ------------------------------------------
 
+  // Saludo de referrer (?from=<slug>) DESACTIVADO a propósito (Diego, 2026-07-29):
+  // el link ?from= ya está publicado en varios sitios externos y no quiere
+  // que salga ese saludo por ahora — pero el desarrollo se queda intacto
+  // (referrer.yml, referrerNode(), sessionStorage.chatFrom en footer.html)
+  // para reactivarlo más adelante: alcanza con volver esto a `true`.
+  var REFERRER_GREETING_ENABLED = false;
   var from = (sessionStorage.getItem('chatFrom') || '').toLowerCase();
-  var ref = referrerNode();
+  var ref = REFERRER_GREETING_ENABLED ? referrerNode() : null;
   var introText = ref ? t(ref.intro) : t(UI.about_extended);
   showText(introText);
   startProjectGallery();

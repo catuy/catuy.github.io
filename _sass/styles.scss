@@ -550,15 +550,20 @@ ul.post-list li span.post-tags {
   .gallery-window video {
     max-width: 92vw;
   }
-  // Los botones ×/ampliar no respondían bien al toque en mobile (según
-  // Diego) — se sacan del todo ahí (display:none, siguen existiendo en el
-  // DOM/JS para desktop) y la barra queda como una manija angosta, sólo
-  // para arrastrar. Cerrar/ampliar dejan de estar disponibles en mobile:
-  // las ventanas se apilan y arrastran igual, pero no hay forma de
-  // sacarlas de la cola ni ver el caption ampliado ahí.
-  .gallery-window-header {
-    height: 14px;
+  // "El dibujo del navegador" (el look de ventana de browser: borde,
+  // esquinas redondeadas, la barra de header) no tiene sentido en mobile
+  // — a esta altura ya es una sola imagen a la vez (ver reveal()/
+  // mobileWin en info-chat.html), no una ventana para organizar entre
+  // varias. Se saca todo el chrome: sin borde/fondo/radio en la ventana,
+  // header oculto del todo (antes quedaba como manija angosta, ahora ni
+  // eso — sin handle, `.draggable()` sigue arrastrando agarrando la
+  // imagen misma, no hacía falta un handle dedicado).
+  .gallery-window {
+    border: none;
+    border-radius: 0;
+    background: none;
   }
+  .gallery-window-header,
   .gallery-window-close,
   .gallery-window-expand {
     display: none;

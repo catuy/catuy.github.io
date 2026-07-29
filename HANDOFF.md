@@ -952,6 +952,57 @@ interacción en mobile más adelante, hay que resolver primero por qué el
 toque no las activaba de forma confiable (no se investigó la causa raíz
 táctil, se optó por sacarlas).
 
+## Segunda tanda de mobile: sin tipeo, una imagen a la vez, sin "chrome" de ventana (2026-07-29)
+
+Diego pidió varios cambios más en mobile, más uno general.
+
+1. **Sin efecto de tipeo en mobile**: `typeOut()` (`_includes/info-chat.html`)
+   ahora chequea `IS_MOBILE` (`window.matchMedia('(max-width: 768px)')`,
+   mismo breakpoint que ya usa el CSS) al principio — si es mobile, pone el
+   texto completo de una (`el.textContent = text`) y llama `done()`
+   directo, sin el loop de `setTimeout`. Desktop no se tocó.
+2. **Nav de `/info/` en mobile**: `.container > header.item:nth-child(1)`
+   pasa a `position: relative` y suma `margin-bottom: var(--margin)` antes
+   del about — agregado al `<style>` scopeado de `_layouts/info.html`
+   (mismo bloque donde ya vivía el ajuste de `.contact-mail`).
+3. **Galería: una sola imagen visible a la vez en mobile** — vuelve
+   parcialmente al comportamiento "ventana única" que se había probado y
+   descartado en la ronda original (ver más arriba, "Ajustes 2026-07-28"),
+   pero esta vez sólo para mobile (en desktop sigue apilando, sin cambios).
+   `reveal()` ahora chequea `IS_MOBILE` y, si hay una `mobileWin` activa, la
+   saca (misma limpieza que hacía el botón `×` — factorizada a un helper
+   nuevo, `removeWindow(win, img)`, que también reusa el propio `closeBtn`)
+   antes de mostrar la siguiente. La imagen sacada vuelve al final de la
+   cola, igual que antes — así que en mobile también es cíclico, no se
+   agota después de la primera vuelta.
+4. **Se saca "el dibujo del navegador"**: la ventana estaba diseñada para
+   parecer una mini ventana de browser (borde, esquinas redondeadas 8px,
+   barra de header) — tenía sentido cuando se apilaban varias, no cuando
+   es una sola imagen a la vez. En mobile: `.gallery-window` pierde
+   borde/fondo/radio, y `.gallery-window-header` (que la ronda anterior
+   había dejado como manija angosta de 14px) pasa a `display: none` del
+   todo — sin handle, `.draggable()` sigue arrastrando agarrando la
+   imagen misma (nunca tuvo `handle` configurado).
+5. **Ajuste general (no sólo mobile): saludo de referrer desactivado**.
+   Diego ya publicó el link `?from=<slug>` en varios sitios externos y no
+   quiere que aparezca ese saludo contextual por ahora — pero pidió
+   explícitamente NO borrar el desarrollo. Se agregó
+   `var REFERRER_GREETING_ENABLED = false;` en el arranque de
+   `info-chat.html`: con eso en `false`, `ref` siempre da `null` y se
+   muestra `about_extended` como si fuera un visitante frío, sin importar
+   `?from=`. `referrer.yml`, `referrerNode()`, y el
+   `sessionStorage.chatFrom` que guarda `footer.html` siguen intactos —
+   reactivar es una sola línea (`true`).
+
+Verificado con un harness ad-hoc que corre el mismo engine dos veces
+(`matchMedia` stubeado en `true`/`false`) más un contador de cuántas veces
+se asigna `textContent` al turno del narrador: en mobile, 5 clicks seguidos
+dejan siempre **1** `.gallery-window` en pantalla (la anterior se saca
+antes de sumar la siguiente) y el texto se asigna **una sola vez** (sin
+animación); en desktop, los mismos 5 clicks apilan **1,2,3,4,5** ventanas
+sin cambios, y el texto se asigna **20 veces** (los pasos de `typeOut`),
+confirmando que el comportamiento desktop quedó intacto.
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

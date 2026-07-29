@@ -16,6 +16,13 @@ layout: default
       display: block;
       margin-top: var(--margin);
     }
+    /* El breadcrumb (".. / Info") pasa a position:relative (normal,
+       en flujo) y le suma margen abajo antes del about — Diego lo pidió
+       explícito para mobile. */
+    .container > header.item:nth-child(1) {
+      position: relative;
+      margin-bottom: var(--margin);
+    }
   }
 </style>
 <article class="main-content">
