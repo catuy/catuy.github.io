@@ -1191,6 +1191,70 @@ siempre. Un tercer caso confirma que `draggable()` recibe exactamente
 .gallery-window-expand'}` en ambas plataformas (antes desktop no tenía
 `handle`).
 
+## Pool ampliado a 29 proyectos (2026-07-29)
+
+Diego trajo bastantes archivos más a `assets/blogimages/tiles/` y pidió
+sumarlos: `artifact-2.gif`, `cc-24.jpg`, `cololo.jpg`, `criolla-2.jpg` (de
+vuelta) + `criolla-3.jpg` (nuevo), `escobar` (con `escobar.gif`, no el
+`.webp`), `leac.webp` (de vuelta), `melu` (con `melu.jpg`, no el
+`.webp`), `prisma` (de vuelta), `reboot` (ya estaba — sólo cambió de
+`reboot.webp` a `reboot.jpg`), `seri3.jpg` (de vuelta), `1976-1.jpg`,
+`jacobin` (de vuelta), `sso-1.mp4`, `tend-1.mp4`, `trama-4.mp4`. Pidió
+sacar las descripciones "del mismo lugar que las otras" —
+`/Users/diego/www/cataldo-pages` — mismo criterio que la ronda original:
+texto en inglés ahí, adaptado a 1ª persona bilingüe.
+
+**Investigación (agente Explore) confirmó proyecto por archivo**:
+- `escobar` → **Escobar**, serie de TV de Fusion (identidad + títulos).
+- `leac.webp` → repurposeado en cataldo-pages como **FAdu UdelaR**
+  (docencia en la Universidad de la República) — el archivo se llama
+  "leac" pero el tile en el otro repo representa otra cosa; se usó la
+  descripción real encontrada para ESE archivo puntual, no lo que
+  sugiere el nombre. "LEAC" en sí no tiene copy en ningún lado (ni en
+  los borradores).
+- `melu` → **Melu**, álbum de música (dirección de arte + diseño).
+- `prisma` → **PRISMA** (prisma.uy), portal de indicadores nacionales de
+  innovación. El post dedicado en cataldo-pages tiene un
+  título/descripción pegados por error de otro proyecto ("The Inter
+  typeface") — se usó la descripción de `slideshow.yml`, no esa.
+- `jacobin` → **Jacobin** (jacobinlat.com), publicación de izquierda.
+- `1976-1.jpg` → **Uruguay 1976**: tipografía con retratos de detenidos
+  desaparecidos durante la dictadura uruguaya (1973-1985), premiada en
+  varias bienales internacionales — tema sensible, se mantuvo el texto
+  cerca del que ya usa Diego en su propio portfolio, sin agregar nada.
+- `sso-1.mp4` → **ANII SSO** (anii.org.uy), sistema de inicio de sesión
+  único de la agencia nacional de innovación.
+- `tend-1.mp4` → **Tend** (tend.uy), revista digital de la Asociación
+  Psicoanalítica del Uruguay. Mismo problema que Prisma: el
+  front-matter del post tiene una descripción calcada por error de
+  Monitor Cannabis — se usó `slideshow.yml`/el cuerpo real del post.
+- `trama-4.mp4` → **Trama**, plataforma para conectar al ecosistema de
+  innovación de Uruguay. Mismo problema de nuevo (front-matter con el
+  boilerplate de "The Inter typeface") — se usó el cuerpo real del post.
+- `criolla-2.jpg`/`criolla-3.jpg` y `seri3.jpg` reusan el `comment` ya
+  verificado de Criolla Films / Serigraphic Work (mismo proyecto, otra
+  imagen).
+
+**Sin comment, a propósito** (no hay texto real en cataldo-pages para
+estos 3, ni siquiera en sus archivos de backup/draft con contenido
+placeholder): `artifact-2.gif`, `cc-24.jpg` (es sólo un thumbnail de
+ejemplo de "creative coding" ahí, no un proyecto con nombre propio —
+"CC" = Creative Coding, confirmado, pero sin descripción propia) y
+`cololo.jpg`. Quedan con `alt`/`label` de mejor esfuerzo (derivados del
+nombre de archivo) y sin `comment` — no se inventó contenido. Avisar a
+Diego si tiene texto para estos tres.
+
+`GALLERY_IMAGES` pasa de 14 a **29 entradas**. `artifact-2.gif` se
+maneja como `<img>` normal (no `.mp4`, `isVideo()` no lo toca) — un gif
+anima solo, sin necesitar la lógica de video/poster.
+
+Verificado con un harness: revela las 29 entradas en secuencia sin
+excepciones; confirma que las 3 sin `comment` (`artifact-2.gif`,
+`cc-24.jpg`, `cololo.jpg`) no generan `.gallery-window-caption`, que las
+otras 26 sí; y que `artifact-2.gif` se crea como `<img>` (no `<video>`,
+confirmando que `isVideo()` sólo mira `.mp4`) mientras `prisma-1.mp4` sí
+se crea como `<video>`.
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/
