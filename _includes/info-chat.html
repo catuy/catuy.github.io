@@ -462,7 +462,20 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         win.style.left = (ev.clientX - win.offsetWidth / 2) + 'px';
         win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
       };
-      if (video) {
+      if (video && IS_MOBILE) {
+        // En mobile no hay "ampliar" (los botones están ocultos, ver
+        // styles.scss) — la miniatura ES la vista final, no tiene sentido
+        // dejarla en la portada estática esperando un expand() que acá no
+        // existe. Reproduce directo: sin preload="none" (si no, nunca
+        // arranca sola), y usa `loadeddata` (no `onload`, que <video> no
+        // dispara) para recentrar una vez que se conoce el tamaño real.
+        pic.loop = true;
+        pic.muted = true;
+        pic.playsInline = true;
+        pic.autoplay = true;
+        pic.alt = img.alt;
+        pic.addEventListener('loadeddata', recenter);
+      } else if (video) {
         // En chico se ve quieta (portada estática, sin descargar el .mp4
         // todavía): sólo reproduce al ampliar (expand()/collapse() más
         // arriba) — así no hay 22 videos corriendo a la vez en pantalla.

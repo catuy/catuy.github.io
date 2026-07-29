@@ -1035,6 +1035,37 @@ primera con `×` manualmente, y revelar 2 más — da **3** en pantalla al
 final (no 2 ni 4), confirmando que el cierre manual no deja basura en
 `desktopWindows` que corra el tope.
 
+## Mobile: los .mp4 reproducen directo, sin portada estática (2026-07-29)
+
+Diego pidió, mismo día: en mobile, que la "miniatura" cargue lo que en
+desktop se ve recién al ampliar (el video reproduciendo), no la portada
+estática — no tiene sentido mostrar sólo la portada ahí porque en mobile
+ya no hay forma de ampliar (botones ocultos, ver más arriba). También
+aclaró que **no hace falta mostrar las descripciones** en mobile — eso ya
+estaba resuelto solo: el caption (`.gallery-window-caption`) sólo se
+muestra con `.expanded` (CSS), y `expanded` es inalcanzable en mobile
+(mismo motivo), así que no había nada que tocar ahí.
+
+`reveal()` en `_includes/info-chat.html` ahora bifurca por `IS_MOBILE`
+para los `.mp4`: en mobile, el `<video>` se crea con `autoplay = true` y
+**sin** `preload = "none"` (si no, nunca arranca solo) — sigue con
+`loop`/`muted`/`playsInline`, pero ya no usa `poster` ni el `coverProbe`
+(el truco de medir la portada con un `Image()` aparte porque con
+`preload="none"` el video no tenía `videoWidth`/`videoHeight` — en mobile,
+al cargar de verdad, esos datos SÍ están disponibles). Para recentrar la
+ventana en el punto de click una vez que se conoce el tamaño real, se usa
+`pic.addEventListener('loadeddata', recenter)` en vez de `onload` (que
+`<video>` no dispara). Desktop sigue exactamente igual: `preload="none"`,
+portada, sin autoplay, sólo reproduce al ampliar.
+
+Verificado con un harness: en mobile, los primeros 5 elementos creados
+(mezcla de video/imagen según `GALLERY_IMAGES`) dan videos con
+`autoplay=true`, `preload=undefined` (no `"none"`); en desktop, los mismos
+5 dan `autoplay=false`, `preload="none"`, `poster` presente — sin cambios.
+Un caso aparte confirma que disparar `loadeddata` a mano sobre el `<video>`
+mueve `win.style.left/top` del punto de click original al centrado real
+(recenter() corrió).
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/
