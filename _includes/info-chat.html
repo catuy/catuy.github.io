@@ -260,15 +260,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     // NO los clicks sobre la propia imagen ampliada (no tiene por qué
     // frenarlos ella misma), que si no burbujean a document igual.
     var activeExpanded = null;
-    // Sólo en mobile: una sola imagen visible a la vez (ver reveal() más
-    // abajo) — guarda la ventana/imagen actual para poder sacarla antes
-    // de mostrar la siguiente. En desktop queda siempre en null, sin usarse.
-    var mobileWin = null;
-    // Sólo en desktop: nunca más de 3 ventanas visibles a la vez — cola
-    // FIFO de las últimas reveladas (no de z-index/orden al frente). Al
-    // aparecer una 4ª, se saca la más vieja (ver reveal()). En mobile
-    // queda siempre vacío (ahí manda `mobileWin`, tope de 1).
-    var desktopWindows = [];
+    // Una sola imagen visible a la vez, en cualquier tamaño de pantalla
+    // (antes esto era distinto por plataforma: mobile topeaba en 1,
+    // desktop en 3 — Diego pidió parejarlo) — guarda la ventana/imagen
+    // actual para sacarla antes de mostrar la siguiente (ver reveal()).
+    var currentWin = null;
 
     // La transition va inline, sólo mientras dura expand()/collapse() — si
     // viviera en el CSS de .gallery-window, tanto arrastrar (jQuery UI pisa
@@ -416,18 +412,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       if (isInteractive(ev.target)) return;
       if (!queue.length) return;
 
-      // Sólo en mobile: nunca más de una imagen en pantalla — la anterior
-      // se saca (vuelve al final de la cola) antes de mostrar la
-      // siguiente. En desktop `mobileWin` nunca se setea, esto no hace nada.
-      if (IS_MOBILE && mobileWin) {
-        removeWindow(mobileWin.win, mobileWin.img);
-        mobileWin = null;
-      }
-      // Sólo en desktop: al llegar a 3 visibles, la 4ª saca a la más
-      // vieja (FIFO) antes de aparecer.
-      if (!IS_MOBILE && desktopWindows.length >= 3) {
-        var oldest = desktopWindows.shift();
-        removeWindow(oldest.win, oldest.img);
+      // Nunca más de una imagen en pantalla — la anterior se saca (vuelve
+      // al final de la cola) antes de mostrar la siguiente.
+      if (currentWin) {
+        removeWindow(currentWin.win, currentWin.img);
+        currentWin = null;
       }
 
       var img = queue.shift();
@@ -500,6 +489,19 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       pic.src = img.src;
       win.appendChild(pic);
 
+      // Clickear la imagen/video ya cargada tiene que avanzar igual que
+      // clickear el fondo de la página — en teoría el click ya burbujea
+      // solo hasta `document` (`reveal()` más abajo lo escucha ahí), pero
+      // en mobile algunos navegadores le dan a `<video>` un manejo propio
+      // del tap (play/pause nativo) que puede frenar esa propagación.
+      // Escuchar acá también, directo sobre `pic`, no depende de eso.
+      // `stopPropagation()` evita que el mismo click dispare `reveal()`
+      // una segunda vez al llegar a `document` por bubbling normal.
+      pic.addEventListener('click', function (picEv) {
+        picEv.stopPropagation();
+        reveal(picEv);
+      });
+
       // Sólo visible ampliada, colgando AFUERA de la ventana (position:
       // absolute, top:100% — ver .gallery-window-caption en styles.scss,
       // atado a .expanded) — texto fijo al crear la ventana, no hace falta
@@ -529,14 +531,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
 
       closeBtn.addEventListener('click', function () {
         removeWindow(win, img);
-        if (mobileWin && mobileWin.win === win) mobileWin = null;
-        var idx = desktopWindows.findIndex(function (w) { return w.win === win; });
-        if (idx !== -1) desktopWindows.splice(idx, 1);
+        if (currentWin && currentWin.win === win) currentWin = null;
       });
 
       document.body.appendChild(win);
-      if (IS_MOBILE) mobileWin = { win: win, img: img };
-      else desktopWindows.push({ win: win, img: img });
+      currentWin = { win: win, img: img };
       win.addEventListener('mousedown', function () {
         if (win.classList.contains('expanded')) return; // no compite con Z_EXPANDED
         z += 1;

@@ -1066,6 +1066,55 @@ Un caso aparte confirma que disparar `loadeddata` a mano sobre el `<video>`
 mueve `win.style.left/top` del punto de click original al centrado real
 (recenter() corrió).
 
+## Cuarta tanda, mismo día: desktop pasa a 1 sola imagen, click sobre la imagen, transición de aparición, borde de vuelta en mobile (2026-07-29)
+
+Diego, viendo todo lo de arriba ya en vivo, pidió 4 ajustes más en la
+misma sesión.
+
+1. **Desktop también a una sola imagen visible**, no 3 — pero **mantiene**
+   la barra de header y el botón de ampliar (a diferencia de mobile, que
+   los sigue sin tener). Esto dejó sin sentido el `desktopWindows`
+   (FIFO de 3) agregado un rato antes — se sacó del todo y se unificó con
+   el mecanismo de `mobileWin` en una sola variable, `currentWin`, que
+   ahora se usa **sin distinguir plataforma**: cualquier `reveal()` saca
+   la ventana actual (si hay) antes de mostrar la siguiente. El código de
+   plataforma que queda (`IS_MOBILE`) es sólo para el efecto de tipeo y el
+   autoplay de video — ya no para cuántas ventanas caben.
+2. **Clickear la imagen/video ya cargada tiene que avanzar igual que
+   clickear el fondo**: en teoría el click ya burbujeaba solo hasta
+   `document` (donde escucha `reveal()`), pero Diego reportó que en mobile
+   es "difícil" cuando la imagen cambia — sospecha razonable: algunos
+   navegadores mobile le dan a `<video>` un manejo de tap propio (algo
+   así como play/pause nativo) que puede interceptar la propagación antes
+   de que llegue a `document`. Se agregó un listener de `click` directo
+   sobre `pic` (la imagen o el video) que llama a `reveal(picEv)` a mano,
+   con `picEv.stopPropagation()` para que el mismo click no dispare un
+   SEGUNDO `reveal()` al seguir burbujeando por su cuenta.
+3. **Transición más suave al cambiar de imagen**: con una sola imagen a
+   la vez, el salto de tamaño entre una imagen angosta y una ancha se
+   sentía abrupto (cada `reveal()` saca la ventana vieja y crea una
+   completamente nueva — no hay un elemento continuo al que animarle un
+   resize). En vez de interpolar tamaños exactos (no hay from/to
+   confiable antes de que la imagen cargue), se le puso a `.gallery-window`
+   un pop-in de aparición: `animation: gallery-window-in .25s ease`
+   (`opacity`/`scale(.94→1)`) en `_sass/styles.scss`. Es `animation`, no
+   `transition` — no interfiere con el comentario ya existente ahí ("sin
+   transition, arrastrar/recentrar tienen que ser instantáneos"), corre
+   una sola vez por ventana nueva, nunca en `left`/`top`.
+4. **El borde vuelve en mobile** (sin la barra de header, que sigue
+   oculta): Diego sintió que las imágenes quedaban "vacías" del todo sin
+   ningún marco después de sacar "el dibujo del navegador" (ver más
+   arriba). Vuelve sólo `border: 1px solid var(--color-primary)` — sin
+   las esquinas redondeadas asimétricas de desktop (`8px 8px 0 0`,
+   pensadas para calzar con un header que en mobile no existe) ni fondo.
+
+Verificado con un harness (bubbling real, mismo patrón que ya usaron
+rondas anteriores): 5 clicks en el fondo dejan **1** ventana en pantalla
+tanto en desktop (antes 3) como en mobile (sin cambios); clickear la
+imagen/video ya cargada (target real = `pic`, no el fondo) avanza a otra
+imagen y sigue habiendo exactamente **1** ventana — confirma que el nuevo
+listener no duplica el `reveal()` vía bubbling normal.
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

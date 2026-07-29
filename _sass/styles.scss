@@ -394,6 +394,17 @@ body.layout-home .cursor-dot:not(.hint) {
   border: 1px solid var(--color-primary);
   border-radius: 8px 8px 0 0;
   background: var(--color-tertiary);
+  // Pop-in suave al aparecer — ahora que cada click reemplaza a la
+  // ventana anterior (una sola imagen visible a la vez, cualquier
+  // tamaño de pantalla) el salto entre imágenes de tamaño distinto se
+  // sentía abrupto. `animation` en vez de `transition`: es un efecto de
+  // aparición único, no interfiere con el arrastre/reposicionamiento
+  // instantáneo que sí necesita el comentario de arriba.
+  animation: gallery-window-in .25s ease;
+}
+@keyframes gallery-window-in {
+  from { opacity: 0; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1); }
 }
 .gallery-window-header {
   position: relative;
@@ -552,14 +563,19 @@ ul.post-list li span.post-tags {
   }
   // "El dibujo del navegador" (el look de ventana de browser: borde,
   // esquinas redondeadas, la barra de header) no tiene sentido en mobile
-  // — a esta altura ya es una sola imagen a la vez (ver reveal()/
-  // mobileWin en info-chat.html), no una ventana para organizar entre
-  // varias. Se saca todo el chrome: sin borde/fondo/radio en la ventana,
-  // header oculto del todo (antes quedaba como manija angosta, ahora ni
-  // eso — sin handle, `.draggable()` sigue arrastrando agarrando la
+  // — es una sola imagen a la vez (ver reveal()/currentWin en
+  // info-chat.html), no una ventana para organizar entre varias. Se saca
+  // la barra de header del todo (antes quedaba como manija angosta, ahora
+  // ni eso — sin handle, `.draggable()` sigue arrastrando agarrando la
   // imagen misma, no hacía falta un handle dedicado).
+  //
+  // El borde SÍ vuelve (pedido de Diego, mismo día, un rato después): sin
+  // ningún marco la imagen quedaba "vacía" — pero sin esquinas
+  // redondeadas asimétricas (`8px 8px 0 0` en desktop, pensadas para
+  // calzar con el header que acá ya no existe) ni fondo, sólo el borde
+  // de color.
   .gallery-window {
-    border: none;
+    border: 1px solid var(--color-primary);
     border-radius: 0;
     background: none;
   }
