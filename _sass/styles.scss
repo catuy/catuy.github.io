@@ -394,12 +394,15 @@ body.layout-home .cursor-dot:not(.hint) {
   border: 1px solid var(--color-primary);
   border-radius: 8px 8px 0 0;
   background: var(--color-tertiary);
-  // Pop-in suave al aparecer — ahora que cada click reemplaza a la
-  // ventana anterior (una sola imagen visible a la vez, cualquier
-  // tamaño de pantalla) el salto entre imágenes de tamaño distinto se
-  // sentía abrupto. `animation` en vez de `transition`: es un efecto de
-  // aparición único, no interfiere con el arrastre/reposicionamiento
-  // instantáneo que sí necesita el comentario de arriba.
+  // Arranca oculta: antes se veía la ventana aparecer con la esquina en
+  // el punto de click y saltar al centro recién al conocerse el tamaño
+  // real (recenter() en info-chat.html) — un salto brusco. Ahora
+  // recenter() posiciona y recién ahí agrega .revealed, así que lo único
+  // que se ve es el pop-in ya en el lugar final.
+  visibility: hidden;
+}
+.gallery-window.revealed {
+  visibility: visible;
   animation: gallery-window-in .25s ease;
 }
 @keyframes gallery-window-in {
@@ -411,6 +414,22 @@ body.layout-home .cursor-dot:not(.hint) {
   height: var(--margin);
   border-bottom: 1px solid var(--color-primary);
   border-radius: 8px 8px 0 0;
+}
+// Pill centrado que indica "de acá se arrastra" (`.draggable({ handle:
+// ... })` en info-chat.html restringe el drag a este elemento en las dos
+// plataformas). En desktop convive con los botones × y ampliar, uno a
+// cada punta — el pill queda centrado entre los dos.
+.gallery-window-header::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  opacity: .5;
 }
 // Botones del header: mismo tamaño, uno a cada punta. El color del ícono
 // nunca cambia — el hover sólo le baja la opacidad, sin fondo ni borde.
@@ -561,25 +580,24 @@ ul.post-list li span.post-tags {
   .gallery-window video {
     max-width: 92vw;
   }
-  // "El dibujo del navegador" (el look de ventana de browser: borde,
-  // esquinas redondeadas, la barra de header) no tiene sentido en mobile
-  // — es una sola imagen a la vez (ver reveal()/currentWin en
-  // info-chat.html), no una ventana para organizar entre varias. Se saca
-  // la barra de header del todo (antes quedaba como manija angosta, ahora
-  // ni eso — sin handle, `.draggable()` sigue arrastrando agarrando la
-  // imagen misma, no hacía falta un handle dedicado).
-  //
-  // El borde SÍ vuelve (pedido de Diego, mismo día, un rato después): sin
-  // ningún marco la imagen quedaba "vacía" — pero sin esquinas
-  // redondeadas asimétricas (`8px 8px 0 0` en desktop, pensadas para
-  // calzar con el header que acá ya no existe) ni fondo, sólo el borde
-  // de color.
+  // El borde de "dibujo del navegador" vuelve — sin ningún marco la
+  // imagen quedaba "vacía" — pero sin esquinas redondeadas asimétricas
+  // (`8px 8px 0 0` en desktop, pensadas para calzar con un header con
+  // texto/iconos) ni fondo, sólo el borde de color.
   .gallery-window {
     border: 1px solid var(--color-primary);
     border-radius: 0;
     background: none;
   }
-  .gallery-window-header,
+  // El header también vuelve, pero acá como MANIJA de arrastre pura, no
+  // barra de acciones: × y ampliar siguen ocultos (en mobile no hay forma
+  // de cerrar/ampliar) — el pill de "acá se arrastra" (`::after`) ya es
+  // parte de la regla base, se ve igual acá.
+  .gallery-window-header {
+    display: block;
+    height: 18px;
+    background: var(--color-tertiary);
+  }
   .gallery-window-close,
   .gallery-window-expand {
     display: none;

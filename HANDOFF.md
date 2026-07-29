@@ -1115,6 +1115,82 @@ imagen/video ya cargada (target real = `pic`, no el fondo) avanza a otra
 imagen y sigue habiendo exactamente **1** ventana — confirma que el nuevo
 listener no duplica el `reveal()` vía bubbling normal.
 
+## Quinta tanda, mismo día: 3 bugs de mobile + manija de arrastre en las dos plataformas (2026-07-29)
+
+Con todo lo de arriba ya en vivo, Diego probó de nuevo y reportó 3 cosas
+más — dos bugs reales de mobile y un pedido de UX que terminó
+resolviendo el tercero de paso.
+
+1. **Los videos tardaban en cargar y la ventana quedaba vacía en mobile**:
+   al sacar `preload="none"` para que el `.mp4` arrancara solo (ronda
+   anterior), también se había sacado `poster` — sin querer, dejaba la
+   ventana en negro/vacía todo lo que tardara la descarga en una red
+   mobile lenta. Se restauró `pic.poster = img.poster` en la rama mobile:
+   el navegador ya sabe mostrar la portada hasta que arranca la
+   reproducción sola, no hacía falta nada más.
+2. **El tap sobre la imagen ya cargada no cambiaba nada — había que
+   tocar afuera**: pese al listener directo sobre `pic` agregado en la
+   ronda anterior (con `stopPropagation`), Diego lo siguió viendo roto en
+   uso real. Sospecha razonable, no confirmada 100% pero consistente con
+   el síntoma: jQuery UI Draggable es a base de eventos de MOUSE, no
+   táctiles — en touchscreen depende de que el navegador emule mouse a
+   partir del touch, y esa emulación no es confiable sobre un `<video>`
+   (que suele tener manejo nativo propio del tap) — sin `handle`
+   configurado, CUALQUIER punto de la ventana (imagen incluida) era un
+   candidato a "arranque de drag", compitiendo con el tap y a veces
+   comiéndoselo.
+   **Solución de Diego**: devolver el header como manija de arrastre
+   (visible de nuevo, con un pill centrado que indica "de acá se
+   arrastra" en vez de los íconos de siempre) y restringir
+   `.draggable()` a `handle: '.gallery-window-header'` — así el resto de
+   la ventana (la imagen) queda completamente libre de la lógica de
+   Draggable, sin nada compitiendo con el tap.
+   - Pedido después, en la misma conversación: aplicar el mismo pill a
+     **desktop también** ("mismo concepto... conservando sus otras
+     funcionalidades") — y que ahí TAMBIÉN se restrinja el drag a la
+     manija (antes era arrastrable de punta a punta, sin handle, a
+     propósito — documentado en una ronda bien anterior). Se unificó:
+     `.draggable({ handle: '.gallery-window-header', cancel:
+     '.gallery-window-close, .gallery-window-expand' })` para las dos
+     plataformas — `cancel` sigue excluyendo los botones × y ampliar
+     (que viven DENTRO del header) para que no arranquen un drag ellos
+     también; en mobile esos botones están ocultos, así que ahí `cancel`
+     no hace nada, pero no molesta dejarlo parejo.
+   - El pill (`.gallery-window-header::after`, `_sass/styles.scss`) pasó
+     a la regla base (ya no duplicado en el media query mobile) — se ve
+     igual en las dos plataformas, centrado entre los botones en desktop.
+3. **Salto brusco de posición al revelar una imagen** (reportado para las
+   dos plataformas): la ventana aparecía con la esquina en el punto de
+   click y, recién al conocerse el tamaño real, saltaba al centrado
+   (`recenter()`) — un salto visible y feo, más notorio ahora que sólo
+   hay una imagen a la vez. Fix: `.gallery-window` arranca con
+   `visibility: hidden`: `recenter()` ahora hace las dos cosas en el
+   mismo paso — reposiciona Y agrega la clase `.revealed` (que recién ahí
+   dispara `visibility:visible` + el pop-in ya existente) — nunca hay un
+   estado intermedio visible "en la esquina". Sin eso, si por lo que sea
+   `recenter()` nunca se llega a disparar (portada que no carga), la
+   ventana quedaría invisible para siempre — se agregó `revealTimeout`,
+   un resguardo de 400ms que fuerza `.revealed` igual, degradado al
+   comportamiento viejo (aparece en la esquina) en vez de invisible.
+   De paso se unificaron las ramas de video mobile/desktop (antes
+   duplicadas): las dos usan el mismo `coverProbe` sobre la portada para
+   recentrar rápido, sólo difieren en `autoplay` (mobile) vs
+   `preload="none"` (desktop) — el video de verdad puede tardar más que
+   la portada en llegar, no tenía sentido esperarlo para posicionar.
+
+Verificado con un harness (con un stub de `Image` que NO dispara `onload`
+solo, para poder inspeccionar el estado intermedio a mano): justo después
+del click, la ventana está oculta (`revealed` ausente) con
+`left`/`top` = el punto de click crudo; recién cuando se resuelve la
+portada (o la imagen, en el camino sin video), `left`/`top` pasan al
+valor centrado Y `revealed` se agrega **en el mismo paso** — nunca hay un
+frame donde se vea la posición vieja. Un caso aparte simula el timeout de
+400ms sin que nada haya cargado: revela igual, no queda invisible para
+siempre. Un tercer caso confirma que `draggable()` recibe exactamente
+`{handle: '.gallery-window-header', cancel: '.gallery-window-close,
+.gallery-window-expand'}` en ambas plataformas (antes desktop no tenía
+`handle`).
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

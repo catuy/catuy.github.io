@@ -447,35 +447,46 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
 
       var video = isVideo(img.src);
       var pic = document.createElement(video ? 'video' : 'img');
+      // Antes: la ventana aparecía con la esquina en el punto de click y
+      // recién al conocerse el tamaño real saltaba al centrado — un salto
+      // brusco y feo (reportado por Diego, en ambas plataformas). Ahora
+      // `recenter()` también revela la ventana (agrega `.revealed`, ver
+      // `.gallery-window` en styles.scss: arranca `visibility: hidden`) —
+      // se posiciona bien ANTES de mostrarse, no después. `revealTimeout`
+      // es un resguardo (400ms): si por lo que sea nunca se dispara
+      // `recenter()` (imagen que no carga, poster ausente), la ventana
+      // igual aparece — degradada al viejo comportamiento de "esquina en
+      // el click", no invisible para siempre.
       var recenter = function () {
+        clearTimeout(revealTimeout);
         win.style.left = (ev.clientX - win.offsetWidth / 2) + 'px';
         win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
+        win.classList.add('revealed');
       };
-      if (video && IS_MOBILE) {
-        // En mobile no hay "ampliar" (los botones están ocultos, ver
-        // styles.scss) — la miniatura ES la vista final, no tiene sentido
-        // dejarla en la portada estática esperando un expand() que acá no
-        // existe. Reproduce directo: sin preload="none" (si no, nunca
-        // arranca sola), y usa `loadeddata` (no `onload`, que <video> no
-        // dispara) para recentrar una vez que se conoce el tamaño real.
+      var revealTimeout = setTimeout(function () { win.classList.add('revealed'); }, 400);
+      if (video) {
         pic.loop = true;
         pic.muted = true;
         pic.playsInline = true;
-        pic.autoplay = true;
         pic.alt = img.alt;
-        pic.addEventListener('loadeddata', recenter);
-      } else if (video) {
-        // En chico se ve quieta (portada estática, sin descargar el .mp4
-        // todavía): sólo reproduce al ampliar (expand()/collapse() más
-        // arriba) — así no hay 22 videos corriendo a la vez en pantalla.
-        pic.loop = true;
-        pic.muted = true;
-        pic.playsInline = true;
-        pic.preload = 'none';
-        pic.alt = img.alt;
+        if (IS_MOBILE) {
+          // En mobile no hay "ampliar" (los botones están ocultos, ver
+          // styles.scss) — la miniatura ES la vista final, reproduce
+          // directo en vez de esperar un expand() que acá no existe.
+          pic.autoplay = true;
+        } else {
+          // En chico se ve quieta (portada estática, sin descargar el
+          // .mp4 todavía): sólo reproduce al ampliar (expand()/collapse()
+          // más arriba) — así no hay varios videos corriendo a la vez.
+          pic.preload = 'none';
+        }
+        // El tamaño para centrar sale de la portada en las dos
+        // plataformas (no del video, que en desktop con preload="none"
+        // todavía no tiene videoWidth/Height, y en mobile tarda más en
+        // llegar que la portada — mejor recentrar/revelar rápido con eso
+        // que esperar el video entero, que además ya se ve solo gracias
+        // al `poster` nativo mientras carga).
         if (img.poster) pic.poster = img.poster;
-        // El tamaño para centrar/expandir sale de la portada, no del video
-        // (que con preload="none" todavía no tiene videoWidth/Height).
         var coverProbe = new Image();
         coverProbe.onload = function () {
           pic._naturalSize = { w: coverProbe.naturalWidth, h: coverProbe.naturalHeight };
@@ -541,7 +552,23 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         z += 1;
         win.style.zIndex = z;
       });
-      $(win).draggable({ cancel: '.gallery-window-close, .gallery-window-expand' });
+      // Arrastrar sólo puede arrancar desde el header (la manija, ver
+      // styles.scss) en las dos plataformas — antes desktop arrastraba de
+      // punta a punta sin handle; Diego pidió acotarlo también ahí, mismo
+      // criterio que mobile. El resto de la ventana, imagen incluida,
+      // queda libre para el tap/click que avanza a la siguiente (ver el
+      // listener de `pic` más arriba) — en mobile esto además evita que
+      // el intento de drag compita con el tap: jQuery UI Draggable es a
+      // base de eventos de mouse, no táctiles, y esa emulación no es
+      // confiable sobre un <video> (que suele tener su propio manejo
+      // nativo del tap). `cancel` sigue excluyendo los botones × y
+      // ampliar (que viven DENTRO del header) para que no arranquen un
+      // drag ellos también — en mobile están ocultos, así que ahí no
+      // hace nada, pero no molesta dejarlo parejo para las dos.
+      $(win).draggable({
+        handle: '.gallery-window-header',
+        cancel: '.gallery-window-close, .gallery-window-expand',
+      });
     }
     document.addEventListener('click', reveal);
   }
