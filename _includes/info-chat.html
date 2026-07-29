@@ -264,6 +264,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
     // abajo) — guarda la ventana/imagen actual para poder sacarla antes
     // de mostrar la siguiente. En desktop queda siempre en null, sin usarse.
     var mobileWin = null;
+    // Sólo en desktop: nunca más de 3 ventanas visibles a la vez — cola
+    // FIFO de las últimas reveladas (no de z-index/orden al frente). Al
+    // aparecer una 4ª, se saca la más vieja (ver reveal()). En mobile
+    // queda siempre vacío (ahí manda `mobileWin`, tope de 1).
+    var desktopWindows = [];
 
     // La transition va inline, sólo mientras dura expand()/collapse() — si
     // viviera en el CSS de .gallery-window, tanto arrastrar (jQuery UI pisa
@@ -418,6 +423,12 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         removeWindow(mobileWin.win, mobileWin.img);
         mobileWin = null;
       }
+      // Sólo en desktop: al llegar a 3 visibles, la 4ª saca a la más
+      // vieja (FIFO) antes de aparecer.
+      if (!IS_MOBILE && desktopWindows.length >= 3) {
+        var oldest = desktopWindows.shift();
+        removeWindow(oldest.win, oldest.img);
+      }
 
       var img = queue.shift();
       var win = document.createElement('div');
@@ -506,10 +517,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       closeBtn.addEventListener('click', function () {
         removeWindow(win, img);
         if (mobileWin && mobileWin.win === win) mobileWin = null;
+        var idx = desktopWindows.findIndex(function (w) { return w.win === win; });
+        if (idx !== -1) desktopWindows.splice(idx, 1);
       });
 
       document.body.appendChild(win);
       if (IS_MOBILE) mobileWin = { win: win, img: img };
+      else desktopWindows.push({ win: win, img: img });
       win.addEventListener('mousedown', function () {
         if (win.classList.contains('expanded')) return; // no compite con Z_EXPANDED
         z += 1;

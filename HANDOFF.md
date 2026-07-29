@@ -1000,8 +1000,40 @@ se asigna `textContent` al turno del narrador: en mobile, 5 clicks seguidos
 dejan siempre **1** `.gallery-window` en pantalla (la anterior se saca
 antes de sumar la siguiente) y el texto se asigna **una sola vez** (sin
 animación); en desktop, los mismos 5 clicks apilan **1,2,3,4,5** ventanas
-sin cambios, y el texto se asigna **20 veces** (los pasos de `typeOut`),
-confirmando que el comportamiento desktop quedó intacto.
+~~sin cambios~~ — **desactualizado, ver la sección de abajo**: horas
+después, en la misma jornada, desktop pasó a topear en 3. En su momento
+(esta verificación) sí apilaba sin límite, y el texto se asigna **20
+veces** (los pasos de `typeOut`), confirmando que el comportamiento
+desktop quedó intacto respecto de ANTES de esta ronda de cambios de mobile
+— no respecto de lo que hay hoy.
+
+## Desktop: tope de 3 ventanas visibles, FIFO (2026-07-29)
+
+Mismo día, un rato después: Diego pidió que en desktop tampoco se apilen
+infinitas ventanas — máximo **3** visibles a la vez. Al revelar una 4ª, se
+saca la más vieja de las 3 (por orden de aparición, no por z-index/quién
+está al frente) antes de sumar la nueva.
+
+`reveal()` (`_includes/info-chat.html`) suma `desktopWindows`, un array
+FIFO paralelo a `mobileWin` (ese sigue igual, tope de 1 sólo en mobile).
+Antes de crear la ventana nueva: si `!IS_MOBILE && desktopWindows.length
+>= 3`, saca la primera del array (`shift()`) con el mismo `removeWindow()`
+que ya usaban `mobileWin` y el botón `×` — misma limpieza (backdrop/
+Escape si estuviera expandida, aunque no puede pasar por el guard de
+`activeExpanded`) y la imagen vuelve al final de la cola, así que sigue
+siendo cíclico. Al final de `reveal()`, la ventana nueva se agrega al
+array (`push`) sólo si es desktop. El botón `×` (que en desktop sigue
+existiendo, a diferencia de mobile) también saca la ventana de
+`desktopWindows` si estaba ahí — si no, cerrar una manualmente ANTES de
+llegar a 3 dejaría una referencia colgada, corriendo el tope de menos.
+
+Verificado con un harness: 7 clicks seguidos en desktop dan
+`1, 2, 3, 3, 3, 3, 3` ventanas en pantalla (nunca más de 3); en mobile
+los mismos 7 clicks siguen dando `1` todo el tiempo (sin cambios, tope
+propio). Un segundo caso probado a mano: 2 ventanas reveladas, cerrar la
+primera con `×` manualmente, y revelar 2 más — da **3** en pantalla al
+final (no 2 ni 4), confirmando que el cierre manual no deja basura en
+`desktopWindows` que corra el tope.
 
 ## Cómo verificar (sistema nuevo)
 
