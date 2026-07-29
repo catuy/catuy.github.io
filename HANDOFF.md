@@ -1255,6 +1255,50 @@ otras 26 sí; y que `artifact-2.gif` se crea como `<img>` (no `<video>`,
 confirmando que `isVideo()` sólo mira `.mp4`) mientras `prisma-1.mp4` sí
 se crea como `<video>`.
 
+## Ajustes al pool ampliado, mismo día: portada vs. animación, texto de FAdu, se saca Trama (2026-07-29)
+
+Diego revisó lo de arriba y corrigió 4 cosas.
+
+1. **Reboot, Escobar y Melu tenían el `src`/`poster` invertidos**: lo que
+   yo había puesto como imagen principal (`reboot.jpg`, `escobar.gif`,
+   `melu.jpg`) era en realidad la PORTADA — el `.webp` animado de cada
+   uno (`reboot.webp`, `escobar.webp`, `melu.webp`) es lo que debería
+   verse al ampliar. El problema: `.webp` animado no tiene un `poster`
+   nativo como `<video>` (no hay forma de "mostrar la portada hasta que
+   se activa" sin código propio). Se generalizó el mecanismo que ya
+   existía para video: en `reveal()`, si una entrada no-video tiene
+   `poster`, se guardan `_posterSrc`/`_expandSrc` en el propio `pic`, y
+   `expand()`/`collapse()` (que ya hacían `play()`/`pause()` para
+   `<video>`) ahora también saben cambiar el `src` de un `<img>` a mano
+   — a la animación real al ampliar, de vuelta a la portada al achicar.
+   En mobile (sin "ampliar", mismo criterio que los videos) se muestra
+   la animación real directo, sin pasar por la portada.
+   - Esto corrige además una confusión mía: el pedido original decía
+     "escobar (usa el gif como poster)" — lo interpreté como "usá el gif
+     de imagen principal", cuando en realidad pedía literalmente
+     `poster: escobar.gif` (que es justo lo que quedó ahora).
+2. **Texto de FAdu/LEAC**: tenía "I was a faculty member..." (paráfrasis
+   mía) — Diego pidió el término real de la fuente, "associate
+   professor" (con un typo, "corrige de ser necesario"). Quedó: *"I was
+   an associate professor at the Faculty of Architecture, Design and
+   Urban Planning, University of the Republic, for over ten years."* —
+   fiel al texto que ya había encontrado el agente en cataldo-pages. El
+   español también sumó "adjunto" para que diga lo mismo ("docente
+   adjunto", el equivalente uruguayo de "associate professor").
+3. **Se saca Trama** del pool — pedido sin más contexto, entrada
+   eliminada por completo (el archivo `trama-4.mp4`/
+   `trama-4-poster.jpg` queda sin usar en el repo, mismo criterio que
+   otros proyectos sacados antes: no se borra del disco).
+
+`GALLERY_IMAGES` queda en **28 entradas** (29 menos Trama).
+
+Verificado con un harness: para `reboot` (mismo mecanismo que `escobar`/
+`melu`, no se testeó cada uno por separado) — en desktop arranca
+mostrando `reboot.jpg` (`_posterSrc`), clickear "Ampliar" cambia el `src`
+a `reboot.webp` (`_expandSrc`), clickear "Achicar" lo devuelve a
+`reboot.jpg`; en mobile arranca directo en `reboot.webp`, sin pasar por
+la portada — igual que ya pasaba con los videos.
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/

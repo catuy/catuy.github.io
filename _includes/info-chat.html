@@ -103,13 +103,20 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
   // Pool real de proyectos: arrancó en 22, Diego sacó 8 en la curación
   // (2026-07-29, "Curación del pool"), y volvió a sumar bastante más
   // después (cafe/escobar/jacobin/leac/melu/prisma/seri3/criolla-2 de
-  // vuelta, más criolla-3/1976/sso/tend/trama/artifact/cc-24/cololo
-  // nuevos) — 29 en total ahora. `alt`/`label` y los `comment` salieron
-  // de /Users/diego/www/cataldo-pages (otro repo, portfolio viejo de
+  // vuelta, más criolla-3/1976/sso/tend/artifact/cc-24/cololo nuevos —
+  // trama se agregó y se volvió a sacar el mismo día) — 28 en total
+  // ahora. `alt`/`label` y los `comment` salieron de
+  // /Users/diego/www/cataldo-pages (otro repo, portfolio viejo de
   // Diego) — texto en inglés ahí, adaptado acá a 1ª persona y traducido,
   // mismo registro que ya tenían Brecha/Monitor Cannabis (los primeros 2
   // en tener comment). artifact/cc-24/cololo NO tienen comment: no hay
   // texto real para ellos en cataldo-pages, ni en sus borradores.
+  // `poster` en reboot/escobar/melu NO es la portada de un video: son
+  // `.webp` animados sin equivalente nativo al `poster` de <video> — acá
+  // significa "portada en chico/desktop, la animación real se ve recién
+  // al ampliar" (swap a mano en expand()/collapse(), ver más abajo). En
+  // mobile (sin "ampliar") se ve la animación real directo, igual que los
+  // videos.
   // `slug`/`label` NO se usan por ahora (la galería es puramente visual:
   // se apila sobre el about fijo, sin URL por proyecto) — quedan en los
   // datos por si se retoma más adelante. `comment` SÍ se usa ahora: es el
@@ -207,7 +214,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       },
     },
     {
-      src: '/assets/blogimages/tiles/reboot.jpg', alt: 'Reboot',
+      src: '/assets/blogimages/tiles/reboot.webp', poster: '/assets/blogimages/tiles/reboot.jpg', alt: 'Reboot',
       slug: 'reboot', label: 'Reboot',
       comment: {
         es: "Formé parte del equipo curatorial que representó a Uruguay en la 15ª Bienal de Arquitectura de Venecia.",
@@ -255,7 +262,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       },
     },
     {
-      src: '/assets/blogimages/tiles/escobar.gif', alt: 'Escobar',
+      src: '/assets/blogimages/tiles/escobar.webp', poster: '/assets/blogimages/tiles/escobar.gif', alt: 'Escobar',
       slug: 'escobar', label: 'Escobar',
       comment: {
         es: "Diseñé la identidad y los títulos en pantalla de Escobar, una serie de TV del canal Fusion.",
@@ -266,12 +273,12 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       src: '/assets/blogimages/tiles/leac.webp', alt: 'FAdu UdelaR',
       slug: 'fadu-udelar', label: 'FAdu UdelaR',
       comment: {
-        es: "Fui docente en la Facultad de Arquitectura, Diseño y Urbanismo de la Universidad de la República por más de diez años.",
-        en: "I was a faculty member at the Faculty of Architecture, Design and Urban Planning, University of the Republic, for over ten years.",
+        es: "Fui docente adjunto en la Facultad de Arquitectura, Diseño y Urbanismo de la Universidad de la República por más de diez años.",
+        en: "I was an associate professor at the Faculty of Architecture, Design and Urban Planning, University of the Republic, for over ten years.",
       },
     },
     {
-      src: '/assets/blogimages/tiles/melu.jpg', alt: 'Melu',
+      src: '/assets/blogimages/tiles/melu.webp', poster: '/assets/blogimages/tiles/melu.jpg', alt: 'Melu',
       slug: 'melu', label: 'Melu',
       comment: {
         es: "Hice la dirección de arte y el diseño de Melu, un álbum de música.",
@@ -316,14 +323,6 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       comment: {
         es: "Diseñé y desarrollé Tend, la primera revista digital de la Asociación Psicoanalítica del Uruguay.",
         en: "I designed and built Tend, the first digital magazine of the Uruguayan Psychoanalytic Association.",
-      },
-    },
-    {
-      src: '/assets/blogimages/tiles/trama-4.mp4', poster: '/assets/blogimages/tiles/trama-4-poster.jpg', alt: 'Trama',
-      slug: 'trama', label: 'Trama',
-      comment: {
-        es: "Definí la estrategia de diseño, UX/UI y producto de Trama, una plataforma para conectar al ecosistema de innovación de Uruguay.",
-        en: "I defined the design strategy, UX/UI, and product for Trama, a platform connecting Uruguay's innovation ecosystem.",
       },
     },
     // Sin comment: no hay texto real para estos 3 en cataldo-pages (ni
@@ -470,6 +469,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       // la portada estática, quieta (ver reveal()). play() dispara la
       // descarga (preload="none") si todavía no había arrancado.
       if (pic.tagName === 'VIDEO') pic.play();
+      // Mismo criterio para imágenes animadas con portada propia (webp
+      // animado, ej. reboot/escobar/melu): no hay un "poster" nativo como
+      // <video>, así que el swap de src se hace a mano acá — ver reveal()
+      // para cómo se guardan `_posterSrc`/`_expandSrc` en `pic`.
+      else if (pic._expandSrc) pic.src = pic._expandSrc;
 
       expandBtn.innerHTML = COMPRESS_ICON;
       expandBtn.setAttribute('aria-label', 'Achicar');
@@ -492,6 +496,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       // el elemento a su estado sin datos cargados (preload="none"), así
       // que la próxima reproducción vuelve a descargar desde el principio.
       if (pic.tagName === 'VIDEO') { pic.pause(); pic.load(); }
+      else if (pic._posterSrc) pic.src = pic._posterSrc;
       $(win).draggable('enable');
       z += 1;
       win.style.zIndex = z; // vuelve a "al frente de lo normal", no a su z viejo
@@ -600,11 +605,24 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
           recenter();
         };
         if (img.poster) coverProbe.src = img.poster;
+        pic.src = img.src;
       } else {
         pic.alt = img.alt;
         pic.onload = recenter;
+        if (img.poster) {
+          // Imagen animada con portada propia (ej. reboot.webp/
+          // escobar.webp/melu.webp): no hay equivalente nativo al
+          // `poster` de <video> para <img>, así que expand()/collapse()
+          // (más arriba) hacen el swap a mano usando esto. En mobile no
+          // hay "ampliar" (mismo criterio que los videos): muestra la
+          // animación real directo, sin pasar por la portada.
+          pic._posterSrc = img.poster;
+          pic._expandSrc = img.src;
+          pic.src = IS_MOBILE ? img.src : img.poster;
+        } else {
+          pic.src = img.src;
+        }
       }
-      pic.src = img.src;
       win.appendChild(pic);
 
       // Clickear la imagen/video ya cargada tiene que avanzar igual que
