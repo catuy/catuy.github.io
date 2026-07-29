@@ -6,7 +6,17 @@
   <script src="{{ "/assets/jquery-3.6.3.min.js" | relative_url }}"></script>
   <script src="{{ "/assets/jquery-ui.min.js" | relative_url }}"></script>
   <script src="{{ "/assets/jquery.ui.touch-punch.min.js" | relative_url }}"></script>
-  {%- seo -%}
+  {% comment %}
+  La pestaña siempre dice sólo "d" (site.title): jekyll-seo-tag arma el
+  <title> como "site.title | site.description" apenas hay una
+  site.description seteada (nuestro caso, el bloque de caracteres en
+  _config.yml) — no importa si la página tiene su propio title o no.
+  `title=false` apaga el <title> que arma el plugin (sus otros tags —
+  og:title, description, twitter — siguen intactos, no dependen de esa
+  flag); el <title> de acá abajo es el único.
+  {% endcomment %}
+  <title>{{ site.title }}</title>
+  {%- seo title=false -%}
   <link rel="stylesheet" href="{{ "/assets/fonts/css/ibm-plex.min.css" | relative_url }}">
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
   {%- feed_meta -%}

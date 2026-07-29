@@ -1,6 +1,5 @@
 ---
 layout: info
-title: Info
 permalink: /info/
 ---
 {% comment %}

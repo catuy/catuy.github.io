@@ -1334,6 +1334,48 @@ animación real (no la portada) en los tres casos, y la ventana se
 mantiene centrada después de simular que el `<img>` recién swappeado
 termina de "cargar" (confirma que `onload` no vuelve a pisar la posición).
 
+## Título del sitio: sólo "d", sin "Home | " / "Info | " (2026-07-29)
+
+Diego pidió cambiar `site.title` (el bloque de caracteres) por una sola
+letra, "d", y que la pestaña del navegador diga eso nada más — sin el
+prefijo "Home | "/"Info | " que venía agregando `jekyll-seo-tag` según la
+página.
+
+Sacar el `title:` del front matter de `index.markdown`/`info.markdown` no
+alcanzaba: revisando el código fuente del gem
+(`jekyll-seo-tag-2.8.0/lib/jekyll-seo-tag/drop.rb`, método `title`), la
+lógica es —
+
+    if site_title && page_title != site_title
+      page_title + " | " + site_title
+    elsif site_description && site_title   # <- este es el caso que aplicaba
+      site_title + " | " + site_tagline_or_description
+    else
+      page_title || site_title
+    end
+
+Sin `page.title`, `page_title` cae a `site_title` (son iguales), así que
+la primera rama no aplica — pero cae en la segunda rama igual, porque
+`site.description` sigue seteada (otro bloque de caracteres en
+`_config.yml`, ajeno a este cambio) — de ahí el "d | ██ ████..." que
+seguía apareciendo.
+
+Solución: no tocar `site.description` (la siguen usando `og:description`/
+`meta description`, sin relación con el pedido) — en cambio, `{% seo %}`
+acepta un parámetro `title=false` que apaga sólo el `<title>` que arma el
+plugin (revisado en el propio template del gem,
+`lib/jekyll-seo-tag/template.html`: `{% if seo_tag.title? %}`, y
+`title?` chequea literalmente si el texto del tag incluye `title=false`)
+— sus otros tags (`og:title`, `description`, `twitter:title`) no dependen
+de esa flag, siguen funcionando igual. `_includes/head.html` ahora pone
+`<title>{{ site.title }}</title>` a mano, seguido de
+`{%- seo title=false -%}`.
+
+Verificado sirviendo ambas páginas: `<title>d</title>` en `/` y `/info/`
+(antes "d | ██ ████..."), y que `og:title`/`meta description`/
+`twitter:title` siguen presentes y con el contenido esperado — no se
+rompió nada del resto de `{% seo %}`.
+
 ## Cómo verificar (sistema nuevo)
 
 - Dev local: `bundle exec jekyll serve --port 4000` → http://localhost:4000/info/
