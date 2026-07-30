@@ -447,6 +447,11 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       win.classList.add('expanded');
       win.style.zIndex = Z_EXPANDED;
       activeExpanded = win;
+      // Mientras está ampliada, clickear no avanza la galería (reveal() se
+      // frena con el mismo `activeExpanded` de arriba) — el cursor ambiente
+      // vuelve a ser un punto simple todo ese tiempo, sin importar sobre
+      // qué esté el mouse (ver lock()/unlock() en footer.html).
+      if (window.__infoCursorDie) window.__infoCursorDie.lock();
 
       var backdrop = document.createElement('div');
       backdrop.className = 'gallery-backdrop';
@@ -515,6 +520,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
       z += 1;
       win.style.zIndex = z; // vuelve a "al frente de lo normal", no a su z viejo
       activeExpanded = null;
+      if (window.__infoCursorDie) window.__infoCursorDie.unlock();
 
       expandBtn.innerHTML = EXPAND_ICON;
       expandBtn.setAttribute('aria-label', 'Ampliar');
@@ -528,6 +534,7 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         if (win._backdrop) win._backdrop.remove();
         if (win._onKeydown) document.removeEventListener('keydown', win._onKeydown);
         activeExpanded = null;
+        if (window.__infoCursorDie) window.__infoCursorDie.unlock();
       }
       win.remove();
       queue.push(img);
@@ -544,6 +551,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         removeWindow(currentWin.win, currentWin.img);
         currentWin = null;
       }
+
+      // El dado del cursor ambiente (footer.html) empieza a animar acá y se
+      // frena en recenter()/el resguardo de revealTimeout más abajo, ambos
+      // el mismo punto donde ya se sabe que la imagen/portada terminó de
+      // cargar — footer.html expone el hook en window por orden de carga,
+      // ver el comentario ahí.
+      if (window.__infoCursorDie) window.__infoCursorDie.start();
 
       var img = queue.shift();
       var win = document.createElement('div');
@@ -588,8 +602,12 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         win.style.left = (ev.clientX - win.offsetWidth / 2) + 'px';
         win.style.top = (ev.clientY - win.offsetHeight / 2) + 'px';
         win.classList.add('revealed');
+        if (window.__infoCursorDie) window.__infoCursorDie.stop();
       };
-      var revealTimeout = setTimeout(function () { win.classList.add('revealed'); }, 400);
+      var revealTimeout = setTimeout(function () {
+        win.classList.add('revealed');
+        if (window.__infoCursorDie) window.__infoCursorDie.stop();
+      }, 400);
       if (video) {
         pic.loop = true;
         pic.muted = true;
@@ -675,7 +693,21 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         win.appendChild(caption);
       }
 
-      expandBtn.addEventListener('click', function () {
+      expandBtn.addEventListener('click', function (ev) {
+        // stopPropagation() es obligatorio acá, no sólo prolijidad: tanto
+        // expand() como collapse() reemplazan `expandBtn.innerHTML` (para
+        // cambiar el ícono) ANTES de que este click termine de burbujear.
+        // Eso destruye el nodo real que originó el evento (el <svg>/<path>
+        // del ícono, casi siempre lo que el usuario clickea de hecho) — al
+        // llegar a `document`, `isInteractive(ev.target)` ya no lo
+        // encuentra (`closest()` sobre un nodo desconectado del árbol no
+        // llega al <button>), así que `reveal()` no lo reconocía como
+        // interactivo y disparaba un avance de imagen de más. Achicar lo
+        // sufría siempre (collapse() limpia `activeExpanded` antes de que
+        // el evento siga subiendo, así que ese guard tampoco lo tapaba);
+        // ampliar quedaba tapado de casualidad por ese mismo guard
+        // (`activeExpanded` sigue en `true` durante todo expand()).
+        ev.stopPropagation();
         if (win.classList.contains('expanded')) { collapse(win, pic, header, expandBtn); return; }
         // Bug real (no sólo de CSS): `z` no tiene techo — sube con cada
         // reveal()/mousedown-al-frente, así que en una sesión larga puede
@@ -691,7 +723,13 @@ tras sacar la experiencia agéntica — ver HANDOFF.md.
         expand(win, pic, header, expandBtn);
       });
 
-      closeBtn.addEventListener('click', function () {
+      closeBtn.addEventListener('click', function (ev) {
+        // Mismo motivo que expandBtn: removeWindow() hace win.remove(),
+        // que desconecta closeBtn (y con él, el nodo real que originó el
+        // click) ANTES de que el evento termine de burbujear a document —
+        // sin stopPropagation(), reveal() no reconoce ese target ya
+        // huérfano como interactivo y avanza una imagen de más.
+        ev.stopPropagation();
         removeWindow(win, img);
         if (currentWin && currentWin.win === win) currentWin = null;
       });

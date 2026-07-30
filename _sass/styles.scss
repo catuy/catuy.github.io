@@ -342,41 +342,42 @@ footer{
 //  ------------------------------------------
 
 // Acompaña al cursor nativo (no lo reemplaza) en esas dos páginas: un mini
-// círculo que lo sigue con lag (lerp en requestAnimationFrame, en
+// ícono que lo sigue con lag (lerp en requestAnimationFrame, en
 // footer.html), siempre presente — no depende del chat ni de ningún click.
-// transform, no margin negativo: así centra igual de bien el círculo
-// (14x14 fijo) que el texto "click" del hint (ancho variable).
+// transform, no margin negativo: así centra igual de bien el círculo chico
+// como el dado (tamaños distintos). footer.html arma exactamente UNA de
+// estas dos clases a la vez (`circle`/`die`) según el estado — nunca
+// combinadas.
 .cursor-dot {
   position: fixed;
   z-index: 9999;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+// Círculo simple: siempre en la home; en /info/ es el estado "hover sobre
+// un link/botón/input" (ampliar, cerrar, el nav, el mail — ver footer.html)
+// o "hay una ventana ampliada" — el dado no tiene sentido mostrado sobre
+// algo que no avanza la galería.
+.cursor-dot.circle {
   width: 14px;
   height: 14px;
-  transform: translate(-50%, -50%);
   border-radius: 50%;
-  pointer-events: none;
 }
 // El color primario ya es el que eligió la sesión (cabeza random, ver
 // footer.html/heads/*.js) — el punto lo sigue, no define uno propio.
-// :not(.hint): si no, esta regla (más específica que .cursor-dot.hint de
-// abajo) le seguía ganando al `background: none` del hint — el texto
-// "click" quedaba invisible sobre un rectángulo del mismo color.
-body.layout-info .cursor-dot:not(.hint) {
-  background: var(--color-primary);
-}
-body.layout-home .cursor-dot:not(.hint) {
+body.layout-home .cursor-dot.circle {
   background: white;
 }
-// Hint inicial en /info/ (hasta el primer click, ver footer.html): el texto
-// "click" en vez del círculo, mismo seguimiento del mouse.
-.cursor-dot.hint {
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  background: none;
+body.layout-info .cursor-dot.circle {
+  background: var(--color-primary);
+}
+// Dado (sólo /info/, ver footer.html): cuadrado relleno (currentColor,
+// puntos blancos — armado en el SVG de footer.html) en vez del círculo. Más
+// grande que el círculo (22px vs 14px) para que los puntos se vean nítidos.
+body.layout-info .cursor-dot.die {
+  width: 22px;
+  height: 22px;
   color: var(--color-primary);
-  font-family: inherit;
-  font-size: var(--font-size-m);
-  white-space: nowrap;
 }
 
 //  ------------------------------------------

@@ -86,36 +86,123 @@
   </script>
 {% if page.layout == "home" or page.layout == "info" %}
 <script>
-  // Cursor ambiente (círculo que sigue al mouse con lag): rojo en /info/,
-  // blanco en la home, siempre presente en esas dos páginas — no depende del
-  // chat ni de ningún click (a diferencia de startProjectGallery en
-  // info-chat.html, que sólo agrega el click-to-reveal de proyectos).
+  // Cursor ambiente (círculo que sigue al mouse con lag): un dado en /info/,
+  // blanco y circular en la home, siempre presente en esas dos páginas — no
+  // depende del chat ni de ningún click (a diferencia de startProjectGallery
+  // en info-chat.html, que sólo agrega el click-to-reveal de proyectos). El
+  // dado en sí ya es la pista de "clickear acá avanza la galería" — antes
+  // había además un hint de texto ("click") hasta el primer click del
+  // visitante, se sacó por quedar redundante con el dado.
   //
-  // En /info/, hasta el primer click, el punto se muestra como la palabra
-  // "click" (mismo seguimiento del mouse, sin la forma circular) — es la
-  // única pista de que hacer click revela proyectos. Una vez que clickea,
-  // vuelve a ser el círculo de siempre y sessionStorage evita que reaparezca
-  // el resto de la sesión (ver 'chatFrom'/'scriptPath' más arriba: mismo
-  // criterio de "una vez por sesión", no por visita a la página).
+  // Mismo mapa de caras que el botón Shuffle de home.html (#shuffle-die) —
+  // duplicado a propósito: son dos vistas visuales independientes (botón
+  // vs. cursor ambiente), no vale la pena una dependencia cruzada por unas
+  // pocas líneas de datos. El dibujo SÍ difiere del de Shuffle: acá es un
+  // cuadrado RELLENO (currentColor) con puntos blancos, no un marco con
+  // trazo — Diego lo pidió así para que se distinga como icono de cursor,
+  // no como botón.
+  var DIE_FACES = {
+    1: [[12, 12]],
+    2: [[8, 8], [16, 16]],
+    3: [[8, 8], [12, 12], [16, 16]],
+    4: [[8, 8], [16, 8], [8, 16], [16, 16]],
+    5: [[8, 8], [16, 8], [12, 12], [8, 16], [16, 16]],
+    6: [[8, 8], [16, 8], [8, 12], [16, 12], [8, 16], [16, 16]],
+  };
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function buildDieSvg() {
+    var svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", "22");
+    svg.setAttribute("height", "22");
+    svg.setAttribute("aria-hidden", "true");
+    var rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("x", "3");
+    rect.setAttribute("y", "3");
+    rect.setAttribute("width", "18");
+    rect.setAttribute("height", "18");
+    rect.setAttribute("rx", "4");
+    rect.setAttribute("ry", "4");
+    rect.setAttribute("fill", "currentColor");
+    svg.appendChild(rect);
+    return svg;
+  }
+  function setDieFace(svg, face) {
+    // El primer hijo es el fondo (rect) — se conserva, se sacan sólo los
+    // puntos de la cara anterior.
+    while (svg.childNodes.length > 1) svg.removeChild(svg.lastChild);
+    DIE_FACES[face].forEach(function (pt) {
+      var dot = document.createElementNS(SVG_NS, "circle");
+      dot.setAttribute("cx", pt[0]);
+      dot.setAttribute("cy", pt[1]);
+      dot.setAttribute("r", "1.6");
+      dot.setAttribute("fill", "white");
+      svg.appendChild(dot);
+    });
+  }
+  function randomFace() { return 1 + Math.floor(Math.random() * 6); }
+
   document.addEventListener("DOMContentLoaded", function () {
     var dot = document.createElement("div");
     dot.className = "cursor-dot";
 
     var isInfo = document.body.classList.contains("layout-info");
-    var alreadyClicked = false;
-    try { alreadyClicked = sessionStorage.getItem("infoClicked") === "1"; } catch (err) {}
+    var dieSvg = null;
 
-    if (isInfo && !alreadyClicked) {
-      dot.classList.add("hint");
-      dot.textContent = "click";
+    if (isInfo) {
+      dieSvg = buildDieSvg();
+      setDieFace(dieSvg, randomFace());
+      dot.appendChild(dieSvg);
+      dot.classList.add("die");
+    } else {
+      // Home: siempre círculo, sin dado — sin cambios de comportamiento acá.
+      dot.classList.add("circle");
     }
 
     document.body.appendChild(dot);
+
+    // Mientras una ventana de la galería está ampliada (lightbox), el dado
+    // no tiene sentido: clickear ahí no avanza a la imagen siguiente (ver
+    // el guard `if (activeExpanded) return;` de reveal() en
+    // info-chat.html) — el punto queda en círculo todo ese tiempo, sin
+    // importar sobre qué esté el mouse. expand()/collapse() en
+    // info-chat.html prenden/apagan esto vía lock()/unlock() más abajo, el
+    // mismo hook `window.__infoCursorDie` que ya usan para animar el dado
+    // al revelar.
+    var expandedLock = false;
+    var lastTarget = null;
+    function showCircle() {
+      dot.classList.remove("die");
+      dot.classList.add("circle");
+      dieSvg.style.display = "none";
+    }
+    function showDie() {
+      dot.classList.remove("circle");
+      dot.classList.add("die");
+      dieSvg.style.display = "";
+    }
+    function isOverUi() {
+      return expandedLock || !!(lastTarget && lastTarget.closest && lastTarget.closest("a, button, input"));
+    }
 
     var targetX = 0, targetY = 0, curX = 0, curY = 0;
     document.addEventListener("mousemove", function (ev) {
       targetX = ev.clientX;
       targetY = ev.clientY;
+      lastTarget = ev.target;
+
+      // En /info/, pasar sobre un link/botón/input (ampliar, cerrar, el nav
+      // ".. / Info", el mail, etc.) vuelve el cursor a un punto simple — el
+      // dado es la seña de "clickear acá avanza la galería", así que no
+      // tiene sentido mostrarlo sobre algo que hace otra cosa. Se resuelve
+      // acá, no con mouseenter/mouseleave: `ev.target` en mousemove YA es el
+      // elemento bajo el cursor en cada instante, sin el lío de bubbling que
+      // tienen esos otros dos eventos con elementos anidados.
+      if (isInfo && dieSvg) {
+        var overUi = isOverUi();
+        if (overUi && !dot.classList.contains("circle")) showCircle();
+        else if (!overUi && !dot.classList.contains("die")) showDie();
+      }
     });
     (function tick() {
       curX += (targetX - curX) * 0.15;
@@ -125,13 +212,38 @@
       requestAnimationFrame(tick);
     })();
 
-    if (isInfo && !alreadyClicked) {
-      document.addEventListener("click", function onFirstClick() {
-        dot.classList.remove("hint");
-        dot.textContent = "";
-        try { sessionStorage.setItem("infoClicked", "1"); } catch (err) {}
-        document.removeEventListener("click", onFirstClick);
-      });
+    // Hook para que info-chat.html anime el dado mientras carga la imagen
+    // siguiente (reveal()) y para que trabe el cursor en círculo mientras
+    // una ventana está ampliada (expand()/collapse()) — expuesto en window
+    // porque footer.html se incluye DESPUÉS de info-chat.html en la
+    // página: en el momento en que corre el script de info-chat.html este
+    // <script> todavía no se ejecutó, así que no hay forma de pasarse una
+    // referencia directa. Para cuando el visitante llega a clickear (mucho
+    // después del DOMContentLoaded que arma esto), el hook ya existe.
+    if (isInfo) {
+      var rollTimer = null;
+      window.__infoCursorDie = {
+        start: function () {
+          if (rollTimer) return;
+          rollTimer = setInterval(function () { setDieFace(dieSvg, randomFace()); }, 90);
+        },
+        stop: function () {
+          if (rollTimer) { clearInterval(rollTimer); rollTimer = null; }
+          setDieFace(dieSvg, randomFace());
+        },
+        lock: function () {
+          expandedLock = true;
+          showCircle();
+        },
+        unlock: function () {
+          expandedLock = false;
+          // No forzar el dado a ciegas: si el mouse quedó parado justo
+          // sobre el botón "Achicar" (lo más probable, recién se clickeó),
+          // isOverUi() lo detecta vía lastTarget y se queda en círculo —
+          // el próximo mousemove ya lo resuelve solo si no fuera el caso.
+          if (!isOverUi()) showDie();
+        },
+      };
     }
   });
 </script>
