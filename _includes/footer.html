@@ -186,6 +186,22 @@
     }
 
     var targetX = 0, targetY = 0, curX = 0, curY = 0;
+    // Mientras el dado está "tirándose" (isRolling, entre start()/stop() —
+    // ver el hook más abajo) se aleja del cursor a un punto fijo (elegido
+    // al azar en start(), ver HOP_DIST) y gira rápido ahí, como un dado
+    // real en el aire cambiando de cara; al terminar vuelve solo, planeando
+    // de regreso a la posición del mouse (mismo lerp que ya sigue al
+    // cursor, sólo que ahora también hacia offset 0). Un punto FIJO en vez
+    // de una órbita continua: la primera versión orbitaba en vez de
+    // tirarse, y el lerp (necesario para que no se vea como un salto en
+    // seco) amortiguaba tanto ese objetivo en movimiento constante que el
+    // resultado era casi imperceptible — un radio real mucho menor al
+    // nominal. Con el objetivo quieto, el lerp sí llega a converger ahí y
+    // el desplazamiento se nota. `spinAngle` (el giro visual del ícono) va
+    // aparte, no está atado a la posición — puede girar tan rápido como
+    // quiera sin ese problema de amortiguación.
+    var HOP_DIST = 34;
+    var rollOffsetX = 0, rollOffsetY = 0, spinAngle = 0, hopTargetX = 0, hopTargetY = 0, isRolling = false;
     document.addEventListener("mousemove", function (ev) {
       targetX = ev.clientX;
       targetY = ev.clientY;
@@ -207,8 +223,27 @@
     (function tick() {
       curX += (targetX - curX) * 0.15;
       curY += (targetY - curY) * 0.15;
-      dot.style.left = curX + "px";
-      dot.style.top = curY + "px";
+
+      // El hop sólo aplica mostrando el dado de verdad (no en hover/círculo
+      // ni en la home) — si isRolling sigue prendido pero el cursor pasó a
+      // círculo mientras tanto, el offset relaja a 0 igual que al frenar.
+      var wantHop = isRolling && dot.classList.contains("die");
+      var offX = 0, offY = 0;
+      if (wantHop) {
+        spinAngle += 0.5;
+        // Pequeño temblor arriba del punto fijo (hopTargetX/Y, elegido en
+        // start()) para que no se vea estático mientras está en el aire.
+        offX = hopTargetX + Math.sin(spinAngle * 2) * 3;
+        offY = hopTargetY + Math.cos(spinAngle * 2) * 3;
+        dieSvg.style.transform = "rotate(" + (spinAngle * 180 / Math.PI) + "deg)";
+      } else if (dieSvg) {
+        dieSvg.style.transform = "";
+      }
+      rollOffsetX += (offX - rollOffsetX) * 0.3;
+      rollOffsetY += (offY - rollOffsetY) * 0.3;
+
+      dot.style.left = (curX + rollOffsetX) + "px";
+      dot.style.top = (curY + rollOffsetY) + "px";
       requestAnimationFrame(tick);
     })();
 
@@ -222,14 +257,35 @@
     // después del DOMContentLoaded que arma esto), el hook ya existe.
     if (isInfo) {
       var rollTimer = null;
+      var rollStartTime = 0;
+      // Los assets de la galería son chicos y locales — muchas veces cargan
+      // en unos pocos ms, bastante antes de que el hop (el lerp de arriba,
+      // ~140ms para acercarse del todo a HOP_DIST) llegue a notarse. Sin
+      // este mínimo, stop() llegaba casi pegado a start() y el dado
+      // prácticamente no se movía — reportado por Diego probándolo en el
+      // navegador real (recenter()/revealTimeout, que llaman a stop(), no
+      // saben nada de esto ni tienen por qué: la garantía de duración
+      // mínima vive acá, no ahí).
+      var MIN_ROLL_MS = 400;
       window.__infoCursorDie = {
         start: function () {
           if (rollTimer) return;
+          isRolling = true;
+          rollStartTime = Date.now();
+          var angle = Math.random() * Math.PI * 2;
+          hopTargetX = Math.cos(angle) * HOP_DIST;
+          hopTargetY = Math.sin(angle) * HOP_DIST - HOP_DIST * 0.3; // sesgado hacia arriba, como al tirarlo
           rollTimer = setInterval(function () { setDieFace(dieSvg, randomFace()); }, 90);
         },
         stop: function () {
-          if (rollTimer) { clearInterval(rollTimer); rollTimer = null; }
-          setDieFace(dieSvg, randomFace());
+          var finish = function () {
+            if (rollTimer) { clearInterval(rollTimer); rollTimer = null; }
+            isRolling = false;
+            setDieFace(dieSvg, randomFace());
+          };
+          var elapsed = Date.now() - rollStartTime;
+          if (elapsed < MIN_ROLL_MS) setTimeout(finish, MIN_ROLL_MS - elapsed);
+          else finish();
         },
         lock: function () {
           expandedLock = true;
