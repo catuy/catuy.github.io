@@ -1,4 +1,92 @@
-# HANDOFF — catuy.github.io (2026-07-24, ver ESTADO ACTUAL 2026-07-28)
+# HANDOFF — catuy.github.io (2026-07-24, ver ESTADO ACTUAL 2026-07-29)
+
+## ESTADO ACTUAL (2026-07-29): galería visual de /info/, dominio propio, todo en `main`
+
+Segunda actualización de este bloque — la de abajo ("ESTADO ACTUAL
+2026-07-28") documentaba el pivote de sacar el chat agéntico. **Todo lo
+que sigue después de esta sección, incluida esa, es historia**: útil
+como referencia de cómo se llegó hasta acá, pero ya no describe el
+estado real del sitio. Leer esto primero.
+
+### Rama y flujo de trabajo
+- Se trabaja **directo en `main`** — `feature/info-gallery` (ex
+  `feature/synth-chat`) se mergeó a `main` el 2026-07-29 (ver "Rama y
+  merge a main" más abajo) y no se sigue usando.
+- **Push a `main` = deploy real** (GitHub Actions → GitHub Pages). Toda
+  esta sesión, cada commit se pusheó y se confirmó con
+  `gh run list --branch main --limit 1 --json status,conclusion,url`
+  antes de dar el cambio por terminado — mismo criterio a seguir.
+- **Dominio propio**: `catuy.github.io` ahora redirige (301) a
+  **d.persn.net** — lo configuró Diego vía GitHub Pages settings, no
+  vive en el repo (sin `CNAME` trackeado en git). Si hace falta
+  verificar algo visualmente en producción, es en `d.persn.net`, no en
+  `catuy.github.io` (que sigue funcionando, sólo redirige).
+
+### `/info/` — qué hay hoy
+- Arriba, el texto introductorio fijo (`about_extended` en
+  `_data/chat/ui.yml`, es/en). El saludo contextual de referrer
+  (`?from=<slug>`) está **desactivado a propósito**
+  (`REFERRER_GREETING_ENABLED = false` en `_includes/info-chat.html`) —
+  el link ya está publicado en sitios externos y Diego no quiere que
+  aparezca por ahora, pero pidió no borrar el desarrollo (reactivar es
+  esa única línea).
+- **Galería de 28 proyectos** (`GALLERY_IMAGES` en
+  `_includes/info-chat.html`) — **una sola imagen visible a la vez, en
+  cualquier tamaño de pantalla** (`currentWin`, ya no hay lógica
+  separada mobile/desktop para esto). Click en cualquier lado, o en la
+  imagen misma, revela la siguiente; la anterior vuelve al final de la
+  cola (cíclico).
+  - Arrastre restringido a una manija en el header (pill centrado,
+    `.gallery-window-header::after`) en las **dos** plataformas — ya no
+    es de punta a punta como al principio de esta rama.
+  - Desktop conserva el header con `×`/ampliar (lightbox con backdrop,
+    caption con la descripción del proyecto). Mobile no tiene esos
+    botones (ocultos vía CSS) — sólo un borde de color + la manija; no
+    hay forma de cerrar/ampliar ahí, la miniatura ES la vista final, sin
+    tipeo de texto tampoco.
+  - Videos (`.mp4`): muestran su `poster` mientras cargan; reproducen
+    sólo al ampliar en desktop, directo en mobile (no hay "ampliar" ahí).
+  - 3 proyectos (`reboot`, `escobar`, `melu`) usan un mecanismo aparte
+    para `.webp` animado (no tiene `poster` nativo como `<video>`):
+    `poster`+`src` con swap manual del `src` en `expand()`/`collapse()`,
+    más un probe en paralelo que precarga el tamaño real de la animación
+    (la portada puede ser mucho más chica — no usar su tamaño para el
+    cálculo de escala).
+  - **3 proyectos sin descripción a propósito** (no hay texto real en
+    `/Users/diego/www/cataldo-pages`, la fuente de todas las demás):
+    `artifact-2.gif`, `cc-24.jpg`, `cololo.jpg`. Si Diego trae texto para
+    estos, es la única razón pendiente para tocar esas 3 entradas.
+- **Título del sitio: "d"** (una sola letra, `_config.yml`). La pestaña
+  del navegador sólo dice eso, sin "Home | "/"Info | " — se apagó el
+  `<title>` que arma `jekyll-seo-tag` (`{% seo title=false %}` en
+  `_includes/head.html`, `<title>{{ site.title }}</title>` puesto a
+  mano); el resto de sus meta tags (`og:title`, `description`) siguen
+  funcionando igual, no se tocaron.
+
+### Pendientes conocidos, heredados de antes (sin resolver)
+1. `_data/chat/nodes/{work,art,me,project,portfolio,loop}.yml`:
+   contenido viejo del chat, sin uso hoy — decidir si se recicla o se
+   borra.
+2. `worker/worker.js` / `assets/chat-patterns.js`: nadie los llama desde
+   el cliente — decidir si se dan de baja o quedan por si se retoma el
+   chat en el futuro.
+3. Las 3 imágenes sin descripción (arriba).
+
+### Cómo seguir trabajando
+- Dev local: `bundle exec jekyll serve --port 4000`. **Reiniciar el
+  server si se toca `_config.yml`** — no se recarga solo (a diferencia
+  del resto del contenido).
+- No hay Puppeteer/Playwright instalado: para verificar cambios de JS se
+  arma un harness Node ad-hoc que extrae el `<script>` real de la página
+  renderizada — **filtrar por contenido** (ej. buscar `GALLERY_IMAGES`),
+  nunca asumir "el último `<script>` de la página", porque
+  `footer.html`/otros includes también tienen scripts propios — y
+  stubea `document`/`sessionStorage`/`window.matchMedia`/`$`/`Image`
+  según haga falta. Mismo patrón usado en TODAS las verificaciones de
+  esta sesión — buscar "Verificado con un harness" más abajo en este
+  archivo para ejemplos concretos de cada mecanismo (bubbling real,
+  `matchMedia` mobile/desktop, dimensiones reales de imagen vía PIL,
+  etc.) antes de escribir uno nuevo de cero.
 
 ## ESTADO ACTUAL (2026-07-28): se eliminó el chat agéntico y los tags
 
